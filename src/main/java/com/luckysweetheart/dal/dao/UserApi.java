@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
  * Created by yangxin on 2017/5/22.
  */
 @Repository
-public interface UserApi extends CrudRepository<User, Integer> {
+public interface UserApi extends CrudRepository<User, Long> {
 
     @Query(value = "select u from User u where mobilePhone=:mobilePhone and password=:password")
     User login(@Param("mobilePhone") String mobilePhone, @Param("password") String password);
 
-    User findByMoAndMobilePhone(String mobilePhone);
+    User findByMobilePhone(String mobilePhone);
 }

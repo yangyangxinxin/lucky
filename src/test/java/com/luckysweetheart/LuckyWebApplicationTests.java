@@ -1,7 +1,9 @@
 package com.luckysweetheart;
 
 import com.luckysweetheart.service.UserService;
+import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.utils.ResultInfo;
+import com.luckysweetheart.vo.StoreDataDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class LuckyWebApplicationTests {
 	public void contextLoads() {
 	}
 
+	@Resource
+	private StoreService storeService;
+
 	@Test
 	public void test1(){
 		ResultInfo<Void> resultInfo = null;
@@ -31,6 +36,12 @@ public class LuckyWebApplicationTests {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println(resultInfo);
+	}
+
+	@Test
+	public void test2(){
+		ResultInfo<StoreDataDTO> resultInfo =  storeService.uploadFile("F:\\code\\\\my\\\\lucky\\\\src\\\\main\\\\resources\\\\static\\\\img\\\\defaultUserImg.png","defaultUserImg.png");
 		System.out.println(resultInfo);
 	}
 

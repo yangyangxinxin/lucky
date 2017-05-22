@@ -9,9 +9,9 @@ import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.utils.ValidateUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * Created by yangxin on 2017/5/22.
@@ -20,6 +20,8 @@ import javax.annotation.Resource;
 public class UserService extends BaseService {
 
     private final String salt = "www.luckysweetheart.com";
+
+    private final String defaultUserImg = "/1253770331/bubu/defaultUserImg.png";
 
     @Resource
     private UserApi userApi;
@@ -46,7 +48,7 @@ public class UserService extends BaseService {
                 throw new BusinessException("手机号码不符合规范！");
             }
             //查询是否已经注册
-            User byMoAndMobilePhone = userApi.findByMoAndMobilePhone(userDTO.getMobilePhone());
+            User byMoAndMobilePhone = userApi.findByMobilePhone(userDTO.getMobilePhone());
             if (byMoAndMobilePhone != null) {
                 throw new BusinessException("你已注册！请登录！");
             }
@@ -56,6 +58,9 @@ public class UserService extends BaseService {
             user.setPassword(pwd);
             user.setUsername(userDTO.getUsername());
             user.setMobilePhone(userDTO.getMobilePhone());
+            user.setImgPath(defaultUserImg);
+            user.setDeleteStatus(User.DELETE_STATUS_NO);
+            user.setCreateTime(new Date());
             User user1 = userApi.save(user);
             UserDTO dto = new UserDTO();
             BeanCopierUtils.copy(user1, dto);
@@ -77,8 +82,10 @@ public class UserService extends BaseService {
             }
             password = AesUtil.encrypt(salt + password);
             User user = userApi.login(mobilePhone, password);
+            UserDTO userDTO = new UserDTO();
             if (user != null) {
                 logger.info("登录成功");
+                BeanCopierUtils.copy(user,userDTO);
                 return resultInfo.success();
             }
             logger.info("登录失败");

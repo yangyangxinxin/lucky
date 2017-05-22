@@ -1,9 +1,23 @@
-package com.luckysweetheart.vo;
+package com.luckysweetheart.dal.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.util.Date;
 
 /**
  * Created by yangxin on 2017/5/22.
  */
-public class StoreDataDTO {
+@Entity
+public class StoreData {
+
+    public static final Integer DELETE_STATUS_NO = 0;
+
+    public static final Integer DELETE_STATUS_YES = 1;
+    @Id
+    @GeneratedValue
+    private Long id;
 
     /**
      * 通过 CDN 访问该文件的资源链接（访问速度更快）；
@@ -32,6 +46,45 @@ public class StoreDataDTO {
     private String requestId;
 
     private String vId ;
+
+    @Column(nullable = false)
+    private Integer deleteStatus;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    public Integer getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(Integer deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getRequestId() {
         return requestId;
@@ -90,4 +143,5 @@ public class StoreDataDTO {
                 ", url='" + url + '\'' +
                 '}';
     }
+
 }

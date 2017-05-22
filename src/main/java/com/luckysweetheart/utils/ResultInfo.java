@@ -171,4 +171,6 @@ public class ResultInfo<T> implements Serializable {
 		this.resultCode = resultCode;
 		return this;
 	}
+
+
 }
