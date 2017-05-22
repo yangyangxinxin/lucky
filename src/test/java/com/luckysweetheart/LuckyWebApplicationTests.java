@@ -41,7 +41,15 @@ public class LuckyWebApplicationTests {
 
 	@Test
 	public void test2(){
-		ResultInfo<StoreDataDTO> resultInfo =  storeService.uploadFile("F:\\code\\\\my\\\\lucky\\\\src\\\\main\\\\resources\\\\static\\\\img\\\\defaultUserImg.png","defaultUserImg.png");
+		ResultInfo<StoreDataDTO> resultInfo =
+				storeService.uploadFile("F:\\code\\\\my\\\\lucky\\\\src\\\\main\\\\resources\\\\static\\\\img\\\\defaultUserImg.png","defaultUserImg.png");
+
+		System.out.println(resultInfo);
+	}
+
+	@Test
+	public void test3(){
+		ResultInfo<String> resultInfo = storeService.download("/1253770331/bubu/defaultUserImg.png");
 		System.out.println(resultInfo);
 	}
 

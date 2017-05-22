@@ -11,8 +11,12 @@ import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.utils.StoreResultUtil;
 import com.luckysweetheart.vo.StoreDataDTO;
 import com.qcloud.cos.COSClient;
+import com.qcloud.cos.exception.AbstractCosException;
 import com.qcloud.cos.request.DelFileRequest;
 import com.qcloud.cos.request.UploadFileRequest;
+import com.qcloud.cos.sign.Credentials;
+import com.qcloud.cos.sign.Sign;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,6 +30,9 @@ public class StoreService extends BaseService {
 
     @Resource
     private COSClient cosClient;
+
+    @Resource
+    private Credentials cred;
 
     @Resource
     private StoreDataDao storeDataApi;
@@ -60,7 +67,7 @@ public class StoreService extends BaseService {
             if (code == 0) {
                 storeData.setDeleteStatus(StoreData.DELETE_STATUS_YES);
                 storeData.setUpdateTime(new Date());
-                storeDataApi.update(storeData);
+                //storeDataApi.update(storeData);
                 return resultInfo.success();
             }
             return resultInfo.fail(message).setResultCode(code + "");
@@ -68,6 +75,27 @@ public class StoreService extends BaseService {
             logger.error(e.getMessage(), e);
             throw new BusinessException(e.getMessage());
         }
+    }
+
+    /**
+     * 返回base64字符串
+     * @param resourcePath
+     * @return
+     */
+    public ResultInfo<String> download(String resourcePath) {
+        ResultInfo<String> resultInfo = new ResultInfo<>();
+        long expired = System.currentTimeMillis() / 1000 + 600;
+        String signStr = "";
+        try {
+            signStr = Sign.getDownLoadSign(bucketName, resourcePath, cred, expired);
+            logger.info(signStr);
+        } catch (AbstractCosException e) {
+            logger.error(e.getMessage(), e);
+        }
+        if (StringUtils.isNotBlank(signStr)) {
+            return resultInfo.success(signStr);
+        }
+        return resultInfo.fail();
     }
 
     /**

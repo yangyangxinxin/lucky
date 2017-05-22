@@ -16,11 +16,11 @@ public interface StoreDataDao extends CrudRepository<StoreData,Long> {
      * @param resourcePath
      * @return
      */
-    @Query(value = "select s.resourcePath from StoreData where resourcePath=:resourcePath and deleteStatus = DELETE_STATUS_NO")
-    String getHttpUrl(String resourcePath);
+    //@Query(value = "select s.resourcePath from StoreData where resourcePath=:resourcePath and deleteStatus = DELETE_STATUS_NO")
+    //String getHttpUrl(String resourcePath);
 
     StoreData findByResourcePath(String resourcePath);
 
-    StoreData update(StoreData storeData);
+    //StoreData update(StoreData storeData);
 
 }
