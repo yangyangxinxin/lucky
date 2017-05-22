@@ -54,6 +54,16 @@ public class StoreData {
 
     private Date updateTime;
 
+    private String cosPath;
+
+    public String getCosPath() {
+        return cosPath;
+    }
+
+    public void setCosPath(String cosPath) {
+        this.cosPath = cosPath;
+    }
+
     public Integer getDeleteStatus() {
         return deleteStatus;
     }

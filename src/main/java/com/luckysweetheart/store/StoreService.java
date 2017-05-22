@@ -40,12 +40,14 @@ public class StoreService extends BaseService {
     private final String bucketName = "bubu";
 
     public ResultInfo<StoreDataDTO> uploadFile(String filePath, String fileName) {
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, "/" + fileName, filePath);
+        String cosPath = "/" + fileName;
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, cosPath, filePath);
         String uploadFileRet = cosClient.uploadFile(uploadFileRequest);
         logger.info(uploadFileRet);
         ResultInfo<StoreDataDTO> resultInfo = StoreResultUtil.getResult(uploadFileRet);
         if (resultInfo.isSuccess() && resultInfo.getData() != null) {
             StoreDataDTO storeDataDTO = resultInfo.getData();
+            storeDataDTO.setCosPath(cosPath);
             saveStoreData(storeDataDTO);
         }
         return resultInfo;
@@ -58,7 +60,7 @@ public class StoreService extends BaseService {
             if (storeData == null) {
                 throw new BusinessException("该数据不存在!");
             }
-            DelFileRequest delFileRequest = new DelFileRequest(bucketName, resourcePath);
+            DelFileRequest delFileRequest = new DelFileRequest(bucketName, storeData.getCosPath());
             String result = cosClient.delFile(delFileRequest);
             logger.info(result);
             JSONObject jsonObject = JSON.parseObject(result);

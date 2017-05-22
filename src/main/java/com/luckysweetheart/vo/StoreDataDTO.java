@@ -33,6 +33,16 @@ public class StoreDataDTO {
 
     private String vId ;
 
+    private String cosPath;
+
+    public String getCosPath() {
+        return cosPath;
+    }
+
+    public void setCosPath(String cosPath) {
+        this.cosPath = cosPath;
+    }
+
     public String getRequestId() {
         return requestId;
     }

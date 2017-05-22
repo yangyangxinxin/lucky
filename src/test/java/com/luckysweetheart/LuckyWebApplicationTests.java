@@ -53,4 +53,10 @@ public class LuckyWebApplicationTests {
 		System.out.println(resultInfo);
 	}
 
+	@Test
+	public void test4(){
+		ResultInfo<Void> resultInfo = storeService.deleteFile("/1253770331/bubu/defaultUserImg.png");
+		System.out.println(resultInfo);
+	}
+
 }
