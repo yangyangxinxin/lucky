@@ -1,26 +1,19 @@
-package com.luckysweetheart.dal.entity;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+package com.luckysweetheart.dto;
 
 /**
  * Created by yangxin on 2017/5/22.
  */
-@Entity
-public class User {
+public class UserDTO implements DTO {
 
-    @Id
-    @GeneratedValue
     private Long userId;
-
-    private String mobilePhone;
 
     private String username;
 
     private String password;
 
     private String imgPath;
+
+    private String mobilePhone;
 
     public String getMobilePhone() {
         return mobilePhone;

@@ -13,22 +13,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class StoreConfig {
 
-    @Value("${store.appId}")
-    private Long appId;
-
-    @Value("${store.SecretId}")
-    private String secretId;
-
-    @Value("${store.SecretKey}")
-    private String secretKey;
-
     /**
      * 初始化秘钥信息
      * @return
      */
     @Bean
     public Credentials getCredentials(){
-        return new Credentials(appId,secretId,secretKey);
+        Long appId = 1253770331L;
+        String secretId = "AKIDdFhz62SVzHQN9RaA4sX6YxGOVTGrjsQa";
+        String secretKey = "GTTPAmEWdeVBfx169jKp8GD3h9QVPLIG";
+        return new Credentials(appId, secretId, secretKey);
     }
 
     /**

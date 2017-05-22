@@ -3,7 +3,7 @@ package com.luckysweetheart.vo;
 /**
  * Created by yangxin on 2017/5/22.
  */
-public class StoreDataVO {
+public class StoreDataDTO {
 
     /**
      * 通过 CDN 访问该文件的资源链接（访问速度更快）；

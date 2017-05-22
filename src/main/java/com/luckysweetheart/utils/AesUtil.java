@@ -8,8 +8,8 @@ import javax.crypto.spec.SecretKeySpec;
 public class AesUtil {
 
 	private static final String AES = "AES/CBC/PKCS5Padding";
-	private static final String CRYPT_KEY = "www.luckysweetheart.com";
-	private static final String IV = "www.luckysweetheart.com";
+	private static final String CRYPT_KEY = "www.ebaoquan.com";
+	private static final String IV = "www.ebaoquan.com";
 
 	/**
 	 * 加密
