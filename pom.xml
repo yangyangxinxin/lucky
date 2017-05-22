@@ -25,6 +25,10 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-velocity</artifactId>
+		</dependency>s
 		<!-- 只需引入spring-boot-devtools 即可实现热部署 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

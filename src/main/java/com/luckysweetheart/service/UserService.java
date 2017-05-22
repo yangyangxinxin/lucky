@@ -9,6 +9,7 @@ import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.utils.ValidateUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class UserService extends BaseService {
      * @param userDTO
      * @return
      */
-    public ResultInfo<UserDTO> registerUser(UserDTO userDTO) throws Exception{
+    public ResultInfo<UserDTO> registerUser(UserDTO userDTO) throws Exception {
         ResultInfo<UserDTO> resultInfo = new ResultInfo<>();
         try {
             if (userDTO == null) {
@@ -71,7 +72,7 @@ public class UserService extends BaseService {
         }
     }
 
-    public ResultInfo<Void> login(String mobilePhone, String password) throws Exception{
+    public ResultInfo<Void> login(String mobilePhone, String password) throws Exception {
         ResultInfo<Void> resultInfo = new ResultInfo<>();
         try {
             if (!ValidateUtil.mobileVal(mobilePhone)) {
@@ -85,7 +86,7 @@ public class UserService extends BaseService {
             UserDTO userDTO = new UserDTO();
             if (user != null) {
                 logger.info("登录成功");
-                BeanCopierUtils.copy(user,userDTO);
+                BeanCopierUtils.copy(user, userDTO);
                 return resultInfo.success();
             }
             logger.info("登录失败");
@@ -93,6 +94,32 @@ public class UserService extends BaseService {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new BusinessException(e.getMessage());
+        }
+    }
+
+    /**
+     * 重置用户密码
+     * @param userId
+     * @param password
+     * @return
+     */
+    public ResultInfo<UserDTO> resetPwd(Long userId, String password) {
+        ResultInfo<UserDTO> resultInfo = new ResultInfo<>();
+        try {
+            Assert.notNull(userId, "用户id不能为空");
+            Assert.isTrue(ValidateUtil.pwdVal(password), "密码布符合规范");
+            User user = userApi.findOne(userId);
+            Assert.notNull(user, "该用户不存在");
+            password = AesUtil.encrypt(salt + password);
+            user.setUpdateTime(new Date());
+            user.setPassword(password);
+            // 持久态，不需update
+            UserDTO dto = new UserDTO();
+            BeanCopierUtils.copy(user, dto);
+            return resultInfo.success(dto);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BusinessException("重置用户密码失败。");
         }
     }
 
