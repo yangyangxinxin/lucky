@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -114,7 +115,7 @@ public abstract class BaseController {
      *
      * @param
      * @return
-     */
+     *//*
     @ExceptionHandler(Exception.class)
     public String runtimeExceptionHandler(Exception e, ModelMap modelMap) {
         logger.error(e.getLocalizedMessage());
@@ -123,6 +124,6 @@ public abstract class BaseController {
             modelMap.addAttribute("message", e.getMessage());
         }
         return "exception";
-    }
+    }*/
 
 }

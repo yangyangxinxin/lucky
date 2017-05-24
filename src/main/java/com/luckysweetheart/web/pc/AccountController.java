@@ -22,7 +22,8 @@ public class AccountController extends BaseController {
 
     @RequestMapping("/loginPage")
     public String loginPage() {
-        return "loginPage";
+        throw new RuntimeException("error!");
+        //return "loginPage";
     }
 
     @RequestMapping("/doLogin")
@@ -40,7 +41,7 @@ public class AccountController extends BaseController {
 
     @RequestMapping("/registerPage")
     public String registerPage(){
-        return "registerPage";
+        return "/account/registerPage";
     }
 
     @RequestMapping("/doRegister")
