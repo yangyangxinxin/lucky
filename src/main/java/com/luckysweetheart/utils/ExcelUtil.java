@@ -171,7 +171,7 @@ public class ExcelUtil {
 		try {
 			String[] title = new String[]{"一","二","三","四","五","六","七","八","九"};
 			String[][] test = new String[][]{{"5","51","52","53","54","啊神单反","暗色调","57","58"},{"5","51","52","53","54","啊神单反","暗色调","57","58"},{"8","81","82","83","","85","86","87","88"},{"9","91","92","93",null,"95","96","97","98"}};
-			WordUtil.betyToFile("d:/ee.xls", xls.outXls(title, test));
+			//WordUtil.betyToFile("d:/ee.xls", xls.outXls(title, test));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

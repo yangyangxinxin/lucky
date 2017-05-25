@@ -1,6 +1,9 @@
 package com.luckysweetheart.dal.dao;
 
 import com.luckysweetheart.dal.entity.Article;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,7 +11,7 @@ import org.springframework.stereotype.Repository;
  * Created by yangxin on 2017/5/22.
  */
 @Repository
-public interface ArticleDao extends PagingAndSortingRepository<Article,Long> {
+public interface ArticleDao extends PagingAndSortingRepository<Article, Long> {
 
    /*  修改
     @Modifying
@@ -17,5 +20,7 @@ public interface ArticleDao extends PagingAndSortingRepository<Article,Long> {
     */
 
 
+    @Query(value = "select a from Article a ")
+    public Page<Article> findList(Pageable pageable);
 
 }

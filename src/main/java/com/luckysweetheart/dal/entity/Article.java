@@ -149,5 +149,19 @@ public class Article {
         this.commentsCount = commentsCount;
     }
 
-
+    @Override
+    public String toString() {
+        return "Article{" +
+                "articleId=" + articleId +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", ownerUserId=" + ownerUserId +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", deleteStatus=" + deleteStatus +
+                ", viewCount=" + viewCount +
+                ", likeCount=" + likeCount +
+                ", commentsCount=" + commentsCount +
+                '}';
+    }
 }

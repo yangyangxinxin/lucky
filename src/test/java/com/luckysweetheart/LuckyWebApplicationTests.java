@@ -1,5 +1,7 @@
 package com.luckysweetheart;
 
+import com.luckysweetheart.dal.entity.Article;
+import com.luckysweetheart.service.ArticleService;
 import com.luckysweetheart.service.UserService;
 import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.utils.ResultInfo;
@@ -12,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = LuckyWebApplication.class)
@@ -27,6 +30,9 @@ public class LuckyWebApplicationTests {
 
 	@Resource
 	private StoreService storeService;
+
+	@Resource
+	private ArticleService articleService;
 
 	@Test
 	public void test1(){
@@ -58,5 +64,6 @@ public class LuckyWebApplicationTests {
 		ResultInfo<Void> resultInfo = storeService.deleteFile("/1253770331/bubu/defaultUserImg.png");
 		System.out.println(resultInfo);
 	}
+
 
 }
