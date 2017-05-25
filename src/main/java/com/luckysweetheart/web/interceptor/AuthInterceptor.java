@@ -19,7 +19,17 @@ import java.util.List;
  */
 public class AuthInterceptor extends AbstractInterceptor {
 
-
+    /**
+     * 不需要登录的URL
+     * @return
+     */
+    private List<String> unLoginList() {
+        List<String> list = new ArrayList<>();
+        list.add("/index");
+        list.add("/account/*");
+        list.add("/photo/*");
+        return list;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
@@ -53,13 +63,6 @@ public class AuthInterceptor extends AbstractInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
 
-    }
-
-    private List<String> unLoginList() {
-        List<String> list = new ArrayList<>();
-        list.add("/index");
-        list.add("/account/loginPage");
-        return list;
     }
 
     private boolean matches(String path) {

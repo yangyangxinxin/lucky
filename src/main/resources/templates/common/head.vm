@@ -6,11 +6,10 @@
 <script src="/layui/layui.js" charset="utf-8"></script>
 <script src="/js/jquery.min.js"></script>
 <script>
-    layui.use(['form', 'layedit', 'laydate'], function(){
+    layui.use(['form', 'layedit', 'laydate','laypage'], function(){
         var form = layui.form()
                 ,layer = layui.layer
                 ,layedit = layui.layedit
-                ,laydate = layui.laydate,
-        laypage = layui.laypage;
+                ,laydate = layui.laydate, laypage = layui.laypage
     });
 </script>

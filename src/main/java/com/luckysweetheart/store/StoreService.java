@@ -42,6 +42,16 @@ public class StoreService extends BaseService {
     public ResultInfo<StoreDataDTO> uploadFile(String filePath, String fileName) {
         String cosPath = "/" + fileName;
         UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, cosPath, filePath);
+        return uploadFile(uploadFileRequest,cosPath);
+    }
+
+    public ResultInfo<StoreDataDTO> uploadFile(byte[] bytes, String fileName) {
+        String cosPath = "/" + fileName;
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, cosPath, bytes);
+        return uploadFile(uploadFileRequest,cosPath);
+    }
+
+    public ResultInfo<StoreDataDTO> uploadFile(UploadFileRequest uploadFileRequest,String cosPath){
         String uploadFileRet = cosClient.uploadFile(uploadFileRequest);
         logger.info(uploadFileRet);
         ResultInfo<StoreDataDTO> resultInfo = StoreResultUtil.getResult(uploadFileRet);

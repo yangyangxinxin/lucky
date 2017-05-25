@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 统一异常处理类
  * Created by yangxin on 2017/5/24.
  */
 @ControllerAdvice
@@ -16,6 +17,9 @@ public class GlobalExceptionHandler {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * 跳转至error.vm
+     */
     public static final String DEFAULT_ERROR_VIEW = "error";
 
     @ExceptionHandler(value = Exception.class)
