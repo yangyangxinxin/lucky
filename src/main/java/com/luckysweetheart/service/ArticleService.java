@@ -7,10 +7,12 @@ import com.luckysweetheart.dto.ArticleDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -61,7 +63,7 @@ public class ArticleService extends BaseService {
         //排序对象
         Sort sort = new Sort(Sort.Direction.DESC, "createTime");
         Pageable pageable = new PageRequest(itemPage, 10, sort);
-        return articleDao.findList(pageable);
+        return articleDao.findAll(pageable);
     }
 
 }

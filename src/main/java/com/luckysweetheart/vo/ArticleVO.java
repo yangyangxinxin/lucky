@@ -9,7 +9,6 @@ import java.util.Date;
  * 文章实体类
  * Created by yangxin on 2017/5/22.
  */
-@Entity
 public class ArticleVO {
 
     public static final Integer DELETE_STATUS_NO = 0;
@@ -19,8 +18,6 @@ public class ArticleVO {
     /**
      * 文章id
      */
-    @Id
-    @GeneratedValue
     private Long articleId;
 
     /**
