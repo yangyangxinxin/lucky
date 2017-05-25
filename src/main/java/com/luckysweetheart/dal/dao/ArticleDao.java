@@ -9,11 +9,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by yangxin on 2017/5/22.
  */
 @Repository
 public  interface ArticleDao extends PagingAndSortingRepository<Article, Long>  {
-
 
 }

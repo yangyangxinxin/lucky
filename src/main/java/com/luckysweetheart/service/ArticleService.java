@@ -13,11 +13,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yangxin on 2017/5/22.
@@ -65,5 +69,7 @@ public class ArticleService extends BaseService {
         Pageable pageable = new PageRequest(itemPage, 10, sort);
         return articleDao.findAll(pageable);
     }
+
+
 
 }

@@ -10,6 +10,7 @@
         var form = layui.form()
                 ,layer = layui.layer
                 ,layedit = layui.layedit
-                ,laydate = layui.laydate;
+                ,laydate = layui.laydate,
+        laypage = layui.laypage;
     });
 </script>
