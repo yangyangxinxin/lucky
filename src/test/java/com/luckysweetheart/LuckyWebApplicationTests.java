@@ -1,6 +1,7 @@
 package com.luckysweetheart;
 
 import com.luckysweetheart.dal.entity.Article;
+import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.service.ArticleService;
 import com.luckysweetheart.service.UserService;
 import com.luckysweetheart.store.StoreService;
@@ -36,7 +37,7 @@ public class LuckyWebApplicationTests {
 
 	@Test
 	public void test1(){
-		ResultInfo<Void> resultInfo = null;
+		ResultInfo<UserDTO> resultInfo = null;
 		try {
 			resultInfo = userService.login("yangxin","yangxin123");
 		} catch (Exception e) {

@@ -72,8 +72,8 @@ public class UserService extends BaseService {
         }
     }
 
-    public ResultInfo<Void> login(String mobilePhone, String password) throws Exception {
-        ResultInfo<Void> resultInfo = new ResultInfo<>();
+    public ResultInfo<UserDTO> login(String mobilePhone, String password) throws Exception {
+        ResultInfo<UserDTO> resultInfo = new ResultInfo<>();
         try {
             if (!ValidateUtil.mobileVal(mobilePhone)) {
                 throw new BusinessException("用户名不符合规范");
@@ -87,7 +87,7 @@ public class UserService extends BaseService {
             if (user != null) {
                 logger.info("登录成功");
                 BeanCopierUtils.copy(user, userDTO);
-                return resultInfo.success();
+                return resultInfo.success(userDTO);
             }
             logger.info("登录失败");
             return resultInfo.fail("登录失败");

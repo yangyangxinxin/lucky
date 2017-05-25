@@ -1,14 +1,10 @@
 package com.luckysweetheart.web;
 
-import com.luckysweetheart.exception.BusinessException;
-import com.luckysweetheart.utils.ResultInfo;
+import com.luckysweetheart.web.utils.SessionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +28,14 @@ public abstract class BaseController {
         this.response = response;
         response.setContentType("text/html;charset=utf-8");
         request.setCharacterEncoding("utf-8");
+    }
+
+    protected void setSeesionAttribute(String key, Object value) {
+        SessionUtils.setAttribute(key, value, request);
+    }
+
+    protected Object getSessionAttribute(String key) {
+        return SessionUtils.getAttribute(key, request);
     }
 
     protected Long getLoginUserId() {
