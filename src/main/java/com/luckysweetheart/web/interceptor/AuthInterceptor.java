@@ -1,17 +1,13 @@
 package com.luckysweetheart.web.interceptor;
 
-import com.luckysweetheart.config.InterceptorsConfiguration;
 import com.luckysweetheart.web.utils.AjaxResult;
 import com.luckysweetheart.web.utils.RequestUtils;
 import com.luckysweetheart.web.utils.SessionUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,6 +24,7 @@ public class AuthInterceptor extends AbstractInterceptor {
         list.add("/index");
         list.add("/account/*");
         list.add("/photo/*");
+        list.add("/download");
         return list;
     }
 
@@ -66,7 +63,7 @@ public class AuthInterceptor extends AbstractInterceptor {
     }
 
     private boolean matches(String path) {
-        return super.match(unLoginList(), path);
+        return super.match(this.unLoginList(), path);
     }
 
 }

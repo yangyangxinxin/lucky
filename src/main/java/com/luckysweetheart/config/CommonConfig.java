@@ -1,8 +1,12 @@
 package com.luckysweetheart.config;
 
 import com.luckysweetheart.common.IdWorker;
+import com.luckysweetheart.web.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yangxin on 2017/5/22.

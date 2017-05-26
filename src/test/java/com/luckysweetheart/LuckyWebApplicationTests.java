@@ -56,8 +56,7 @@ public class LuckyWebApplicationTests {
 
 	@Test
 	public void test3(){
-		ResultInfo<String> resultInfo = storeService.download("/1253770331/bubu/defaultUserImg.png");
-		System.out.println(resultInfo);
+
 	}
 
 	@Test
@@ -66,5 +65,20 @@ public class LuckyWebApplicationTests {
 		System.out.println(resultInfo);
 	}
 
+	@Test
+	public void test5(){
+		String result = storeService.download("/apply_02.jpg","D://yangxinxin.jpg");
+		System.out.println(result);
+	}
+
+	@Test
+	public void test6(){
+		try {
+			byte[] bytes = storeService.download("/apply_02.jpg");
+			System.out.println(bytes);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
