@@ -129,7 +129,7 @@ public class StoreService extends BaseService {
         InputStream inputStream = cosClient.getFileInputStream(request);
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         byte[] data = new byte[BUFFER_SIZE];
-        int count = -1;
+        int count;
         try {
             while ((count = inputStream.read(data, 0, BUFFER_SIZE)) != -1) {
                 outStream.write(data, 0, count);
@@ -155,8 +155,7 @@ public class StoreService extends BaseService {
         GetFileLocalRequest getFileLocalRequest = new GetFileLocalRequest(bucketName, cosFilePath, localPathDown);
         getFileLocalRequest.setUseCDN(false);
         getFileLocalRequest.setReferer("http://www.luckysweetheart.com");
-        String getFileResult = cosClient.getFileLocal(getFileLocalRequest);
-        return getFileResult;
+        return cosClient.getFileLocal(getFileLocalRequest);
     }
 
     /**

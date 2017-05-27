@@ -1,6 +1,7 @@
 package com.luckysweetheart.web.pc;
 
 import com.luckysweetheart.store.StoreService;
+import com.luckysweetheart.utils.FileUtil;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.web.BaseController;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,8 @@ public class PhotoController extends BaseController {
     public Object upload(MultipartFile file) {
         try {
             byte[] bytes = file.getBytes();
-            return storeService.uploadFile(bytes, file.getOriginalFilename());
+            String suffix = FileUtil.getExtension(file.getOriginalFilename());
+            return storeService.uploadFile(bytes, suffix);
         } catch (IOException e) {
             logger.error(e.getMessage());
             return new ResultInfo<>().fail(e.getMessage());
