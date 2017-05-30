@@ -21,12 +21,22 @@ public class AccountController extends BaseController {
     @Resource
     private UserService userService;
 
+    /**
+     * 登录页
+     * @return
+     */
     @RequestMapping("/loginPage")
     public String loginPage() {
         //throw new RuntimeException("error!");
         return "/account/loginPage";
     }
 
+    /**
+     * 登录动作
+     * @param mobile
+     * @param password
+     * @return
+     */
     @RequestMapping("/doLogin")
     @ResponseBody
     public ResultInfo<UserDTO> doLogin(String mobile, String password) {
@@ -34,6 +44,7 @@ public class AccountController extends BaseController {
         try {
             resultInfo = userService.login(mobile, password);
             if (resultInfo.isSuccess()) {
+                // 在session中写key
                 SessionUtils.login(request, resultInfo.getData());
             }
             return resultInfo;
@@ -43,11 +54,20 @@ public class AccountController extends BaseController {
         }
     }
 
+    /**
+     * 注册页面
+     * @return
+     */
     @RequestMapping("/registerPage")
     public String registerPage() {
         return "/account/registerPage";
     }
 
+    /**
+     * 注册用户
+     * @param userDTO
+     * @return
+     */
     @RequestMapping("/doRegister")
     @ResponseBody
     public ResultInfo<UserDTO> doRegister(UserDTO userDTO) {
@@ -57,6 +77,16 @@ public class AccountController extends BaseController {
             logger.error(e.getMessage(), e);
             return new ResultInfo<UserDTO>().fail(e.getMessage());
         }
+    }
+
+    /**
+     * 登出操作
+     * @return
+     */
+    @RequestMapping("/logout")
+    public String logout() {
+        SessionUtils.logout(request);
+        return "/account/loginPage";
     }
 
 }

@@ -89,8 +89,12 @@ public class UserService extends BaseService {
                 BeanCopierUtils.copy(user, userDTO);
                 return resultInfo.success(userDTO);
             }
-            logger.info("登录失败");
-            return resultInfo.fail("登录失败");
+            User u = userApi.findByMobilePhone(mobilePhone);
+            if (u != null) {
+                return resultInfo.fail("密码输入错误。");
+            } else {
+                return resultInfo.fail("账户不存在，请核对信息。");
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new BusinessException(e.getMessage());
@@ -99,6 +103,7 @@ public class UserService extends BaseService {
 
     /**
      * 重置用户密码
+     *
      * @param userId
      * @param password
      * @return

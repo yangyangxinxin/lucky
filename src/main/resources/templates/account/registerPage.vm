@@ -18,7 +18,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">手机号码</label>
             <div class="layui-input-inline">
-                <input type="tel" name="phone" lay-verify="phone" autocomplete="off" class="layui-input">
+                <input type="tel" name="mobilePhone" lay-verify="phone" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -40,9 +40,10 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" type="button">立即提交</button>
+            <button class="layui-btn" type="button" id="submitBtn">立即提交</button>
         </div>
     </div>
 </form>
 </body>
+<script type="text/javascript" src="/js/register.js"></script>
 </html>

@@ -31,10 +31,10 @@ public class AuthInterceptor extends AbstractInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
         String requestUrl = urlHelper.getLookupPathForRequest(request);
+        boolean isLogin = SessionUtils.isLogin(request);
         if (matches(requestUrl)) {
             return true;
         }
-        boolean isLogin = SessionUtils.isLogin(request);
         boolean isAjax = RequestUtils.isAjaxRequest(request);
         if (!isLogin) {
             if (isAjax) {

@@ -44,4 +44,8 @@ public class SessionUtils {
         setAttribute(loginUserKey,userVO, request);
     }
 
+    public static void logout(HttpServletRequest request){
+        getSession(request).removeAttribute(loginUserKey);
+    }
+
 }
