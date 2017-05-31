@@ -35,7 +35,7 @@ public class PhotoController extends BaseController {
             byte[] bytes = file.getBytes();
             String suffix = FileUtil.getExtension(file.getOriginalFilename());
             return storeService.uploadFile(bytes, suffix);
-        } catch (IOException e) {
+        } catch (Exception e){
             logger.error(e.getMessage());
             return new ResultInfo<>().fail(e.getMessage());
         }

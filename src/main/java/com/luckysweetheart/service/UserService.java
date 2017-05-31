@@ -4,10 +4,12 @@ import com.luckysweetheart.dal.dao.UserApi;
 import com.luckysweetheart.dal.entity.User;
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
+import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.utils.AesUtil;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.utils.ValidateUtil;
+import com.luckysweetheart.vo.StoreDataDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -27,13 +29,16 @@ public class UserService extends BaseService {
     @Resource
     private UserApi userApi;
 
+    @Resource
+    private StoreService storeService;
+
     /**
      * 注册
      *
      * @param userDTO
      * @return
      */
-    public ResultInfo<UserDTO> registerUser(UserDTO userDTO) throws Exception {
+    public ResultInfo<UserDTO> registerUser(UserDTO userDTO) throws BusinessException {
         ResultInfo<UserDTO> resultInfo = new ResultInfo<>();
         try {
             if (userDTO == null) {
@@ -72,7 +77,7 @@ public class UserService extends BaseService {
         }
     }
 
-    public ResultInfo<UserDTO> login(String mobilePhone, String password) throws Exception {
+    public ResultInfo<UserDTO> login(String mobilePhone, String password) throws BusinessException {
         ResultInfo<UserDTO> resultInfo = new ResultInfo<>();
         try {
             if (!ValidateUtil.mobileVal(mobilePhone)) {
@@ -108,7 +113,7 @@ public class UserService extends BaseService {
      * @param password
      * @return
      */
-    public ResultInfo<UserDTO> resetPwd(Long userId, String password) {
+    public ResultInfo<UserDTO> resetPwd(Long userId, String password) throws BusinessException {
         ResultInfo<UserDTO> resultInfo = new ResultInfo<>();
         try {
             Assert.notNull(userId, "用户id不能为空");
@@ -125,6 +130,122 @@ public class UserService extends BaseService {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new BusinessException("重置用户密码失败。");
+        }
+    }
+
+    /**
+     * 根据userId查询用户信息，本来考虑加到redis中，但是网站量很少，也就没必要了。
+     *
+     * @param userId
+     * @return
+     */
+    public UserDTO findById(Long userId) {
+        try {
+            Assert.notNull(userId, "用户id不能为空");
+            User user = userApi.findOne(userId);
+            if (user != null) {
+                UserDTO userDTO = new UserDTO();
+                BeanCopierUtils.copy(user, userDTO);
+                return userDTO;
+            }
+            return null;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * 根据用户手机号 查询用户信息
+     *
+     * @param mobilePhone
+     * @return
+     */
+    public UserDTO findByMobilePhone(String mobilePhone) {
+        try {
+            Assert.isTrue(ValidateUtil.mobileVal(mobilePhone), "手机号不符合规范");
+            User user = userApi.findByMobilePhone(mobilePhone);
+            if (user != null) {
+                UserDTO userDTO = new UserDTO();
+                BeanCopierUtils.copy(user, userDTO);
+                return userDTO;
+            }
+            return null;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * 修改用户名
+     *
+     * @param username
+     * @param userId
+     * @return
+     * @throws BusinessException
+     */
+    public ResultInfo<Void> updateUserName(String username, Long userId) throws BusinessException {
+        ResultInfo<Void> resultInfo = new ResultInfo<>();
+        try {
+            Assert.isTrue(ValidateUtil.specialVal(username), "用户名不符合规范");
+            User user = userApi.findOne(userId);
+            if (user != null) {
+                user.setUsername(username);
+                return resultInfo.success();
+            }
+            throw new BusinessException("用户不存在");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
+    /**
+     * 修改用户头像，图片处理请在前端处理。
+     * @param userId
+     * @param bytes
+     * @return
+     * @throws BusinessException
+     */
+    public ResultInfo<Void> updateImg(Long userId, byte[] bytes) throws BusinessException {
+        ResultInfo<Void> resultInfo = new ResultInfo<>();
+        try {
+            Assert.notNull(userId, "用户id不能为空");
+            Assert.notNull(bytes, "文件不能为空");
+            User user = userApi.findOne(userId);
+            if (user != null) {
+                ResultInfo<StoreDataDTO> result = storeService.uploadFile(bytes, ".png");
+                if (result.isSuccess()) {
+                    user.setImgPath(result.getData().getResourcePath());
+                    return resultInfo.success();
+                } else {
+                    throw new BusinessException("上传头像出错");
+                }
+            }
+            throw new BusinessException("该用户不存在");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
+    /**
+     * 修改用户信息，这种方式虽然简单方便，但是可能导致修改过程中要查询两次数据库，性能可能稍有影响。所以并不推荐。
+     * 修改信息 还是推荐调用本类提供的其他方法。
+     *
+     * @param userDTO
+     */
+    public void update(UserDTO userDTO) throws BusinessException {
+        try {
+            User user = userApi.findOne(userDTO.getUserId());
+            if (user != null) {
+                // 对这种copy 的原理没有深究，但是这种方式类似于调用set方法，所以 调用即可update
+                BeanCopierUtils.copy(userDTO, user);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BusinessException("修改用户信息出现异常");
         }
     }
 

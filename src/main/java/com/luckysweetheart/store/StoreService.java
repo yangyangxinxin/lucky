@@ -64,20 +64,25 @@ public class StoreService extends BaseService {
         return "/" + idWorker.nextId() + suffix;
     }
 
-    public ResultInfo<StoreDataDTO> uploadFile(String filePath, String fileName) {
+    public ResultInfo<StoreDataDTO> uploadFile(String filePath, String fileName) throws BusinessException {
         String cosPath = "/" + fileName;
         UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, cosPath, filePath);
         return uploadFile(uploadFileRequest, cosPath);
     }
 
-    public ResultInfo<StoreDataDTO> uploadFile(byte[] bytes, String suffix) {
+    public ResultInfo<StoreDataDTO> uploadFile(byte[] bytes, String suffix) throws BusinessException {
         String cosPath = getCosPath(suffix);
         UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, cosPath, bytes);
         return uploadFile(uploadFileRequest, cosPath);
     }
 
+    public ResultInfo<StoreDataDTO> uploadFile(byte[] bytes, String suffix,String bucketName) throws BusinessException {
+        String cosPath = getCosPath(suffix);
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, cosPath, bytes);
+        return uploadFile(uploadFileRequest, cosPath);
+    }
 
-    public ResultInfo<StoreDataDTO> uploadFile(UploadFileRequest uploadFileRequest, String cosPath) {
+    public ResultInfo<StoreDataDTO> uploadFile(UploadFileRequest uploadFileRequest, String cosPath) throws BusinessException {
         String uploadFileRet = cosClient.uploadFile(uploadFileRequest);
         logger.info(uploadFileRet);
         ResultInfo<StoreDataDTO> resultInfo = StoreResultUtil.getResult(uploadFileRet);
@@ -89,7 +94,7 @@ public class StoreService extends BaseService {
         return resultInfo;
     }
 
-    public ResultInfo<Void> deleteFile(String resourcePath) {
+    public ResultInfo<Void> deleteFile(String resourcePath) throws BusinessException{
         ResultInfo<Void> resultInfo = new ResultInfo<>();
         try {
             StoreData storeData = storeDataApi.findByResourcePath(resourcePath);
@@ -164,7 +169,7 @@ public class StoreService extends BaseService {
      * @param storeDataDTO
      * @return
      */
-    private StoreData saveStoreData(StoreDataDTO storeDataDTO) {
+    private StoreData saveStoreData(StoreDataDTO storeDataDTO) throws BusinessException{
         if (storeDataDTO == null) {
             throw new BusinessException("存储对象不能为空!");
         }

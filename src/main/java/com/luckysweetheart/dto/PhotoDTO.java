@@ -1,18 +1,12 @@
-package com.luckysweetheart.dal.entity;
+package com.luckysweetheart.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.util.Date;
 
 /**
- * Created by yangxin on 2017/5/26.
+ * Created by yangxin on 2017/5/31.
  */
-@Entity
-public class Photo {
+public class PhotoDTO implements DTO {
 
-    @Id
-    @GeneratedValue
     private Long photoId;
 
     private String name;
@@ -39,6 +33,26 @@ public class Photo {
      * 是否为目录
      */
     private Integer isDirectory;
+
+    private byte[] bytes;
+
+    private String suffix;
+
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
 
     public Integer getIsDirectory() {
         return isDirectory;
@@ -112,3 +126,5 @@ public class Photo {
         this.resourcePath = resourcePath;
     }
 }
+
+

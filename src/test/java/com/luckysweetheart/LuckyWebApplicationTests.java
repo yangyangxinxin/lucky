@@ -2,6 +2,7 @@ package com.luckysweetheart;
 
 import com.luckysweetheart.dal.entity.Article;
 import com.luckysweetheart.dto.UserDTO;
+import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.service.ArticleService;
 import com.luckysweetheart.service.UserService;
 import com.luckysweetheart.store.StoreService;
@@ -77,6 +78,17 @@ public class LuckyWebApplicationTests {
 			byte[] bytes = storeService.download("/apply_02.jpg");
 			System.out.println(bytes);
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void test7(){
+		UserDTO dto = userService.findById(1L);
+		dto.setMobilePhone("18580097376");
+		try {
+			userService.update(dto);
+		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
 	}

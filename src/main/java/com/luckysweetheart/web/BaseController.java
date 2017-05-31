@@ -1,5 +1,6 @@
 package com.luckysweetheart.web;
 
+import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.web.utils.SessionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,10 @@ public abstract class BaseController {
 
     protected Long getLoginUserId() {
         return SessionUtils.getLoginUserId(request);
+    }
+
+    protected UserDTO getLoginUser(){
+        return SessionUtils.getLoginUser(request);
     }
 
     protected void setAttribute(String name, Object value) {
@@ -113,21 +118,5 @@ public abstract class BaseController {
         }
         return defaultValue;
     }
-
-    /**
-     * 异常页面控制
-     *
-     * @param
-     * @return
-     *//*
-    @ExceptionHandler(Exception.class)
-    public String runtimeExceptionHandler(Exception e, ModelMap modelMap) {
-        logger.error(e.getLocalizedMessage());
-        modelMap.put("status", 500);
-        if (e instanceof BusinessException) {
-            modelMap.addAttribute("message", e.getMessage());
-        }
-        return "exception";
-    }*/
 
 }

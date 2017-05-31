@@ -3,7 +3,7 @@ package com.luckysweetheart.exception;
 /**
  * Created by yangxin on 2017/5/22.
  */
-public abstract class LuckyException extends RuntimeException {
+public abstract class LuckyException extends Exception {
 
     private String errcode;
 
