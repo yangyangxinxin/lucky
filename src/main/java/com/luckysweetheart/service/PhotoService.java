@@ -53,4 +53,30 @@ public class PhotoService extends BaseService {
         }
     }
 
+    public ResultInfo<Void> delete(Long photoId, Long userId) throws BusinessException {
+        ResultInfo<Void> resultInfo = new ResultInfo<>();
+        try {
+            Assert.notNull(photoId, "要删除的id不能为空");
+            Assert.notNull(userId, "删除人不能为空");
+            Photo photo = photoDao.findOne(photoId);
+            if (photo != null) {
+                if (photo.getUserId().equals(userId)) {
+                    photo.setDeleteStatus(Const.DELETE_STATUS_YES);
+                    ResultInfo<Void> result = storeService.deleteFile(photo.getResourcePath());
+                    if (result.isSuccess()) {
+                        return resultInfo.success();
+                    } else {
+                        throw new BusinessException(result.getMsg());
+                    }
+                } else {
+                    throw new BusinessException("该相片不属于你");
+                }
+            }
+            throw new BusinessException("该相片不存在！");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
 }

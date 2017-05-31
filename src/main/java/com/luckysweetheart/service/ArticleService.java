@@ -1,28 +1,20 @@
 package com.luckysweetheart.service;
 
 import com.luckysweetheart.common.Const;
-import com.luckysweetheart.common.PagedResult;
 import com.luckysweetheart.dal.dao.ArticleDao;
 import com.luckysweetheart.dal.entity.Article;
 import com.luckysweetheart.dto.ArticleDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by yangxin on 2017/5/22.
@@ -64,13 +56,27 @@ public class ArticleService extends BaseService {
         }
     }
 
+    public ResultInfo<Void> update(ArticleDTO articleDTO) throws BusinessException {
+        ResultInfo<Void> resultInfo = new ResultInfo<>();
+        try {
+            notNull(articleDTO, "要修改的对象不能为空");
+            Article article = articleDao.findOne(articleDTO.getArticleId());
+            isTrue(article != null, "该文章不存在！");
+            isTrue(articleDTO.getOwnerUserId().equals(article.getOwnerUserId()), "此文章不属于你");
+            BeanCopierUtils.copy(articleDTO, article);
+            return resultInfo.success();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
     public Page<Article> findByPage(int itemPage) {
         //排序对象
         Sort sort = new Sort(Sort.Direction.DESC, "createTime");
         Pageable pageable = new PageRequest(itemPage, 10, sort);
         return articleDao.findAll(pageable);
     }
-
 
 
 }
