@@ -2,7 +2,7 @@
 <#assign title="注册">
 <#include '/common/head.ftl' >
 <@defaultLayout>
-<h1>登录</h1>
+<h1 class="layui-layer-title">登录</h1>
 
 <form class="layui-form" action="">
     <div class="layui-form-item">
@@ -11,6 +11,7 @@
             <div class="layui-input-inline">
                 <input type="tel" name="mobilePhone" lay-verify="phone" autocomplete="off" class="layui-input">
             </div>
+            <div class="layui-form-mid layui-word-aux">请输入手机号码</div>
         </div>
     </div>
     <div class="layui-form-item">
@@ -19,11 +20,12 @@
             <div class="layui-input-inline">
                 <input type="password" name="password" lay-verify="password" autocomplete="off" class="layui-input">
             </div>
+            <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button class="layui-btn" type="button" id="submitBtn">立即提交</button>
+            <button class="layui-btn" type="button" id="submitBtn" lay-submit="">立即提交</button>
         </div>
     </div>
 </form>

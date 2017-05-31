@@ -7,19 +7,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title!}</title>
 <link rel="stylesheet" href="${contextPath}/layui/css/layui.css" media="all">
-<script src="${contextPath}/layui/layui.js" charset="utf-8"></script>
+<script src="${contextPath}/layui/lay/dest/layui.all.js" charset="utf-8"></script>
 <script src="${contextPath}/js/jquery.min.js"></script>
 <script>
-    layui.use(['form', 'layedit', 'laydate', 'laypage'], function () {
-        var form = layui.form()
-                , layer = layui.layer
-                , layedit = layui.layedit
-                , laydate = layui.laydate, laypage = layui.laypage
-    });
+    var form = layui.form();
+    var layer = layui.layer;
+    var layedit = layui.layedit;
 </script>
 
 
-<body>
+<body class="layui-body">
     <#nested>
 </body>
 
