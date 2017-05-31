@@ -8,7 +8,7 @@
 
 - spring-boot
 - 前端模板引擎freemarker
-- 前端框架采用jQuery + layerUI  [点击查看layerUI开发文档](http://http://www.layui.com/doc/)
+- 前端框架采用jQuery + layerUI  [点击查看layerUI开发文档](http://www.layui.com/doc/)
 - 存储使用腾讯的 COS存储 [点击查看COS存储Java开发文档](https://www.qcloud.com/document/product/436/6273)
 
 ---
