@@ -2,7 +2,7 @@ package com.luckysweetheart.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.luckysweetheart.vo.StoreDataDTO;
+import com.luckysweetheart.dto.StoreDataDTO;
 
 /**
  * Created by yangxin on 2017/5/22.

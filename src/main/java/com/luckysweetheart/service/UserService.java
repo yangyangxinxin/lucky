@@ -1,5 +1,6 @@
 package com.luckysweetheart.service;
 
+import com.luckysweetheart.common.Const;
 import com.luckysweetheart.dal.dao.UserApi;
 import com.luckysweetheart.dal.entity.User;
 import com.luckysweetheart.dto.UserDTO;
@@ -9,7 +10,7 @@ import com.luckysweetheart.utils.AesUtil;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.utils.ValidateUtil;
-import com.luckysweetheart.vo.StoreDataDTO;
+import com.luckysweetheart.dto.StoreDataDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -22,9 +23,9 @@ import java.util.Date;
 @Service
 public class UserService extends BaseService {
 
-    private final String salt = "www.luckysweetheart.com";
+    private final String salt = Const.SALT;
 
-    private final String defaultUserImg = "/1253770331/bubu/defaultUserImg.png";
+    private final String defaultUserImg = Const.DEFAULT_USER_IMG;
 
     @Resource
     private UserApi userApi;
@@ -65,7 +66,7 @@ public class UserService extends BaseService {
             user.setUsername(userDTO.getUsername());
             user.setMobilePhone(userDTO.getMobilePhone());
             user.setImgPath(defaultUserImg);
-            user.setDeleteStatus(User.DELETE_STATUS_NO);
+            user.setDeleteStatus(Const.DELETE_STATUS_NO);
             user.setCreateTime(new Date());
             User user1 = userApi.save(user);
             UserDTO dto = new UserDTO();

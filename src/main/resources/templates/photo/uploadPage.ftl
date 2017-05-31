@@ -1,6 +1,7 @@
-#parse("/templates/common/head.vm")
-#set($title="上传文件")
-
+<#assign contextPath=request.getContextPath()>
+<#assign title="注册">
+<#include '/common/head.ftl' >
+<@defaultLayout>
 <input type="file" name="file" class="layui-upload-file"/>上传文件
 <hr/>
 <img style="width:100%;"/>
@@ -18,3 +19,4 @@
     });
 
 </script>
+</@defaultLayout>

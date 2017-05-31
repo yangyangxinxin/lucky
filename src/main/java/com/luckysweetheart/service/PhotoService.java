@@ -1,5 +1,6 @@
 package com.luckysweetheart.service;
 
+import com.luckysweetheart.common.Const;
 import com.luckysweetheart.dal.dao.PhotoDao;
 import com.luckysweetheart.dal.entity.Photo;
 import com.luckysweetheart.dto.PhotoDTO;
@@ -8,7 +9,7 @@ import com.luckysweetheart.store.StorageGroupService;
 import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
-import com.luckysweetheart.vo.StoreDataDTO;
+import com.luckysweetheart.dto.StoreDataDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -36,7 +37,7 @@ public class PhotoService extends BaseService {
             Photo photo = new Photo();
             BeanCopierUtils.copy(photoDTO, photo);
             Photo photo1 = photoDao.save(photo);
-            if (photoDTO.getIsDirectory().equals(0)) { // 是目录直接保存，不是目录，存储图片
+            if (photoDTO.getIsDirectory().equals(Const.NO_DIRECTORY)) { // 是目录直接保存，不是目录，存储图片
                 ResultInfo<StoreDataDTO> result = storeService.uploadFile(photoDTO.getBytes(), photoDTO.getSuffix(), storageGroupService.getPhotoGroupName());
                 if (result.isSuccess()) {
                     photo1.setResourcePath(result.getData().getResourcePath());

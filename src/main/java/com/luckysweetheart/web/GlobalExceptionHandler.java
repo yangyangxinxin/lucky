@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * 跳转至error.vm
+     * 跳转至error.ftl
      */
     public static final String DEFAULT_ERROR_VIEW = "error";
 

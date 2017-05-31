@@ -1,3 +1,4 @@
+<#--
 #*
 <!DOCTYPE html>
 <html lang="en">
@@ -5,42 +6,42 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags &ndash;&gt;
     <title>Home</title>
 
-    <!-- Bootstrap -->
+    <!-- Bootstrap &ndash;&gt;
     <link rel="stylesheet" href="/assets/css/bootstrap/bootstrap.min.css">
 
-    <!-- Optional theme -->
+    <!-- Optional theme &ndash;&gt;
     <link rel="stylesheet" href="/assets/css/bootstrap/bootstrap-theme.min.css">
 
-    <!-- Custom css -->
+    <!-- Custom css &ndash;&gt;
     <link rel="stylesheet" href="/assets/css/style.css">
 
-    <!-- Font Awesome -->
+    <!-- Font Awesome &ndash;&gt;
     <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
 
     <link rel="stylesheet" href="/assets/css/ionicons.min.css">
 
-    <!-- Flexslider -->
+    <!-- Flexslider &ndash;&gt;
     <link rel="stylesheet" href="/assets/css/flexslider.css">
 
-    <!-- Owl -->
+    <!-- Owl &ndash;&gt;
     <link rel="stylesheet" href="/assets/css/owl.carousel.css">
 
-    <!-- Magnific Popup -->
+    <!-- Magnific Popup &ndash;&gt;
     <link rel="stylesheet" href="/assets/css/magnific-popup.css">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries &ndash;&gt;
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// &ndash;&gt;
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <![endif]&ndash;&gt;
 </head>
 <body>
 
-<!--  loader  -->
+<!--  loader  &ndash;&gt;
 <div id="myloader">
     <div class="loader">
         <div class="grid">
@@ -57,17 +58,17 @@
     </div>
 </div>
 
-<!--  Header & Menu  -->
+<!--  Header & Menu  &ndash;&gt;
 <header id="header">
     <div class="top-nav">
-        <!--  Header Logo  -->
+        <!--  Header Logo  &ndash;&gt;
         <div id="logo">
             <a class="navbar-brand" href="index.html">
                 <img src="/assets/img/logo.png" class="normal" alt="logo">
                 <img src="/assets/img/logo@2x.png" class="retina" alt="logo">
             </a>
         </div>
-        <!--  END Header Logo  -->
+        <!--  END Header Logo  &ndash;&gt;
         <div class="secondary-menu">
             <ul>
                 <li class="mail"><i class="fa fa-envelope" aria-hidden="true"></i><a href="maito:info@domain.com">info@domain.com</a></li>
@@ -78,7 +79,7 @@
                         <li><a href="#">It</a></li>
                     </ul>
                 </li>
-                <!-- Search Icon -->
+                <!-- Search Icon &ndash;&gt;
                 <li class="search">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </li>
@@ -86,7 +87,7 @@
         </div>
     </div>
     <nav class="navbar navbar-default">
-        <!--  Classic menu, responsive menu classic  -->
+        <!--  Classic menu, responsive menu classic  &ndash;&gt;
         <div id="menu-classic">
             <div class="menu-holder">
                 <ul>
@@ -97,8 +98,8 @@
                 </ul>
             </div>
         </div>
-        <!--  END Classic menu, responsive menu classic  -->
-        <!--  Button for Responsive Menu Classic  -->
+        <!--  END Classic menu, responsive menu classic  &ndash;&gt;
+        <!--  Button for Responsive Menu Classic  &ndash;&gt;
         <div id="menu-responsive-classic">
             <div class="menu-button">
                 <span class="bar bar-1"></span>
@@ -106,7 +107,7 @@
                 <span class="bar bar-3"></span>
             </div>
         </div>
-        <!--  END Button for Responsive Menu Classic  -->
+        <!--  END Button for Responsive Menu Classic  &ndash;&gt;
         <div class="secondary-menu-mobile">
             <ul>
                 <li class="mail"><i class="fa fa-envelope" aria-hidden="true"></i><a href="maito:info@domain.com">info@domain.com</a></li>
@@ -117,7 +118,7 @@
                         <li><a href="#">It</a></li>
                     </ul>
                 </li>
-                <!-- Search Icon -->
+                <!-- Search Icon &ndash;&gt;
                 <li class="search">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </li>
@@ -138,13 +139,13 @@
         </form>
     </div>
 </header>
-<!--  END Header & Menu  -->
+<!--  END Header & Menu  &ndash;&gt;
 
-<!--  Main Wrap  -->
+<!--  Main Wrap  &ndash;&gt;
 <div id="main-wrap">
-    <!--  Page Content  -->
+    <!--  Page Content  &ndash;&gt;
     <div id="page-content" class="header-static">
-        <!--  Slider  -->
+        <!--  Slider  &ndash;&gt;
         <div id="flexslider-nav" class="fullpage-wrap small">
             <ul class="slides">
                 <li style="background-image:url(/assets/img/slider.jpg)">
@@ -180,11 +181,11 @@
                 </a>
             </div>
         </div>
-        <!--  END Slider  -->
+        <!--  END Slider  &ndash;&gt;
         <div id="home-wrap" class="content-section fullpage-wrap">
-            <!-- Abous us -->
+            <!-- Abous us &ndash;&gt;
             <div class="container">
-                <!-- Section Image -->
+                <!-- Section Image &ndash;&gt;
                 <div class="row no-margin padding-onlytop-lg">
                     <div class="col-md-6 padding-leftright-null">
                         <div data-responsive="parent-height" data-responsive-id="about" class="text">
@@ -203,9 +204,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- END Section Image -->
+                <!-- END Section Image &ndash;&gt;
             </div>
-            <!-- Services -->
+            <!-- Services &ndash;&gt;
             <div class="light-background">
                 <div class="container padding-lg">
                     <div class="row no-margin">
@@ -253,20 +254,20 @@
                             </div>
                         </div>
                     </div>
-                    <!-- END Services -->
+                    <!-- END Services &ndash;&gt;
                 </div>
             </div>
-            <!-- END Services -->
-            <!-- Video Section -->
+            <!-- END Services &ndash;&gt;
+            <!-- Video Section &ndash;&gt;
             <div class="container">
                 <div class="row no-margin padding-lg">
                     <div class="col-md-7 padding-leftright-null">
                         <div data-responsive="child-height" data-responsive-id="video" class="text padding-md-top-null height-auto-md">
-                            <!-- Video Popup -->
+                            <!-- Video Popup &ndash;&gt;
                             <a class="popup-vimeo" href="">
                                 <img src="/assets/img/video-business.jpg" alt="">
                             </a>
-                            <!-- END Video Popup -->
+                            <!-- END Video Popup &ndash;&gt;
                         </div>
                     </div>
                     <div class="col-md-5 padding-leftright-null">
@@ -287,8 +288,8 @@
                     </div>
                 </div>
             </div>
-            <!-- END Video Section -->
-            <!--  Section Image Background with overlay  -->
+            <!-- END Video Section &ndash;&gt;
+            <!--  Section Image Background with overlay  &ndash;&gt;
             <div class="row margin-leftright-null grey-background">
                 <div class="bg-img overlay responsive" style="background-image:url(/assets/img/quote-business.jpg)">
                     <div class="container padding-sm">
@@ -301,14 +302,14 @@
                     </div>
                 </div>
             </div>
-            <!--  END Section Image Background with overlay  -->
-            <!--  Section Testimonials  -->
+            <!--  END Section Image Background with overlay  &ndash;&gt;
+            <!--  Section Testimonials  &ndash;&gt;
             <div class="container">
                 <div class="row no-margin padding-lg">
                     <div class="col-md-12 padding-leftright-null text-center">
                         <h3 class="big margin-bottom-small">Our Customer Say</h3>
                     </div>
-                    <!-- Testimonials -->
+                    <!-- Testimonials &ndash;&gt;
                     <section class="testimonials-carousel-simple col-md-12 padding-leftright-null padding-bottom-null">
                         <div class="item padding-leftright-null">
                             <div class="text padding-bottom-null">
@@ -347,11 +348,11 @@
                             </div>
                         </div>
                     </section>
-                    <!-- END Testimonials -->
+                    <!-- END Testimonials &ndash;&gt;
                 </div>
             </div>
-            <!-- END Section Testimonials  -->
-            <!-- Section News -->
+            <!-- END Section Testimonials  &ndash;&gt;
+            <!-- Section News &ndash;&gt;
             <div class="light-background">
                 <div class="container">
                     <div class="row no-margin padding-onlytop-lg">
@@ -359,7 +360,7 @@
                             <h3 class="big margin-bottom-small">Our News</h3>
                         </div>
                         <div class="col-md-12 text" id="news">
-                            <!-- Single News -->
+                            <!-- Single News &ndash;&gt;
                             <div class="col-sm-4 single-news">
                                 <article>
                                     <img src="/assets/img/news1.jpg" alt="">
@@ -371,7 +372,7 @@
                                     <a href="#" class="link"></a>
                                 </article>
                             </div>
-                            <!-- END Single News -->
+                            <!-- END Single News &ndash;&gt;
                             <div class="col-sm-4 single-news">
                                 <article>
                                     <img src="/assets/img/news2.jpg" alt="">
@@ -405,8 +406,8 @@
                     </div>
                 </div>
             </div>
-            <!-- END Section News -->
-            <!-- Section Partners -->
+            <!-- END Section News &ndash;&gt;
+            <!-- Section Partners &ndash;&gt;
             <div class="container">
                 <div class="row no-margin">
                     <div class="col-md-12 padding-leftright-null">
@@ -433,15 +434,15 @@
                     </div>
                 </div>
             </div>
-            <!-- END Section Partners -->
+            <!-- END Section Partners &ndash;&gt;
         </div>
     </div>
-    <!--  END Page Content -->
+    <!--  END Page Content &ndash;&gt;
 </div>
-<!--  Main Wrap  -->
+<!--  Main Wrap  &ndash;&gt;
 
 
-<!--  Footer  -->
+<!--  Footer  &ndash;&gt;
 <footer>
     <div class="container">
         <div class="row no-margin">
@@ -509,17 +510,17 @@
         </div>
     </div>
 </div>
-<!--  END Footer. Class fixed for fixed footer  -->
+<!--  END Footer. Class fixed for fixed footer  &ndash;&gt;
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) &ndash;&gt;
 <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
-<!-- All js library -->
+<!-- All js library &ndash;&gt;
 <script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
 <script src="/assets/js/jquery.flexslider-min.js"></script>
 <script src="/assets/js/owl.carousel.min.js"></script>
 <script src="/assets/js/isotope.min.js"></script>
 <script src="/assets/js/jquery.magnific-popup.min.js"></script>
-<!---<script src="http://ditu.google.cn/maps/api/js?v=3.exp&signed_in=false"></script>--->
+<!---<script src="http://ditu.google.cn/maps/api/js?v=3.exp&signed_in=false"></script>-&ndash;&gt;
 <script src="/assets/js/jquery.scrollTo.min.js"></script>
 <script src="/assets/js/smooth.scroll.min.js"></script>
 <script src="/assets/js/jquery.appear.js"></script>
@@ -531,7 +532,8 @@
 <script src="/assets/js/main.js"></script>
 </body>
 </html>
-*#
+-->
+
 <!DOCTYPE html>
 <html>
 <head>

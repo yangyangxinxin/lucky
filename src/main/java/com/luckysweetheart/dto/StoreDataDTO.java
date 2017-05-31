@@ -1,4 +1,4 @@
-package com.luckysweetheart.vo;
+package com.luckysweetheart.dto;
 
 /**
  * Created by yangxin on 2017/5/22.

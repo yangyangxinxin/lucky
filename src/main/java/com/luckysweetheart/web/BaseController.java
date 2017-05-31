@@ -2,6 +2,7 @@ package com.luckysweetheart.web;
 
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.web.utils.SessionUtils;
+import com.luckysweetheart.web.utils.UserAgentUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,7 @@ public abstract class BaseController {
         return SessionUtils.getLoginUserId(request);
     }
 
-    protected UserDTO getLoginUser(){
+    protected UserDTO getLoginUser() {
         return SessionUtils.getLoginUser(request);
     }
 
@@ -117,6 +118,14 @@ public abstract class BaseController {
             return defaultValue;
         }
         return defaultValue;
+    }
+
+    protected boolean isMobile() {
+        return UserAgentUtil.UA_TYPE_MOBILE.equalsIgnoreCase(UserAgentUtil.uaType(request));
+    }
+
+    protected boolean isPc() {
+        return !isMobile();
     }
 
 }

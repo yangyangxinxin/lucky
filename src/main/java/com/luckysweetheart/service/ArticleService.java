@@ -1,5 +1,6 @@
 package com.luckysweetheart.service;
 
+import com.luckysweetheart.common.Const;
 import com.luckysweetheart.common.PagedResult;
 import com.luckysweetheart.dal.dao.ArticleDao;
 import com.luckysweetheart.dal.entity.Article;
@@ -32,7 +33,7 @@ public class ArticleService extends BaseService {
     @Resource
     private ArticleDao articleDao;
 
-    public ResultInfo<Long> create(ArticleDTO articleDTO) {
+    public ResultInfo<Long> create(ArticleDTO articleDTO) throws BusinessException {
         ResultInfo<Long> resultInfo = new ResultInfo<>();
         try {
             Assert.isTrue(articleDTO != null, "文章对象不能为空");
@@ -46,7 +47,7 @@ public class ArticleService extends BaseService {
         }
     }
 
-    public ResultInfo<Void> delete(Long articleId, Long userId) {
+    public ResultInfo<Void> delete(Long articleId, Long userId) throws BusinessException {
         ResultInfo<Void> resultInfo = new ResultInfo<>();
         try {
             Assert.notNull(articleId, "要删除的id不能为空");
@@ -56,7 +57,7 @@ public class ArticleService extends BaseService {
             if (!userId.equals(article.getOwnerUserId())) {
                 throw new BusinessException("该文章不属于你");
             }
-            article.setDeleteStatus(Article.DELETE_STATUS_YES);
+            article.setDeleteStatus(Const.DELETE_STATUS_YES);
             return resultInfo.success();
         } catch (Exception e) {
             throw new BusinessException("删除文章出现异常：" + e.getMessage());//回滚

@@ -2,6 +2,7 @@ package com.luckysweetheart.store;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.luckysweetheart.common.Const;
 import com.luckysweetheart.common.IdWorker;
 import com.luckysweetheart.dal.dao.StoreDataDao;
 import com.luckysweetheart.dal.entity.StoreData;
@@ -11,16 +12,13 @@ import com.luckysweetheart.service.BaseService;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.utils.StoreResultUtil;
-import com.luckysweetheart.vo.StoreDataDTO;
+import com.luckysweetheart.dto.StoreDataDTO;
 import com.qcloud.cos.COSClient;
-import com.qcloud.cos.exception.AbstractCosException;
 import com.qcloud.cos.request.DelFileRequest;
 import com.qcloud.cos.request.GetFileInputStreamRequest;
 import com.qcloud.cos.request.GetFileLocalRequest;
 import com.qcloud.cos.request.UploadFileRequest;
 import com.qcloud.cos.sign.Credentials;
-import com.qcloud.cos.sign.Sign;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -52,7 +50,7 @@ public class StoreService extends BaseService {
     @Resource
     private StorageGroupService storageGroupService;
 
-    private final String bucketName = "bubu";
+    private final String bucketName = Const.DEFAULT_BUCKET_NAME;
 
     /**
      * 获取全局唯一的cosPath
