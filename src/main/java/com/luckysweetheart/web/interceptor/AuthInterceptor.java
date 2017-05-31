@@ -17,10 +17,12 @@ public class AuthInterceptor extends AbstractInterceptor {
 
     /**
      * 不需要登录的URL
+     *
      * @return
      */
     private List<String> unLoginList() {
         List<String> list = new ArrayList<>();
+        list.add("/");
         list.add("/index");
         list.add("/account/*");
         list.add("/photo/*");
@@ -39,12 +41,10 @@ public class AuthInterceptor extends AbstractInterceptor {
         if (!isLogin) {
             if (isAjax) {
                 //处理ajax情况
-                if (RequestUtils.isAjaxRequest(request)) {
-                    AjaxResult ajaxResult = AjaxResult.createFailedResult("请先登录");
-                    ajaxResult.setResultCode(401);
-                    writeJsonResponse(response, ajaxResult);
-                    return false;
-                }
+                AjaxResult ajaxResult = AjaxResult.createFailedResult("请先登录");
+                ajaxResult.setResultCode(401);
+                writeJsonResponse(response, ajaxResult);
+                return false;
             }
             response.sendRedirect("/account/loginPage");
             return false;

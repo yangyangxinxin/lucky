@@ -23,6 +23,7 @@ public class ProfileController extends BaseController {
      * 账户设置首页
      * @return
      */
+    @RequestMapping("/index")
     public String profileIndex(){
         UserDTO userDTO = userService.findById(getLoginUserId());
         if(userDTO != null){
