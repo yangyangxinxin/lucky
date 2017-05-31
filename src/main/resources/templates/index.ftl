@@ -579,7 +579,7 @@
                 ,element = layui.element();
 
         //向世界问个好
-        layer.msg('Hello World');
+        layer.msg('Hello Worlddfrtg');
 
         //监听Tab切换
         element.on('tab(demo)', function(data){
