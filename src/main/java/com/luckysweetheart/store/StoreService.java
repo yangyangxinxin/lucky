@@ -19,6 +19,7 @@ import com.qcloud.cos.request.GetFileInputStreamRequest;
 import com.qcloud.cos.request.GetFileLocalRequest;
 import com.qcloud.cos.request.UploadFileRequest;
 import com.qcloud.cos.sign.Credentials;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -74,10 +75,14 @@ public class StoreService extends BaseService {
         return uploadFile(uploadFileRequest, cosPath);
     }
 
-    public ResultInfo<StoreDataDTO> uploadFile(byte[] bytes, String suffix,String bucketName) throws BusinessException {
+    public ResultInfo<StoreDataDTO> uploadFile(byte[] bytes, String suffix, String bucketName) throws BusinessException {
         String cosPath = getCosPath(suffix);
         UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, cosPath, bytes);
         return uploadFile(uploadFileRequest, cosPath);
+    }
+
+    private String getFileName(String cosPath){
+        return cosPath.substring(1,cosPath.length());
     }
 
     public ResultInfo<StoreDataDTO> uploadFile(UploadFileRequest uploadFileRequest, String cosPath) throws BusinessException {
@@ -87,12 +92,13 @@ public class StoreService extends BaseService {
         if (resultInfo.isSuccess() && resultInfo.getData() != null) {
             StoreDataDTO storeDataDTO = resultInfo.getData();
             storeDataDTO.setCosPath(cosPath);
+            storeDataDTO.setFileName(getFileName(cosPath));
             saveStoreData(storeDataDTO);
         }
         return resultInfo;
     }
 
-    public ResultInfo<Void> deleteFile(String resourcePath) throws BusinessException{
+    public ResultInfo<Void> deleteFile(String resourcePath) throws BusinessException {
         ResultInfo<Void> resultInfo = new ResultInfo<>();
         try {
             StoreData storeData = storeDataApi.findByResourcePath(resourcePath);
@@ -161,13 +167,39 @@ public class StoreService extends BaseService {
         return cosClient.getFileLocal(getFileLocalRequest);
     }
 
+    public String getHttpUrlByResourcePath(String resourcePath) {
+        StoreData storeData = storeDataApi.findByResourcePath(resourcePath);
+        if (storeData != null) {
+            return storeData.getSourceUrl();
+        }
+        return "";
+    }
+
+    public String getHttpUrlByCosPath(String cosPath) {
+        StoreData storeData = storeDataApi.findByCosPath(cosPath);
+        if (storeData != null) {
+            return storeData.getSourceUrl();
+        }
+        return "";
+    }
+
+    public StoreDataDTO getByCosPath(String cosPath){
+        StoreData data = storeDataApi.findByCosPath(cosPath);
+        if(data != null){
+            StoreDataDTO storeDataDTO = new StoreDataDTO();
+            BeanCopierUtils.copy(data,storeDataDTO);
+            return storeDataDTO;
+        }
+        return null;
+    }
+
     /**
      * 数据库记录存储
      *
      * @param storeDataDTO
      * @return
      */
-    private StoreData saveStoreData(StoreDataDTO storeDataDTO) throws BusinessException{
+    private StoreData saveStoreData(StoreDataDTO storeDataDTO) throws BusinessException {
         if (storeDataDTO == null) {
             throw new BusinessException("存储对象不能为空!");
         }

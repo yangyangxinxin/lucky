@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class AuthInterceptor extends AbstractInterceptor {
         list.add("/");
         list.add("/index");
         list.add("/account/*");
-        list.add("/photo/*");
+        //list.add("/photo/*");
         list.add("/download");
         return list;
     }
@@ -46,7 +47,7 @@ public class AuthInterceptor extends AbstractInterceptor {
                 writeJsonResponse(response, ajaxResult);
                 return false;
             }
-            response.sendRedirect("/account/loginPage");
+            response.sendRedirect("/account/loginPage?returnUrl=" + URLEncoder.encode(requestUrl,"UTF-8"));
             return false;
         }
         return true;

@@ -14,6 +14,7 @@ public class IndexController extends BaseController{
 
     @RequestMapping({"/index","/"})
     public String index(){
+        setAttribute("str","test");
         return "index";
     }
 

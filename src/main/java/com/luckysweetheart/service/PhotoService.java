@@ -8,12 +8,16 @@ import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.store.StorageGroupService;
 import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.utils.BeanCopierUtils;
+import com.luckysweetheart.utils.FileUtil;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.dto.StoreDataDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by yangxin on 2017/5/26.
@@ -53,6 +57,23 @@ public class PhotoService extends BaseService {
         }
     }
 
+    public ResultInfo<Long> create(MultipartFile file,Long userId) throws IOException, BusinessException {
+        byte[] bytes = file.getBytes();
+        String suffix = FileUtil.getExtension(file.getOriginalFilename());
+
+        PhotoDTO photoDTO = new PhotoDTO();
+        photoDTO.setBytes(bytes);
+        photoDTO.setSuffix(suffix);
+        photoDTO.setCreateTime(new Date());
+        photoDTO.setName(file.getName());
+        photoDTO.setParentId(0L);
+        photoDTO.setUserId(userId);
+        photoDTO.setDeleteStatus(Const.DELETE_STATUS_NO);
+        photoDTO.setIsDirectory(Const.NO_DIRECTORY);
+
+        return create(photoDTO);
+    }
+
     public ResultInfo<Void> delete(Long photoId, Long userId) throws BusinessException {
         ResultInfo<Void> resultInfo = new ResultInfo<>();
         try {
@@ -73,6 +94,24 @@ public class PhotoService extends BaseService {
                 }
             }
             throw new BusinessException("该相片不存在！");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
+    public ResultInfo<PhotoDTO> detail(Long photoId) throws BusinessException {
+        ResultInfo<PhotoDTO> re = new ResultInfo<>();
+        try {
+            notNull(photoId, "id不能为空");
+            Photo photo = photoDao.findOne(photoId);
+            if (photo != null) {
+                PhotoDTO photoDTO = new PhotoDTO();
+                BeanCopierUtils.copy(photo, photoDTO);
+                photoDTO.setHttpUrl(storeService.getHttpUrlByResourcePath(photoDTO.getResourcePath()));
+                return re.success(photoDTO);
+            }
+            return re.fail("该相片不存在！");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new BusinessException(e.getMessage());

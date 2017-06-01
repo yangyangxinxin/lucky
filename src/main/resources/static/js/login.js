@@ -18,7 +18,12 @@ $(document).ready(function(){
             success:function(data){
                 if(data.success){
                     console.log(data);
-                    layer.alert("登录成功！");
+                    layer.alert("登录成功！",function () {
+                        var returnUrl = $app.getRequest().returnUrl;
+                        if(returnUrl){
+                            window.location.href = decodeURIComponent(returnUrl);
+                        }
+                    });
                 }else{
                     layer.alert(data.msg);
                 }

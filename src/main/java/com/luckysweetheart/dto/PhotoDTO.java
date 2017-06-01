@@ -38,6 +38,16 @@ public class PhotoDTO implements DTO {
 
     private String suffix;
 
+    private String httpUrl;
+
+    public String getHttpUrl() {
+        return httpUrl;
+    }
+
+    public void setHttpUrl(String httpUrl) {
+        this.httpUrl = httpUrl;
+    }
+
     public byte[] getBytes() {
         return bytes;
     }

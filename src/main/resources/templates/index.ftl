@@ -563,7 +563,7 @@
             在这里，你将以最直观的形式体验Layui！在编辑器中可以执行layui相关的一切代码。
             <br>你也可以点击左侧导航针对性地试验我们提供的示例。
         </div>
-        <div class="layui-tab-item">内容1</div>
+        <div class="layui-tab-item">${str!}</div>
         <div class="layui-tab-item">内容2</div>
         <div class="layui-tab-item">内容3</div>
     </div>
@@ -579,7 +579,7 @@
                 ,element = layui.element();
 
         //向世界问个好
-        layer.msg('Hello Worlddfrtg');
+        layer.msg('Hello World');
 
         //监听Tab切换
         element.on('tab(demo)', function(data){

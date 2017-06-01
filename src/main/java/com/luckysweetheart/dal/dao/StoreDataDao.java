@@ -21,6 +21,8 @@ public interface StoreDataDao extends CrudRepository<StoreData,Long> {
 
     StoreData findByResourcePath(String resourcePath);
 
+    StoreData findByCosPath(String cosPath);
+
     //StoreData update(StoreData storeData);
 
 }

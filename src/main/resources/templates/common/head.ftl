@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="${contextPath}/layui/css/layui.css" media="all">
 <script src="${contextPath}/layui/lay/dest/layui.all.js" charset="utf-8"></script>
 <script src="${contextPath}/js/jquery.min.js"></script>
+<script src="${contextPath}/js/common/app.js"></script>
 <script>
     var form = layui.form();
     var layer = layui.layer;
