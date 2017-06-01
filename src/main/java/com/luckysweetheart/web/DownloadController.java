@@ -1,9 +1,14 @@
 package com.luckysweetheart.web;
 
 import com.luckysweetheart.common.IdWorker;
+import com.luckysweetheart.dto.PhotoDTO;
 import com.luckysweetheart.dto.StoreDataDTO;
+import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.exception.StorageException;
+import com.luckysweetheart.service.PhotoService;
+import com.luckysweetheart.store.StorageGroupService;
 import com.luckysweetheart.store.StoreService;
+import com.luckysweetheart.utils.ResultInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +26,7 @@ import java.util.Date;
  * Created by yangxin on 2017/5/26.
  */
 @Controller
+@RequestMapping("/download")
 public class DownloadController extends BaseController {
 
     @Resource
@@ -29,7 +35,13 @@ public class DownloadController extends BaseController {
     @Resource
     private IdWorker idWorker;
 
-    @RequestMapping("/download")
+    @Resource
+    private PhotoService photoService;
+
+    @Resource
+    private StorageGroupService storageGroupService;
+
+    @RequestMapping("/file")
     public void downloadFile(String cosPath) {
         byte bs[];
         StoreDataDTO dto = storeService.getByCosPath(cosPath);
@@ -40,7 +52,7 @@ public class DownloadController extends BaseController {
             fileName = idWorker.nextId() + ".png";
         }
         try {
-            bs = storeService.download(cosPath);
+            bs = storeService.download(cosPath, dto == null ? storageGroupService.getDefaultGroupName() : dto.getBucketName());
             if (bs != null) {
                 response.setContentType("application/x-download");
                 response.setCharacterEncoding("utf-8");
@@ -71,6 +83,22 @@ public class DownloadController extends BaseController {
             }
         } catch (Exception e) {
             logger.error("下载原始文档时出现异常", e);
+        }
+    }
+
+    @RequestMapping("/photo")
+    public void download(Long photoId) {
+        try {
+            ResultInfo<PhotoDTO> resultInfo = photoService.detail(photoId);
+            if (resultInfo.isSuccess() && resultInfo.getData() != null) {
+                PhotoDTO dto = resultInfo.getData();
+                StoreDataDTO storeDataDTO = storeService.getByResourcePath(dto.getResourcePath());
+                if (storeDataDTO != null) {
+                    downloadFile(storeDataDTO.getCosPath());
+                }
+            }
+        } catch (BusinessException e) {
+            logger.error(e.getMessage(), e);
         }
     }
 

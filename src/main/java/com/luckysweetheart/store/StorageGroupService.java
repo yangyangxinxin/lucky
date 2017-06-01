@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class StorageGroupService extends BaseService{
 
-    @Value("${testGroupName}")
-    private String testGroupName;
+    @Value("${defaultGroupName}")
+    private String defaultGroupName;
 
     @Value("${userGroupName}")
     private String userGroupName;
@@ -24,8 +24,8 @@ public class StorageGroupService extends BaseService{
      * 测试的bucketName
      * @return
      */
-    public String getTestGroupName() {
-        return testGroupName;
+    public String getDefaultGroupName() {
+        return defaultGroupName;
     }
 
     /**

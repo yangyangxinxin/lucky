@@ -1,8 +1,10 @@
 package com.luckysweetheart.web.interceptor;
 
 import com.luckysweetheart.web.utils.AjaxResult;
+import com.luckysweetheart.web.utils.DomainUtils;
 import com.luckysweetheart.web.utils.RequestUtils;
 import com.luckysweetheart.web.utils.SessionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +49,16 @@ public class AuthInterceptor extends AbstractInterceptor {
                 writeJsonResponse(response, ajaxResult);
                 return false;
             }
-            response.sendRedirect("/account/loginPage?returnUrl=" + URLEncoder.encode(requestUrl,"UTF-8"));
+            String queryStr = urlHelper.getOriginatingQueryString(request);
+            String returnURL = requestUrl;
+            if (StringUtils.isNotBlank(queryStr)) {
+                if (returnURL.contains("?")) {
+                    returnURL = returnURL + "&" + queryStr;
+                } else {
+                    returnURL = returnURL + "?" + queryStr;
+                }
+            }
+            response.sendRedirect("/account/loginPage?returnUrl=" + URLEncoder.encode(returnURL,"UTF-8"));
             return false;
         }
         return true;

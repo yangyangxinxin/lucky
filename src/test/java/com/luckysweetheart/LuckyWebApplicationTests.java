@@ -66,8 +66,8 @@ public class LuckyWebApplicationTests {
 
 	@Test
 	public void test5(){
-		String result = storeService.download("/apply_02.jpg","D://yangxinxin.jpg");
-		System.out.println(result);
+		/*String result = storeService.download("/apply_02.jpg","D://yangxinxin.jpg");
+		System.out.println(result);*/
 	}
 
 	@Test

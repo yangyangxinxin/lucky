@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,9 +18,12 @@ public class UploadUtils {
 
     private static String extension;
 
-    @Value("${extension.pic}")
     public static void setExtension(String extension) {
         UploadUtils.extension = extension;
+    }
+
+    public static String getExtension() {
+        return extension;
     }
 
     public static boolean isPic(String extension) {
@@ -27,6 +31,9 @@ public class UploadUtils {
             return false;
         }
         try {
+            if (extension.contains(".")) {
+                extension = extension.substring(extension.indexOf(".") + 1, extension.length());
+            }
             List<String> list = Arrays.asList(UploadUtils.extension.split(","));
             if (list.contains(extension.toUpperCase())) {
                 return true;

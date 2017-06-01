@@ -1,6 +1,8 @@
 package com.luckysweetheart.web.utils;
 
 import com.luckysweetheart.dto.UserDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,6 +11,8 @@ import javax.servlet.http.HttpSession;
  * Created by yangxin on 2017/5/22.
  */
 public class SessionUtils {
+
+    private static Logger logger = LoggerFactory.getLogger(SessionUtils.class);
 
     public static final String loginUserKey = "userInfo";
 
@@ -40,16 +44,21 @@ public class SessionUtils {
         return request.getSession(true);
     }
 
-    public static void login(HttpServletRequest request,UserDTO userVO){
-        setAttribute(loginUserKey,userVO, request);
+    public static void login(HttpServletRequest request, UserDTO userVO) {
+        setAttribute(loginUserKey, userVO, request);
+        logger.info("登录成功，登录用户id：" + userVO.getUserId() + "，用户名：" + userVO.getUsername());
     }
 
-    public static void removeAttribute(HttpServletRequest request,String key){
+    public static void removeAttribute(HttpServletRequest request, String key) {
         getSession(request).removeAttribute(key);
     }
 
-    public static void logout(HttpServletRequest request){
-        removeAttribute(request,loginUserKey);
+    public static void logout(HttpServletRequest request) {
+        UserDTO user = getLoginUser(request);
+        removeAttribute(request, loginUserKey);
+        if (user != null) {
+            logger.info("注销成功，注销用户id：" + user.getUserId() + "，用户名：" + user.getUsername());
+        }
     }
 
 }

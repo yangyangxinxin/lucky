@@ -37,6 +37,16 @@ public class StoreDataDTO {
 
     private String fileName;
 
+    private String bucketName;
+
+    public String getBucketName() {
+        return bucketName;
+    }
+
+    public void setBucketName(String bucketName) {
+        this.bucketName = bucketName;
+    }
+
     public String getFileName() {
         return fileName;
     }

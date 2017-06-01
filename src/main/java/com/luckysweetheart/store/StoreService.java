@@ -10,6 +10,7 @@ import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.exception.StorageException;
 import com.luckysweetheart.service.BaseService;
 import com.luckysweetheart.utils.BeanCopierUtils;
+import com.luckysweetheart.utils.DateUtil;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.utils.StoreResultUtil;
 import com.luckysweetheart.dto.StoreDataDTO;
@@ -40,16 +41,10 @@ public class StoreService extends BaseService {
     private COSClient cosClient;
 
     @Resource
-    private Credentials cred;
-
-    @Resource
     private StoreDataDao storeDataApi;
 
     @Resource
     private IdWorker idWorker;
-
-    @Resource
-    private StorageGroupService storageGroupService;
 
     private final String bucketName = Const.DEFAULT_BUCKET_NAME;
 
@@ -81,11 +76,12 @@ public class StoreService extends BaseService {
         return uploadFile(uploadFileRequest, cosPath);
     }
 
-    private String getFileName(String cosPath){
-        return cosPath.substring(1,cosPath.length());
+    private String getFileName(String cosPath) {
+        return cosPath.substring(1, cosPath.length());
     }
 
     public ResultInfo<StoreDataDTO> uploadFile(UploadFileRequest uploadFileRequest, String cosPath) throws BusinessException {
+        logger.info("调用存储上传文件，bucketName：" + uploadFileRequest.getBucketName() + "，cosPath：" + cosPath + " at " + DateUtil.formatDate(new Date()));
         String uploadFileRet = cosClient.uploadFile(uploadFileRequest);
         logger.info(uploadFileRet);
         ResultInfo<StoreDataDTO> resultInfo = StoreResultUtil.getResult(uploadFileRet);
@@ -93,7 +89,11 @@ public class StoreService extends BaseService {
             StoreDataDTO storeDataDTO = resultInfo.getData();
             storeDataDTO.setCosPath(cosPath);
             storeDataDTO.setFileName(getFileName(cosPath));
+            storeDataDTO.setBucketName(uploadFileRequest.getBucketName());
             saveStoreData(storeDataDTO);
+            logger.info(cosPath + "文件上传成功。" + " at " + DateUtil.formatDate(new Date()));
+        } else {
+            logger.info(cosPath + "文件上传失败，失败原因：" + resultInfo.getMsg() + " at " + DateUtil.formatNow());
         }
         return resultInfo;
     }
@@ -131,10 +131,10 @@ public class StoreService extends BaseService {
      * @return
      * @throws Exception
      */
-    public byte[] download(String cosFilePath) throws Exception {
+    public byte[] download(String cosFilePath, String bucketName) throws Exception {
+        logger.info("调用存储下载文件，要下载的文件为：" + cosFilePath + "，bucketName ：" + bucketName + " at " + DateUtil.formatDate(new Date()));
         GetFileInputStreamRequest request = new GetFileInputStreamRequest(bucketName, cosFilePath);
         request.setUseCDN(false);
-        request.setReferer("http://www.luckysweetheart.com");
         InputStream inputStream = cosClient.getFileInputStream(request);
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         byte[] data = new byte[BUFFER_SIZE];
@@ -150,8 +150,21 @@ public class StoreService extends BaseService {
             outStream.close();
             inputStream.close();
         }
+        logger.info("文件下载完成：" + cosFilePath + " at " + DateUtil.formatDate(new Date()));
         return outStream.toByteArray();
     }
+
+    /**
+     * 下载文件，默认bucketName为bubu
+     *
+     * @param cosFilePath
+     * @return
+     * @throws Exception
+     */
+    public byte[] download(String cosFilePath) throws Exception {
+        return download(cosFilePath, bucketName);
+    }
+
 
     /**
      * 下载文件到本地
@@ -160,7 +173,7 @@ public class StoreService extends BaseService {
      * @param localPathDown
      * @return
      */
-    public String download(String cosFilePath, String localPathDown) {
+    public String downloadLocal(String cosFilePath, String localPathDown) {
         GetFileLocalRequest getFileLocalRequest = new GetFileLocalRequest(bucketName, cosFilePath, localPathDown);
         getFileLocalRequest.setUseCDN(false);
         getFileLocalRequest.setReferer("http://www.luckysweetheart.com");
@@ -183,11 +196,21 @@ public class StoreService extends BaseService {
         return "";
     }
 
-    public StoreDataDTO getByCosPath(String cosPath){
+    public StoreDataDTO getByCosPath(String cosPath) {
         StoreData data = storeDataApi.findByCosPath(cosPath);
-        if(data != null){
+        if (data != null) {
             StoreDataDTO storeDataDTO = new StoreDataDTO();
-            BeanCopierUtils.copy(data,storeDataDTO);
+            BeanCopierUtils.copy(data, storeDataDTO);
+            return storeDataDTO;
+        }
+        return null;
+    }
+
+    public StoreDataDTO getByResourcePath(String resourcePath) {
+        StoreData data = storeDataApi.findByResourcePath(resourcePath);
+        if (data != null) {
+            StoreDataDTO storeDataDTO = new StoreDataDTO();
+            BeanCopierUtils.copy(data, storeDataDTO);
             return storeDataDTO;
         }
         return null;

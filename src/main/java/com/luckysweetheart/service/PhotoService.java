@@ -11,6 +11,7 @@ import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.FileUtil;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.dto.StoreDataDTO;
+import com.luckysweetheart.web.utils.UploadUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +39,11 @@ public class PhotoService extends BaseService {
         ResultInfo<Long> resultInfo = new ResultInfo<>();
         try {
             Assert.notNull(photoDTO, "相片对象不能为空");
+            String suffix = photoDTO.getSuffix();
+            boolean isPc = UploadUtils.isPic(suffix);
+            if (!isPc) {
+                throw new BusinessException("只支持图片格式的文件上传！");
+            }
             Photo photo = new Photo();
             BeanCopierUtils.copy(photoDTO, photo);
             Photo photo1 = photoDao.save(photo);
@@ -53,11 +59,12 @@ public class PhotoService extends BaseService {
             }
             return resultInfo.success(photo1.getPhotoId());
         } catch (Exception e) {
-            throw new BusinessException("保存相册出现错误");
+            logger.error(e.getMessage(), e);
+            throw new BusinessException(e.getMessage());
         }
     }
 
-    public ResultInfo<Long> create(MultipartFile file,Long userId) throws IOException, BusinessException {
+    public ResultInfo<Long> create(MultipartFile file, Long userId) throws IOException, BusinessException {
         byte[] bytes = file.getBytes();
         String suffix = FileUtil.getExtension(file.getOriginalFilename());
 
