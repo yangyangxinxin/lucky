@@ -101,4 +101,18 @@ public class User {
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", imgPath='" + imgPath + '\'' +
+                ", deleteStatus=" + deleteStatus +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

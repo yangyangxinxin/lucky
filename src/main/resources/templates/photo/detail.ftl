@@ -6,7 +6,9 @@
     <#if photo?? >
         <span>name:${photo.name!}</span><br/>
         <span>创建时间:${photo.createTime!}</span><br/>
-        <img style="width:10%;height:10%" src="${photo.httpUrl!}"/>
+        <img class="" src="${photo.httpUrl!}"/>
+    <#else>
+        ${msg!}
     </#if>
 
 </@defaultLayout>

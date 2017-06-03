@@ -11,10 +11,17 @@ import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.utils.ValidateUtil;
 import com.luckysweetheart.dto.StoreDataDTO;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.Date;
 
 /**
@@ -60,7 +67,10 @@ public class UserService extends BaseService {
                 throw new BusinessException("你已注册！请登录！");
             }
             // 加密用户密码
-            String pwd = AesUtil.encrypt(salt + userDTO.getPassword());
+
+
+            String pwd = DigestUtils.sha512Hex(salt + userDTO.getPassword());
+
             User user = new User();
             user.setPassword(pwd);
             user.setUsername(userDTO.getUsername());
@@ -87,7 +97,7 @@ public class UserService extends BaseService {
             if (!ValidateUtil.pwdVal(password)) {
                 throw new BusinessException("密码不符合规范！");
             }
-            password = AesUtil.encrypt(salt + password);
+            password = DigestUtils.sha512Hex(salt + password);
             User user = userApi.login(mobilePhone, password);
             UserDTO userDTO = new UserDTO();
             if (user != null) {
@@ -121,7 +131,7 @@ public class UserService extends BaseService {
             Assert.isTrue(ValidateUtil.pwdVal(password), "密码布符合规范");
             User user = userApi.findOne(userId);
             Assert.notNull(user, "该用户不存在");
-            password = AesUtil.encrypt(salt + password);
+            password = DigestUtils.sha512Hex(salt + password);
             user.setUpdateTime(new Date());
             user.setPassword(password);
             // 持久态，不需update
@@ -248,6 +258,15 @@ public class UserService extends BaseService {
             logger.error(e.getMessage(), e);
             throw new BusinessException("修改用户信息出现异常");
         }
+    }
+
+    public void test(){
+        userApi.findOne(Specifications.where(new Specification<User>() {
+            @Override
+            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return null;
+            }
+        }));
     }
 
 }

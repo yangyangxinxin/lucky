@@ -82,9 +82,12 @@ public class PhotoController extends BaseController {
             ResultInfo<PhotoDTO> resultInfo = photoService.detail(photoId);
             if (resultInfo.isSuccess() && resultInfo.getData() != null) {
                 setAttribute("photo", resultInfo.getData());
+            } else {
+                setAttribute("msg", resultInfo.getMsg());
             }
         } catch (BusinessException e) {
             logger.error(e.getMessage(), e);
+            setAttribute("msg", e.getMessage());
         }
         return "/photo/detail";
     }

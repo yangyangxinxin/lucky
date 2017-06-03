@@ -1,6 +1,8 @@
 package com.luckysweetheart.dal.dao;
 
 import com.luckysweetheart.dal.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Repository;
  * Created by yangxin on 2017/5/22.
  */
 @Repository
-public interface UserApi extends CrudRepository<User, Long> {
+public interface UserApi extends JpaRepository<User, Long>,JpaSpecificationExecutor<User> {
 
     @Query(value = "select u from User u where mobilePhone=:mobilePhone and password=:password")
     User login(@Param("mobilePhone") String mobilePhone, @Param("password") String password);
