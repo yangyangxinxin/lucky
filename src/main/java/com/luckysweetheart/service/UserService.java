@@ -6,6 +6,7 @@ import com.luckysweetheart.dal.entity.User;
 import com.luckysweetheart.dto.StoreDataDTO;
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
+import com.luckysweetheart.store.StorageGroupService;
 import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
@@ -32,6 +33,9 @@ public class UserService extends ParameterizedBaseService<User, Long> {
 
     @Resource
     private StoreService storeService;
+
+    @Resource
+    private StorageGroupService storageGroupService;
 
     /**
      * 注册
@@ -219,7 +223,7 @@ public class UserService extends ParameterizedBaseService<User, Long> {
             Assert.notNull(bytes, "文件不能为空");
             User user = userApi.get(userId);
             if (user != null) {
-                ResultInfo<StoreDataDTO> result = storeService.uploadFile(bytes, ".png");
+                ResultInfo<StoreDataDTO> result = storeService.uploadFile(bytes, ".png",storageGroupService.getUserGroupName());
                 if (result.isSuccess()) {
                     user.setImgPath(result.getData().getResourcePath());
                     return resultInfo.success();
