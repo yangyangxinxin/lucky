@@ -56,6 +56,10 @@ public class HibernateConfig {
         return transactionManager;
     }
 
+    /**
+     * 数据库命名策略
+     * @return
+     */
     @Bean
     public DatabaseNamingStrategy databaseNamingStrategy() {
         DatabaseNamingStrategy databaseNamingStrategy = new DatabaseNamingStrategy();
