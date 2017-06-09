@@ -21,7 +21,7 @@ import java.util.Date;
  * Created by yangxin on 2017/5/22.
  */
 @Service
-public class UserService extends ParameterizedBaseService<User,Long>  {
+public class UserService extends ParameterizedBaseService<User, Long> {
 
     private final String salt = Const.SALT;
 
@@ -71,10 +71,9 @@ public class UserService extends ParameterizedBaseService<User,Long>  {
             user.setImgPath(defaultUserImg);
             user.setDeleteStatus(Const.DELETE_STATUS_NO);
             user.setCreateTime(new Date());
-            User user1 = userApi.save(user);
-            UserDTO dto = new UserDTO();
-            BeanCopierUtils.copy(user1, dto);
-            return resultInfo.success(dto);
+            Long userId = userApi.save(user);
+            userDTO.setUserId(userId);
+            return resultInfo.success(userDTO);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new BusinessException(e.getMessage());//回滚
@@ -207,6 +206,7 @@ public class UserService extends ParameterizedBaseService<User,Long>  {
 
     /**
      * 修改用户头像，图片处理请在前端处理。
+     *
      * @param userId
      * @param bytes
      * @return
@@ -234,19 +234,17 @@ public class UserService extends ParameterizedBaseService<User,Long>  {
         }
     }
 
+
     /**
-     * 修改用户信息，这种方式虽然简单方便，但是可能导致修改过程中要查询两次数据库，性能可能稍有影响。所以并不推荐。
-     * 修改信息 还是推荐调用本类提供的其他方法。
-     *
+     * 注意这里的update不含任何业务逻辑操作，请谨慎使用
      * @param userDTO
+     * @throws BusinessException
      */
     public void update(UserDTO userDTO) throws BusinessException {
         try {
-            User user = userApi.get(userDTO.getUserId());
-            if (user != null) {
-                // 对这种copy 的原理没有深究，但是这种方式类似于调用set方法，所以 调用即可update
-                BeanCopierUtils.copy(userDTO, user);
-            }
+            User user = new User();
+            BeanCopierUtils.copy(userDTO, user);
+            userApi.update(user);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new BusinessException("修改用户信息出现异常");

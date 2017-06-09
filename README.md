@@ -6,7 +6,7 @@
 
 ### 相关技术
 
-- spring-boot
+- spring-boot、hibernate
 - 前端模板引擎freemarker
 - 前端框架采用jQuery + layerUI  [点击查看layerUI开发文档](http://www.layui.com/doc/)
 - 存储使用腾讯的 COS存储 [点击查看COS存储Java开发文档](https://www.qcloud.com/document/product/436/6273)
@@ -83,4 +83,6 @@ photo|相册功能存储组|
 - 2017/06/01 批量文件上传接口，存储表 添加fileName字段，在下载文件的时候会用到。下载文件功能优化，登录优化（添加returnURL的支持），日志文件保存到本地，上传文件过程中的问题优化。
 
 - 2017/06/03 密码MD5加密，加入了HTTP调用接口工具类、百度地图的API接口，可用于根据经纬度查询当前位置信息
+
+- 2017/06/09 ORM框架改成了hibernate，Spring Data JPA 处理一些简单的逻辑是非常方便，但是执行复杂的动态SQL的时候就显得有点麻烦了，为了不让这个坑越来越深，我就毅然决然的把ORM框架换成了hibernate，目前在查询条件非常多的情况下，也有一套通用的查询方式，使用起来非常方便！
 

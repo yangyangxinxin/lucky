@@ -1,6 +1,12 @@
 package com.luckysweetheart.web.pc;
 
 import com.luckysweetheart.common.Const;
+import com.luckysweetheart.common.Paged;
+import com.luckysweetheart.common.PagedResult;
+import com.luckysweetheart.dal.query.PhotoQuery;
+import com.luckysweetheart.dal.query.condition.ConditionParam;
+import com.luckysweetheart.dal.query.field.PhotoQueryField;
+import com.luckysweetheart.dal.query.order.OrderParam;
 import com.luckysweetheart.dto.PhotoDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.service.PhotoService;
@@ -90,6 +96,52 @@ public class PhotoController extends BaseController {
             setAttribute("msg", e.getMessage());
         }
         return "/photo/detail";
+    }
+
+    @RequestMapping("/list")
+    public String list(Integer itemPage) {
+        Paged paged = new Paged();
+        itemPage = itemPage == null || itemPage == 0 ? 1 : itemPage;
+        PhotoQuery photoQuery = new PhotoQuery();
+        List<ConditionParam<PhotoQueryField>> conditionParams = new ArrayList<>();
+        List<OrderParam<PhotoQueryField>> orderParams = new ArrayList<>();
+
+        conditionParams.add(new ConditionParam<PhotoQueryField>(PhotoQueryField.DELETE_STATUS, Const.DELETE_STATUS_NO, ConditionParam.OPERATION_EQ));
+        conditionParams.add(new ConditionParam<PhotoQueryField>(PhotoQueryField.USER_ID, getLoginUserId(), ConditionParam.OPERATION_EQ));
+
+        orderParams.add(new OrderParam<PhotoQueryField>(PhotoQueryField.CREATE_TIME, OrderParam.ORDER_TYPE_DESC));
+
+        photoQuery.setPaged(paged);
+        photoQuery.setOrderParams(orderParams);
+        photoQuery.setConditionParams(conditionParams);
+
+        ResultInfo<PagedResult<PhotoDTO>> resultInfo = photoService.query(photoQuery);
+        if (resultInfo.isSuccess() && resultInfo.getData() != null) {
+            setAttribute("photos", resultInfo.getData().getResults());
+            setAttribute("paged", resultInfo.getData().getPaged());
+            setAttribute("size", resultInfo.getData().getSize());
+        } else {
+            setAttribute("size", 0);
+        }
+        return "/photo/list";
+    }
+
+    /**
+     * 删除
+     *
+     * @param photoId
+     * @return
+     */
+    @RequestMapping("/delete")
+    @ResponseBody
+    public ResultInfo<Void> delete(Long photoId) {
+        ResultInfo<Void> resultInfo = new ResultInfo<>();
+        try {
+            return photoService.delete(photoId, getLoginUserId());
+        } catch (BusinessException e) {
+            logger.error(e.getMessage(), e);
+            return resultInfo.fail(e.getMessage());
+        }
     }
 
 }

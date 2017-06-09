@@ -28,7 +28,7 @@ import java.util.List;
  * Created by yangxin on 2017/5/26.
  */
 @Service
-public class PhotoService extends ParameterizedBaseService<Photo,Long>  {
+public class PhotoService extends ParameterizedBaseService<Photo, Long> {
 
     @Resource
     private StoreService storeService;
@@ -50,18 +50,20 @@ public class PhotoService extends ParameterizedBaseService<Photo,Long>  {
             }
             Photo photo = new Photo();
             BeanCopierUtils.copy(photoDTO, photo);
-            Photo photo1 = photoDao.save(photo);
+            Long pk = photoDao.save(photo);
             if (photoDTO.getIsDirectory().equals(Const.NO_DIRECTORY)) { // 是目录直接保存，不是目录，存储图片
                 ResultInfo<StoreDataDTO> result = storeService.uploadFile(photoDTO.getBytes(), photoDTO.getSuffix(), storageGroupService.getPhotoGroupName());
                 if (result.isSuccess()) {
-                    photo1.setResourcePath(result.getData().getResourcePath());
+                    photo.setPhotoId(pk);
+                    photo.setResourcePath(result.getData().getResourcePath());
+                    photoDao.update(photo);
                 } else {
                     throw new BusinessException("文件上传出现异常");
                 }
             } else {
                 // todo 将文件存储id设置为文件夹样式
             }
-            return resultInfo.success(photo1.getPhotoId());
+            return resultInfo.success(pk);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new BusinessException(e.getMessage());
@@ -94,8 +96,9 @@ public class PhotoService extends ParameterizedBaseService<Photo,Long>  {
             if (photo != null) {
                 if (photo.getUserId().equals(userId)) {
                     photo.setDeleteStatus(Const.DELETE_STATUS_YES);
-                    ResultInfo<Void> result = storeService.deleteFile(photo.getResourcePath());
+                    ResultInfo<Void> result = storeService.deleteFile(photo.getResourcePath(), storageGroupService.getPhotoGroupName());
                     if (result.isSuccess()) {
+                        photoDao.update(photo);
                         return resultInfo.success();
                     } else {
                         throw new BusinessException(result.getMsg());
@@ -139,6 +142,7 @@ public class PhotoService extends ParameterizedBaseService<Photo,Long>  {
                 for (Photo photo : pagedResult.getResults()) {
                     PhotoDTO photoDTO = new PhotoDTO();
                     BeanCopierUtils.copy(photo, photoDTO);
+                    photoDTO.setHttpUrl(storeService.getHttpUrlByResourcePath(photo.getResourcePath()));
                     photoDTOS.add(photoDTO);
                 }
                 dtoPagedResult.setResults(photoDTOS);
@@ -148,9 +152,10 @@ public class PhotoService extends ParameterizedBaseService<Photo,Long>  {
             return result.fail("查询记录为空");
 
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return result.fail(e.getMessage());
         }
     }
+
 
 }

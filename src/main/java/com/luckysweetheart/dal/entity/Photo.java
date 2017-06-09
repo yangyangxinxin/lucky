@@ -1,5 +1,8 @@
 package com.luckysweetheart.dal.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,6 +12,8 @@ import java.util.Date;
  * Created by yangxin on 2017/5/26.
  */
 @Entity
+@DynamicUpdate
+@DynamicInsert
 public class Photo {
 
     @Id

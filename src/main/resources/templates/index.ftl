@@ -534,7 +534,7 @@
 </html>
 -->
 
-<!DOCTYPE html>
+<#--<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -602,4 +602,17 @@
     });
 </script>
 </body>
-</html>
+</html>-->
+
+
+<#assign contextPath=request.getContextPath()>
+<#assign title="index">
+<#include '/common/head.ftl' >
+<@defaultLayout>
+
+    <h1>Welcome to access this web site !</h1>
+
+    <h2>you can </h2><button onclick="window.location.href='/account/loginPage'" class="layui-btn">登录</button>
+    <h2>or</h2><button onclick="window.location.href='/account/registerPage'" class="layui-btn">注册</button>
+
+</@defaultLayout>

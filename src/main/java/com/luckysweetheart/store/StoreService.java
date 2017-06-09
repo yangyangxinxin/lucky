@@ -96,7 +96,7 @@ public class StoreService extends ParameterizedBaseService<StoreData,Long> {
         return resultInfo;
     }
 
-    public ResultInfo<Void> deleteFile(String resourcePath) throws BusinessException {
+    public ResultInfo<Void> deleteFile(String resourcePath,String bucketName) throws BusinessException {
         ResultInfo<Void> resultInfo = new ResultInfo<>();
         try {
             StoreData storeData = storeDataApi.findByResourcePath(resourcePath);

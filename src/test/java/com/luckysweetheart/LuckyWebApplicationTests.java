@@ -1,6 +1,7 @@
 package com.luckysweetheart;
 
 import com.alibaba.fastjson.JSON;
+import com.luckysweetheart.common.Const;
 import com.luckysweetheart.common.Paged;
 import com.luckysweetheart.common.PagedResult;
 import com.luckysweetheart.dal.query.PhotoQuery;
@@ -71,7 +72,7 @@ public class LuckyWebApplicationTests {
 
     @Test
     public void test4() throws BusinessException {
-        ResultInfo<Void> resultInfo = storeService.deleteFile("/1253770331/bubu/defaultUserImg.png");
+        ResultInfo<Void> resultInfo = storeService.deleteFile("/1253770331/bubu/defaultUserImg.png","bubu");
         System.out.println(resultInfo);
     }
 
@@ -117,7 +118,8 @@ public class LuckyWebApplicationTests {
         paged.setPage(1);
 
         // where photoId = 1
-        conditionParams.add(new ConditionParam<PhotoQueryField>(PhotoQueryField.PHOTO_ID, 1, ConditionParam.OPERATION_EQ));
+        conditionParams.add(new ConditionParam<PhotoQueryField>(PhotoQueryField.DELETE_STATUS, Const.DELETE_STATUS_NO, ConditionParam.OPERATION_EQ));
+        conditionParams.add(new ConditionParam<PhotoQueryField>(PhotoQueryField.USER_ID, 2L, ConditionParam.OPERATION_EQ));
 
         // order by create desc
         orderParams.add(new OrderParam<PhotoQueryField>(PhotoQueryField.CREATE_TIME, OrderParam.ORDER_TYPE_DESC));

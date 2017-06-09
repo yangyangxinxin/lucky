@@ -114,16 +114,16 @@ public abstract class BaseDAO {
         Integer pageSize = paged.getPageSize();
 
         detachedCriteria.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
-        //Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
+        Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
 
         // 真TM是个坑！按照上面注释的写法，不知道为撒总是要报个空指针异常！！！！
         // WC这个坑是我自己填的。。。在PhotoQueryField中的getFiledName()方法中没有返回值，现在还是不知道为撒总是报
         // java.lang.ClassCastException: java.lang.Integer cannot be cast to java.lang.Long
         // 这个异常，不过如果按照下面那个写法的话 暂时没得问题，这是个神坑！！！
+        // 好吧！都是我自己做的孽！上面那个转换异常是我测试的时候传了一个Integer的值，但是PhotoId是Long类型的，就是这样，下面的这种写法是不带过滤效果的！因为它是一个新的Criteria对象！！！
 
-        Criteria criteria = getSession().createCriteria(tClass);
-        Long totalCount = (Long) criteria.setProjection(
-                Projections.rowCount()).uniqueResult();
+        //Criteria criteria = getSession().createCriteria(tClass);
+        Long totalCount = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
 
         criteria.setProjection(null);
         criteria.setFirstResult(paged.getOffset());

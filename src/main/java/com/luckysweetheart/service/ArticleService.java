@@ -31,8 +31,8 @@ public class ArticleService extends ParameterizedBaseService<Article, Long> {
             Assert.isTrue(articleDTO != null, "文章对象不能为空");
             Article article = new Article();
             BeanCopierUtils.copy(articleDTO, article);
-            article = articleDao.save(article);
-            return resultInfo.success(article.getArticleId());
+            Long pk  = articleDao.save(article);
+            return resultInfo.success(pk);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new BusinessException(e.getMessage());

@@ -1,5 +1,8 @@
 package com.luckysweetheart.dal.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +13,8 @@ import java.util.Date;
  * Created by yangxin on 2017/5/22.
  */
 @Entity
+@DynamicUpdate
+@DynamicInsert
 public class User {
 
     public static final Integer DELETE_STATUS_NO = 0;

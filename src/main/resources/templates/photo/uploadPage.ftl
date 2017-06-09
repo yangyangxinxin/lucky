@@ -11,7 +11,7 @@
         layui.upload({
             url: '/photo/doUploadMultipart', //上传接口,
             success: function(res){ //上传成功后的回调
-                console.log(res);
+                window.location.href = "/photo/list"
             }
         });
 

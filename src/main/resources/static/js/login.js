@@ -22,6 +22,8 @@ $(document).ready(function(){
                         var returnUrl = $app.getRequest().returnUrl;
                         if(returnUrl){
                             window.location.href = decodeURIComponent(returnUrl);
+                        }else{
+                            window.location.href="/photo/list";
                         }
                     });
                 }else{
