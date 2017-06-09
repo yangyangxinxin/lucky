@@ -4,13 +4,13 @@ import com.luckysweetheart.common.Const;
 import com.luckysweetheart.dal.dao.PhotoDao;
 import com.luckysweetheart.dal.entity.Photo;
 import com.luckysweetheart.dto.PhotoDTO;
+import com.luckysweetheart.dto.StoreDataDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.store.StorageGroupService;
 import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.FileUtil;
 import com.luckysweetheart.utils.ResultInfo;
-import com.luckysweetheart.dto.StoreDataDTO;
 import com.luckysweetheart.web.utils.UploadUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -24,7 +24,7 @@ import java.util.Date;
  * Created by yangxin on 2017/5/26.
  */
 @Service
-public class PhotoService extends BaseService {
+public class PhotoService extends ParameterizedBaseService {
 
     @Resource
     private StoreService storeService;
@@ -86,7 +86,7 @@ public class PhotoService extends BaseService {
         try {
             Assert.notNull(photoId, "要删除的id不能为空");
             Assert.notNull(userId, "删除人不能为空");
-            Photo photo = photoDao.findOne(photoId);
+            Photo photo = photoDao.get(photoId);
             if (photo != null) {
                 if (photo.getUserId().equals(userId)) {
                     photo.setDeleteStatus(Const.DELETE_STATUS_YES);
@@ -111,7 +111,7 @@ public class PhotoService extends BaseService {
         ResultInfo<PhotoDTO> re = new ResultInfo<>();
         try {
             notNull(photoId, "id不能为空");
-            Photo photo = photoDao.findOne(photoId);
+            Photo photo = photoDao.get(photoId);
             if (photo != null) {
                 PhotoDTO photoDTO = new PhotoDTO();
                 BeanCopierUtils.copy(photo, photoDTO);

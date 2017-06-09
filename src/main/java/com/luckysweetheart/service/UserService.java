@@ -1,41 +1,34 @@
 package com.luckysweetheart.service;
 
 import com.luckysweetheart.common.Const;
-import com.luckysweetheart.dal.dao.UserApi;
+import com.luckysweetheart.dal.dao.UserDao;
 import com.luckysweetheart.dal.entity.User;
+import com.luckysweetheart.dto.StoreDataDTO;
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.store.StoreService;
-import com.luckysweetheart.utils.AesUtil;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.utils.ValidateUtil;
-import com.luckysweetheart.dto.StoreDataDTO;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.Date;
 
 /**
  * Created by yangxin on 2017/5/22.
  */
 @Service
-public class UserService extends BaseService {
+public class UserService extends ParameterizedBaseService {
 
     private final String salt = Const.SALT;
 
     private final String defaultUserImg = Const.DEFAULT_USER_IMG;
 
     @Resource
-    private UserApi userApi;
+    private UserDao userApi;
 
     @Resource
     private StoreService storeService;
@@ -129,7 +122,7 @@ public class UserService extends BaseService {
         try {
             Assert.notNull(userId, "用户id不能为空");
             Assert.isTrue(ValidateUtil.pwdVal(password), "密码布符合规范");
-            User user = userApi.findOne(userId);
+            User user = userApi.get(userId);
             Assert.notNull(user, "该用户不存在");
             password = DigestUtils.sha512Hex(salt + password);
             user.setUpdateTime(new Date());
@@ -153,7 +146,7 @@ public class UserService extends BaseService {
     public UserDTO findById(Long userId) {
         try {
             Assert.notNull(userId, "用户id不能为空");
-            User user = userApi.findOne(userId);
+            User user = userApi.get(userId);
             if (user != null) {
                 UserDTO userDTO = new UserDTO();
                 BeanCopierUtils.copy(user, userDTO);
@@ -200,7 +193,7 @@ public class UserService extends BaseService {
         ResultInfo<Void> resultInfo = new ResultInfo<>();
         try {
             Assert.isTrue(ValidateUtil.specialVal(username), "用户名不符合规范");
-            User user = userApi.findOne(userId);
+            User user = userApi.get(userId);
             if (user != null) {
                 user.setUsername(username);
                 return resultInfo.success();
@@ -224,7 +217,7 @@ public class UserService extends BaseService {
         try {
             Assert.notNull(userId, "用户id不能为空");
             Assert.notNull(bytes, "文件不能为空");
-            User user = userApi.findOne(userId);
+            User user = userApi.get(userId);
             if (user != null) {
                 ResultInfo<StoreDataDTO> result = storeService.uploadFile(bytes, ".png");
                 if (result.isSuccess()) {
@@ -249,7 +242,7 @@ public class UserService extends BaseService {
      */
     public void update(UserDTO userDTO) throws BusinessException {
         try {
-            User user = userApi.findOne(userDTO.getUserId());
+            User user = userApi.get(userDTO.getUserId());
             if (user != null) {
                 // 对这种copy 的原理没有深究，但是这种方式类似于调用set方法，所以 调用即可update
                 BeanCopierUtils.copy(userDTO, user);
@@ -260,13 +253,5 @@ public class UserService extends BaseService {
         }
     }
 
-    public void test(){
-        userApi.findOne(Specifications.where(new Specification<User>() {
-            @Override
-            public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                return null;
-            }
-        }));
-    }
 
 }

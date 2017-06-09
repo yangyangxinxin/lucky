@@ -7,10 +7,6 @@ import com.luckysweetheart.dto.ArticleDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -20,7 +16,7 @@ import javax.annotation.Resource;
  * Created by yangxin on 2017/5/22.
  */
 @Service
-public class ArticleService extends BaseService {
+public class ArticleService extends ParameterizedBaseService {
 
     @Resource
     private ArticleDao articleDao;
@@ -44,7 +40,7 @@ public class ArticleService extends BaseService {
         try {
             Assert.notNull(articleId, "要删除的id不能为空");
             Assert.notNull(userId, "用户未登录");
-            Article article = articleDao.findOne(articleId);
+            Article article = articleDao.get(articleId);
             Assert.notNull(article, "该文章不存在！");
             if (!userId.equals(article.getOwnerUserId())) {
                 throw new BusinessException("该文章不属于你");
@@ -60,7 +56,7 @@ public class ArticleService extends BaseService {
         ResultInfo<Void> resultInfo = new ResultInfo<>();
         try {
             notNull(articleDTO, "要修改的对象不能为空");
-            Article article = articleDao.findOne(articleDTO.getArticleId());
+            Article article = articleDao.get(articleDTO.getArticleId());
             isTrue(article != null, "该文章不存在！");
             isTrue(articleDTO.getOwnerUserId().equals(article.getOwnerUserId()), "此文章不属于你");
             BeanCopierUtils.copy(articleDTO, article);
@@ -71,12 +67,6 @@ public class ArticleService extends BaseService {
         }
     }
 
-    public Page<Article> findByPage(int itemPage) {
-        //排序对象
-        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
-        Pageable pageable = new PageRequest(itemPage, 10, sort);
-        return articleDao.findAll(pageable);
-    }
 
 
 }

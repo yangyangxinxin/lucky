@@ -1,28 +1,22 @@
 package com.luckysweetheart.dal.dao;
 
 import com.luckysweetheart.dal.entity.StoreData;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * Created by yangxin on 2017/5/22.
  */
 @Repository
-public interface StoreDataDao extends CrudRepository<StoreData,Long> {
+public class StoreDataDao extends ParameterizedBaseDAO<StoreData, Long> {
 
-    /**
-     * 根据resourcePath 获取httpUrl
-     * @param resourcePath
-     * @return
-     */
-    //@Query(value = "select s.resourcePath from StoreData where resourcePath=:resourcePath and deleteStatus = DELETE_STATUS_NO")
-    //String getHttpUrl(String resourcePath);
+    public StoreData findByResourcePath(String resourcePath) {
+        String hql = "from StoreData where resourcePath = ?1";
+        return (StoreData) this.getSession().createQuery(hql).setString(1, resourcePath).list().get(0);
+    }
 
-    StoreData findByResourcePath(String resourcePath);
-
-    StoreData findByCosPath(String cosPath);
-
-    //StoreData update(StoreData storeData);
+    public StoreData findByCosPath(String cosPath){
+        String hql = "from StoreData where cosPath = ?1";
+        return (StoreData) this.getSession().createQuery(hql).setString(1, cosPath).list().get(0);
+    }
 
 }

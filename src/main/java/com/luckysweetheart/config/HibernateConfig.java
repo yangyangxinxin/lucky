@@ -1,5 +1,6 @@
 package com.luckysweetheart.config;
 
+import com.luckysweetheart.dal.DatabaseNamingStrategy;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,24 +15,30 @@ import java.util.Properties;
 /**
  * Created by yangxin on 2017/5/25.
  */
-//@Configuration
+@Configuration
 public class HibernateConfig {
+
     @Value("${spring.hibernate.packageScan}")
-    String packageScan;
+    private String packageScan;
+
     @Value("${spring.jpa.properties.hibernate.dialect}")
-    String dialect;
+    private String dialect;
+
     @Value("${spring.jpa.show-sql}")
-    String showSql;
+    private String showSql;
+
     @Value("${spring.jpa.properties.hibernate.format_sql}")
-    String formatSql;
+    private String formatSql;
+
     @Value("${spring.jpa.hibernate.ddl-auto}")
-    String ddlAuto;
+    private String ddlAuto;
 
     @Bean
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
+    public LocalSessionFactoryBean sessionFactory(DataSource dataSource, DatabaseNamingStrategy databaseNamingStrategy) {
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
         localSessionFactoryBean.setDataSource(dataSource);
-        //localSessionFactoryBean.setPackagesToScan(packageScan);
+        localSessionFactoryBean.setPackagesToScan(packageScan);
+        localSessionFactoryBean.setNamingStrategy(databaseNamingStrategy);
         Properties properties = new Properties();
         properties.setProperty("hibernate.dialect", dialect);
         properties.setProperty("hibernate.show_sql", showSql);
@@ -47,6 +54,15 @@ public class HibernateConfig {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setSessionFactory(sessionFactory);
         return transactionManager;
+    }
+
+    @Bean
+    public DatabaseNamingStrategy databaseNamingStrategy() {
+        DatabaseNamingStrategy databaseNamingStrategy = new DatabaseNamingStrategy();
+        databaseNamingStrategy.setIsAddUnderscores(true);
+        databaseNamingStrategy.setTablePrefix("lucky_");
+        databaseNamingStrategy.setMaxLength(64);
+        return databaseNamingStrategy;
     }
 
 }

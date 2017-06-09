@@ -6,21 +6,19 @@ import com.luckysweetheart.common.Const;
 import com.luckysweetheart.common.IdWorker;
 import com.luckysweetheart.dal.dao.StoreDataDao;
 import com.luckysweetheart.dal.entity.StoreData;
+import com.luckysweetheart.dto.StoreDataDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.exception.StorageException;
-import com.luckysweetheart.service.BaseService;
+import com.luckysweetheart.service.ParameterizedBaseService;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.DateUtil;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.utils.StoreResultUtil;
-import com.luckysweetheart.dto.StoreDataDTO;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.request.DelFileRequest;
 import com.qcloud.cos.request.GetFileInputStreamRequest;
 import com.qcloud.cos.request.GetFileLocalRequest;
 import com.qcloud.cos.request.UploadFileRequest;
-import com.qcloud.cos.sign.Credentials;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,7 +31,7 @@ import java.util.Date;
  * Created by yangxin on 2017/5/22.
  */
 @Service
-public class StoreService extends BaseService {
+public class StoreService extends ParameterizedBaseService {
 
     private static final int BUFFER_SIZE = 4096;
 
