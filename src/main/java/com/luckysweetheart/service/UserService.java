@@ -21,7 +21,7 @@ import java.util.Date;
  * Created by yangxin on 2017/5/22.
  */
 @Service
-public class UserService extends ParameterizedBaseService {
+public class UserService extends ParameterizedBaseService<User,Long>  {
 
     private final String salt = Const.SALT;
 

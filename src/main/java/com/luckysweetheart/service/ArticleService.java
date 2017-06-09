@@ -1,8 +1,10 @@
 package com.luckysweetheart.service;
 
 import com.luckysweetheart.common.Const;
+import com.luckysweetheart.common.PagedResult;
 import com.luckysweetheart.dal.dao.ArticleDao;
 import com.luckysweetheart.dal.entity.Article;
+import com.luckysweetheart.dal.query.ArticleQuery;
 import com.luckysweetheart.dto.ArticleDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.utils.BeanCopierUtils;
@@ -11,12 +13,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yangxin on 2017/5/22.
  */
 @Service
-public class ArticleService extends ParameterizedBaseService {
+public class ArticleService extends ParameterizedBaseService<Article, Long> {
 
     @Resource
     private ArticleDao articleDao;
@@ -67,6 +71,37 @@ public class ArticleService extends ParameterizedBaseService {
         }
     }
 
+    /**
+     * 根据各种条件查询文章
+     *
+     * @param articleQuery
+     * @return
+     */
+    public ResultInfo<PagedResult<ArticleDTO>> query(ArticleQuery articleQuery) {
+        ResultInfo<PagedResult<ArticleDTO>> resultInfo = new ResultInfo<>();
+        try {
+            PagedResult<Article> pagedResult = super.query(articleQuery);
+
+            if (pagedResult != null && pagedResult.getSize() > 0) {
+
+                PagedResult<ArticleDTO> dtoPagedResult = new PagedResult<>();
+
+                List<ArticleDTO> articleDTOS = new ArrayList<>();
+                for (Article article : pagedResult.getResults()) {
+                    ArticleDTO articleDTO = new ArticleDTO();
+                    BeanCopierUtils.copy(article, articleDTO);
+                    articleDTOS.add(articleDTO);
+                }
+                dtoPagedResult.setPaged(pagedResult.getPaged());
+                dtoPagedResult.setResults(articleDTOS);
+                return resultInfo.success(dtoPagedResult);
+            }
+            return resultInfo.fail("查询失败");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return resultInfo.fail(e.getMessage());
+        }
+    }
 
 
 }

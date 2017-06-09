@@ -2,12 +2,12 @@ package com.luckysweetheart.config;
 
 import com.luckysweetheart.dal.DatabaseNamingStrategy;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -36,15 +36,26 @@ public class HibernateConfig {
     @Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource, DatabaseNamingStrategy databaseNamingStrategy) {
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
+
         localSessionFactoryBean.setDataSource(dataSource);
         localSessionFactoryBean.setPackagesToScan(packageScan);
         localSessionFactoryBean.setNamingStrategy(databaseNamingStrategy);
+
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+
         Properties properties = new Properties();
+
         properties.setProperty("hibernate.dialect", dialect);
         properties.setProperty("hibernate.show_sql", showSql);
         properties.setProperty("hibernate.format_sql", formatSql);
         properties.setProperty("hibernate.hbm2ddl.auto", ddlAuto);
+        properties.setProperty("hibernate.current_session_context_class","org.springframework.orm.hibernate4.SpringSessionContext");
+
+        propertiesFactoryBean.setProperties(properties);
+        propertiesFactoryBean.setLocalOverride(true);
+
         localSessionFactoryBean.setHibernateProperties(properties);
+
         return localSessionFactoryBean;
     }
 

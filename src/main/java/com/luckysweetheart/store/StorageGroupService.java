@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  * Created by yangxin on 2017/5/26.
  */
 @Service
-public class StorageGroupService extends ParameterizedBaseService{
+public class StorageGroupService{
 
     @Value("${defaultGroupName}")
     private String defaultGroupName;

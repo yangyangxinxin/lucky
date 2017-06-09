@@ -23,6 +23,12 @@ public abstract class ParameterizedBaseService<T, PK extends Serializable> exten
 
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * 查询 返回带分页的结果集
+     * @param query
+     * @param <Q>
+     * @return
+     */
     public <Q extends BaseQuery> PagedResult<T> query(Q query) {
         Paged paged = query.getPaged();
         List<ConditionParam<QueryField>> conditionParams = query.getConditionParams();
@@ -44,6 +50,20 @@ public abstract class ParameterizedBaseService<T, PK extends Serializable> exten
             }
         }
         return query(paged, queryConditionParams, queryOrderParams, entityClass);
+    }
+
+    /**
+     * 查询，只返回列表，不返回分页信息
+     * @param query
+     * @param <Q>
+     * @return
+     */
+    public <Q extends BaseQuery> List<T> queryAll(Q query) {
+        PagedResult<T> result = query(query);
+        if (result != null && result.getResults() != null && result.getSize() > 0) {
+            return result.getResults();
+        }
+        return null;
     }
 
     protected void notNull(Object obj, String message) {

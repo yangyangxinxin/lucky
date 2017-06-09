@@ -24,4 +24,12 @@ public class UserAgentUtil {
         return UA_TYPE_PC;
     }
 
+    /**
+     * 判断终端类型是不是只能手机
+     * @param request
+     * @return
+     */
+    public static boolean isMobile(HttpServletRequest request){
+        return uaType(request).equals(UA_TYPE_MOBILE);
+    }
 }

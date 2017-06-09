@@ -31,7 +31,7 @@ import java.util.Date;
  * Created by yangxin on 2017/5/22.
  */
 @Service
-public class StoreService extends ParameterizedBaseService {
+public class StoreService extends ParameterizedBaseService<StoreData,Long> {
 
     private static final int BUFFER_SIZE = 4096;
 

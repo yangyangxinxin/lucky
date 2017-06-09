@@ -27,7 +27,7 @@ public class StoreConfig {
      */
     @Bean
     public Credentials getCredentials() {
-        logger.info(" 初始化COS存储私钥信息 at {} ", DateUtil.formatDate(new Date()));
+        logger.info("初始化COS存储私钥信息 at {} ", DateUtil.formatDate(new Date()));
         Long appId = 1253770331L;
         String secretId = "AKIDdFhz62SVzHQN9RaA4sX6YxGOVTGrjsQa";
         String secretKey = "GTTPAmEWdeVBfx169jKp8GD3h9QVPLIG";
@@ -39,7 +39,7 @@ public class StoreConfig {
      */
     @Bean
     public ClientConfig getClient() {
-        logger.info(" 初始化COS存储客户端配置，bucket所在区域：华北园区(tj) at {} ", DateUtil.formatDate(new Date()));
+        logger.info("初始化COS存储客户端配置，bucket所在区域：华北园区(tj) at {} ", DateUtil.formatDate(new Date()));
         // 初始化客户端配置
         ClientConfig clientConfig = new ClientConfig();
         // 设置bucket所在的区域，比如华南园区：gz； 华北园区：tj；华东园区：sh ；
@@ -52,8 +52,8 @@ public class StoreConfig {
      */
     @Bean
     public COSClient getCosClient(ClientConfig clientConfig, Credentials cred) {
-        logger.info(" 初始化COS存储客户端 at {} ", DateUtil.formatDate(new Date()));
-        logger.info(" 存储初始化成功 at {} ", DateUtil.formatDate(new Date()));
+        logger.info("初始化COS存储客户端 at {} ", DateUtil.formatDate(new Date()));
+        logger.info("存储初始化成功 at {} ", DateUtil.formatDate(new Date()));
         return new COSClient(clientConfig, cred);
     }
 

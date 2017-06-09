@@ -28,7 +28,7 @@ import java.util.List;
  * Created by yangxin on 2017/5/26.
  */
 @Service
-public class PhotoService extends ParameterizedBaseService {
+public class PhotoService extends ParameterizedBaseService<Photo,Long>  {
 
     @Resource
     private StoreService storeService;

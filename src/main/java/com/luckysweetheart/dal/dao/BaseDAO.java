@@ -3,6 +3,7 @@ package com.luckysweetheart.dal.dao;
 
 import com.luckysweetheart.common.Paged;
 import com.luckysweetheart.common.PagedResult;
+import com.luckysweetheart.dal.entity.Photo;
 import com.luckysweetheart.dal.query.param.QueryConditionParam;
 import com.luckysweetheart.dal.query.param.QueryOrderParam;
 import org.hibernate.Criteria;
@@ -21,7 +22,6 @@ import java.util.List;
 
 /**
  * 基本DAO
- *
  */
 @Transactional(rollbackFor = Exception.class)
 public abstract class BaseDAO {
@@ -102,10 +102,10 @@ public abstract class BaseDAO {
             paged = new Paged();
         }
         DetachedCriteria detachedCriteria = DetachedCriteria.forClass(entityClass);
-        return findByPaged(paged, detachedCriteria);
+        return findByPaged(paged, detachedCriteria, entityClass);
     }
 
-    public <T> PagedResult<T> findByPaged(final Paged p, final DetachedCriteria detachedCriteria) {
+    public <T> PagedResult<T> findByPaged(final Paged p, final DetachedCriteria detachedCriteria, final Class<T> tClass) {
         Paged paged = p;
         if (paged == null) {
             paged = new Paged();
@@ -114,9 +114,14 @@ public abstract class BaseDAO {
         Integer pageSize = paged.getPageSize();
 
         detachedCriteria.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
-        Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
+        //Criteria criteria = detachedCriteria.getExecutableCriteria(getSession());
 
+        // 真TM是个坑！按照上面注释的写法，不知道为撒总是要报个空指针异常！！！！
+        // WC这个坑是我自己填的。。。在PhotoQueryField中的getFiledName()方法中没有返回值，现在还是不知道为撒总是报
+        // java.lang.ClassCastException: java.lang.Integer cannot be cast to java.lang.Long
+        // 这个异常，不过如果按照下面那个写法的话 暂时没得问题，这是个神坑！！！
 
+        Criteria criteria = getSession().createCriteria(tClass);
         Long totalCount = (Long) criteria.setProjection(
                 Projections.rowCount()).uniqueResult();
 
@@ -211,6 +216,6 @@ public abstract class BaseDAO {
             }
         }
 
-        return findByPaged(paged, detachedCriteria);
+        return findByPaged(paged, detachedCriteria, entityClass);
     }
 }

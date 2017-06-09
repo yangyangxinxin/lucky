@@ -23,6 +23,6 @@ public enum PhotoQueryField implements QueryField {
 
     @Override
     public String getFiledName() {
-        return null;
+        return this.filedName;
     }
 }

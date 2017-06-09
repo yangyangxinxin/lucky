@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by yangxin on 2017/6/3.
  */
 @Service
-public class LocationService extends ParameterizedBaseService {
+public class LocationService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
