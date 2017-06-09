@@ -1,8 +1,10 @@
 package com.luckysweetheart.service;
 
 import com.luckysweetheart.common.Const;
+import com.luckysweetheart.common.PagedResult;
 import com.luckysweetheart.dal.dao.PhotoDao;
 import com.luckysweetheart.dal.entity.Photo;
+import com.luckysweetheart.dal.query.PhotoQuery;
 import com.luckysweetheart.dto.PhotoDTO;
 import com.luckysweetheart.dto.StoreDataDTO;
 import com.luckysweetheart.exception.BusinessException;
@@ -18,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by yangxin on 2017/5/26.
@@ -122,6 +126,30 @@ public class PhotoService extends ParameterizedBaseService {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new BusinessException(e.getMessage());
+        }
+    }
+
+    public ResultInfo<PagedResult<PhotoDTO>> query(PhotoQuery photoQuery) {
+        ResultInfo<PagedResult<PhotoDTO>> result = new ResultInfo<>();
+        try {
+            PagedResult<Photo> pagedResult = super.query(photoQuery);
+            if (pagedResult != null && pagedResult.getSize() > 0) {
+                PagedResult<PhotoDTO> dtoPagedResult = new PagedResult<>();
+                List<PhotoDTO> photoDTOS = new ArrayList<>();
+                for (Photo photo : pagedResult.getResults()) {
+                    PhotoDTO photoDTO = new PhotoDTO();
+                    BeanCopierUtils.copy(photo, photoDTO);
+                    photoDTOS.add(photoDTO);
+                }
+                dtoPagedResult.setResults(photoDTOS);
+                dtoPagedResult.setPaged(pagedResult.getPaged());
+                return result.success(dtoPagedResult);
+            }
+            return result.fail("查询记录为空");
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            return result.fail(e.getMessage());
         }
     }
 
