@@ -102,6 +102,7 @@ public class PhotoController extends BaseController {
     public String list(Integer itemPage) {
         Paged paged = new Paged();
         itemPage = itemPage == null || itemPage == 0 ? 1 : itemPage;
+        paged.setPage(itemPage);
         PhotoQuery photoQuery = new PhotoQuery();
         List<ConditionParam<PhotoQueryField>> conditionParams = new ArrayList<>();
         List<OrderParam<PhotoQueryField>> orderParams = new ArrayList<>();

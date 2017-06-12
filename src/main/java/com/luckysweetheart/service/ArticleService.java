@@ -9,11 +9,13 @@ import com.luckysweetheart.dto.ArticleDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.ResultInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,9 +31,11 @@ public class ArticleService extends ParameterizedBaseService<Article, Long> {
         ResultInfo<Long> resultInfo = new ResultInfo<>();
         try {
             Assert.isTrue(articleDTO != null, "文章对象不能为空");
+            isTrue(StringUtils.isNotBlank(articleDTO.getTitle()), "标题不能为空");
+            isTrue(StringUtils.isNotBlank(articleDTO.getContent()), "内容不能为空");
             Article article = new Article();
             BeanCopierUtils.copy(articleDTO, article);
-            Long pk  = articleDao.save(article);
+            Long pk = articleDao.save(article);
             return resultInfo.success(pk);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -56,18 +60,55 @@ public class ArticleService extends ParameterizedBaseService<Article, Long> {
         }
     }
 
-    public ResultInfo<Void> update(ArticleDTO articleDTO) throws BusinessException {
+    /**
+     * 修改文章
+     *
+     * @param userId
+     * @param content
+     * @param title
+     * @param articleId
+     * @return
+     * @throws BusinessException
+     */
+    public ResultInfo<Void> modify(Long userId, String content, String title, Long articleId) throws BusinessException {
         ResultInfo<Void> resultInfo = new ResultInfo<>();
         try {
-            notNull(articleDTO, "要修改的对象不能为空");
-            Article article = articleDao.get(articleDTO.getArticleId());
-            isTrue(article != null, "该文章不存在！");
-            isTrue(articleDTO.getOwnerUserId().equals(article.getOwnerUserId()), "此文章不属于你");
-            BeanCopierUtils.copy(articleDTO, article);
+            notNull(userId, "用户id不能为空");
+            notNull(content, "内容不能为空");
+            notNull(title, "标题不能为空");
+            notNull(articleId, "要修改的文章id不能为空");
+
+            Article article = articleDao.get(articleId);
+
+            notNull(article, "该文章不存在");
+            isTrue(article.getOwnerUserId().equals(userId), "该文章不属于你");
+
+            article.setContent(content);
+            article.setTitle(title);
+            article.setUpdateTime(new Date());
+
+            articleDao.update(article);
+
             return resultInfo.success();
+
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             throw new BusinessException(e.getMessage());
+        }
+    }
+
+    public ResultInfo<ArticleDTO> findOne(Long articleId) {
+        ResultInfo<ArticleDTO> resultInfo = new ResultInfo<>();
+        try {
+            notNull(articleId, "文章id不能为空");
+            Article article = articleDao.get(articleId);
+            notNull(article, "文章不存在");
+            ArticleDTO articleDTO = new ArticleDTO();
+            BeanCopierUtils.copy(article, articleDTO);
+            return resultInfo.success(articleDTO);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return resultInfo.fail(e.getMessage());
         }
     }
 

@@ -5,7 +5,7 @@
 
     <#if  photos?exists  >
         <#list photos as photo>
-            <img src="${photo.httpUrl!}"/><a photoId="${photo.photoId!}" name="delete">删除</a>
+            <img src="${photo.httpUrl!}"/><a photoId="${photo.photoId!}" name="delete">删除</a><a href="/download/photo?photoId=${photo.photoId!}">下载</a>
         </#list>
     </#if>
 

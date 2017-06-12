@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 统一异常处理类
@@ -23,11 +24,12 @@ public class GlobalExceptionHandler {
     public static final String DEFAULT_ERROR_VIEW = "error";
 
     @ExceptionHandler(value = Exception.class)
-    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e, HttpServletResponse response) throws Exception {
         logger.error(e.getMessage(),e);
         ModelAndView mav = new ModelAndView();
         mav.addObject("message", e.getMessage());
         mav.addObject("url", req.getRequestURL());
+        mav.addObject("status", response.getStatus());
         mav.setViewName(DEFAULT_ERROR_VIEW);
         return mav;
     }

@@ -31,4 +31,7 @@
 </form>
 
 <script type="text/javascript" src="/js/login.js"></script>
+<script>
+
+</script>
 </@defaultLayout>

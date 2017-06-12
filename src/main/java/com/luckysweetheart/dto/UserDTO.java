@@ -15,6 +15,16 @@ public class UserDTO implements DTO {
 
     private String mobilePhone;
 
+    private String httpUrl;
+
+    public String getHttpUrl() {
+        return httpUrl;
+    }
+
+    public void setHttpUrl(String httpUrl) {
+        this.httpUrl = httpUrl;
+    }
+
     public String getMobilePhone() {
         return mobilePhone;
     }

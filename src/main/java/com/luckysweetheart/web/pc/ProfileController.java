@@ -2,6 +2,7 @@ package com.luckysweetheart.web.pc;
 
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.service.UserService;
+import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.web.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,9 @@ public class ProfileController extends BaseController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private StoreService storeService;
+
     /**
      * 账户设置首页
      * @return
@@ -27,6 +31,7 @@ public class ProfileController extends BaseController {
     public String profileIndex(){
         UserDTO userDTO = userService.findById(getLoginUserId());
         if(userDTO != null){
+            userDTO.setHttpUrl(storeService.getHttpUrlByResourcePath(userDTO.getImgPath()));
             setAttribute("user",userDTO);
         }else{
             setAttribute("msg","用户不存在。");
