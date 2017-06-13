@@ -71,6 +71,9 @@ public class PhotoService extends ParameterizedBaseService<Photo, Long> {
     }
 
     public ResultInfo<Long> create(MultipartFile file, Long userId) throws IOException, BusinessException {
+        if (file.getSize() > Const.MAX_UPLOAD_FILE_SIZE) {
+            return ResultInfo.create(Long.class).fail("上传文件大小不能超过" + Const.MAX_UPLOAD_FILE_SIZE_FORMAT);
+        }
         byte[] bytes = file.getBytes();
         String suffix = FileUtil.getExtension(file.getOriginalFilename());
 

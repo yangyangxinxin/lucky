@@ -7,6 +7,7 @@
 ### 相关技术
 
 - spring-boot、hibernate
+- 数据库 ： MySQL
 - 前端模板引擎freemarker
 - 前端框架采用jQuery + layerUI  [点击查看layerUI开发文档](http://www.layui.com/doc/)
 - 存储使用腾讯的 COS存储 [点击查看COS存储Java开发文档](https://www.qcloud.com/document/product/436/6273)
@@ -88,3 +89,4 @@ photo|相册功能存储组|
 
 - 2017/06/12 写文章、修改文章等接口
 
+- 2017/06/13 新增文章评论表

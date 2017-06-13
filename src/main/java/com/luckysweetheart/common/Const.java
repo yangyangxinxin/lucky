@@ -41,4 +41,14 @@ public interface Const {
      */
     String SALT = "www.luckysweetheart.com";
 
+    /**
+     * 上传文件大小不能超过50MB
+     */
+    Integer MAX_UPLOAD_FILE_SIZE = 50 * 1024 * 1024;
+
+    /**
+     * 上传文件大小不能超过50MB
+     */
+    String MAX_UPLOAD_FILE_SIZE_FORMAT = MAX_UPLOAD_FILE_SIZE / 1024 / 1024 + "MB";
+
 }

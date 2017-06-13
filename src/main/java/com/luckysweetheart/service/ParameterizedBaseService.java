@@ -9,6 +9,7 @@ import com.luckysweetheart.dal.query.BaseQuery;
 import com.luckysweetheart.dal.query.condition.ConditionParam;
 import com.luckysweetheart.dal.query.field.QueryField;
 import com.luckysweetheart.dal.query.order.OrderParam;
+import com.luckysweetheart.utils.ValidateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +73,10 @@ public abstract class ParameterizedBaseService<T, PK extends Serializable> exten
 
     protected void isTrue(boolean flag, String message) {
         Assert.isTrue(flag, message);
+    }
+
+    protected void specialVal(String value,String message){
+        Assert.isTrue(ValidateUtil.specialVal(value),message);
     }
 
 }

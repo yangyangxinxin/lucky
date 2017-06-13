@@ -25,6 +25,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,9 +79,11 @@ public class LuckyWebApplicationTests {
     }
 
     @Test
-    public void test5() {
-        /*String result = storeService.download("/apply_02.jpg","D://yangxinxin.jpg");
-		System.out.println(result);*/
+    public void test5() throws IOException {
+        File file = new File("d:/yangxin/yangxin/yangxin/test.txt");
+        if(!file.exists()){
+            file.createNewFile();
+        }
     }
 
     @Test

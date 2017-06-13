@@ -23,4 +23,9 @@ public enum ArticleQueryField implements QueryField {
     public String getFiledName() {
         return this.fieldName;
     }
+
+    @Override
+    public void setFiledName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 }

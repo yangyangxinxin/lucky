@@ -115,4 +115,16 @@ public class ArticleController extends BaseController {
         }
     }
 
+    @RequestMapping("/delete")
+    @ResponseBody
+    public ResultInfo<Void> delete(Long articleId) {
+        ResultInfo<Void> resultInfo = new ResultInfo<>();
+        try {
+            return articleService.delete(articleId, getLoginUserId());
+        } catch (BusinessException e) {
+            logger.error(e.getMessage(), e);
+            return resultInfo.fail(e.getMessage());
+        }
+    }
+
 }
