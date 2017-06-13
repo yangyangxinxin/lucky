@@ -24,8 +24,7 @@ public enum ArticleCommentsQueryField implements QueryField {
         return this.fieldName;
     }
 
-    @Override
-    public void setFiledName(String fieldName) {
+    private void setFiledName(String fieldName) {
         this.fieldName = fieldName;
     }
 }

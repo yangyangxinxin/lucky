@@ -18,7 +18,7 @@ public class SSLTrustAllSocketFactory extends SSLSocketFactory {
 
     private SSLContext mCtx;
 
-    public class SSLTrustAllManager implements X509TrustManager {
+    public static class SSLTrustAllManager implements X509TrustManager {
 
 		@Override
 		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
@@ -46,6 +46,7 @@ public class SSLTrustAllSocketFactory extends SSLSocketFactory {
                     null);
             setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

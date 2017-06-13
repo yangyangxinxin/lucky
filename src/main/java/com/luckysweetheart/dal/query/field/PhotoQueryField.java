@@ -26,8 +26,7 @@ public enum PhotoQueryField implements QueryField {
         return this.filedName;
     }
 
-    @Override
-    public void setFiledName(String filedName) {
+    private void setFiledName(String filedName) {
         this.filedName = filedName;
     }
 }

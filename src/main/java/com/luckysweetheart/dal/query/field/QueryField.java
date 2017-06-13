@@ -9,6 +9,5 @@ public interface QueryField extends Serializable {
 
     String getFiledName();
 
-    void setFiledName(String fieldName);
 
 }

@@ -24,9 +24,9 @@ import java.util.Date;
 @Service
 public class UserService extends ParameterizedBaseService<User, Long> {
 
-    private final String salt = Const.SALT;
+    private final static String salt = Const.SALT;
 
-    private final String defaultUserImg = Const.DEFAULT_USER_IMG;
+    private final static String defaultUserImg = Const.DEFAULT_USER_IMG;
 
     @Resource
     private UserDao userApi;

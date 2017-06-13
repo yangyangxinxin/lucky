@@ -44,7 +44,7 @@ public class StoreService extends ParameterizedBaseService<StoreData,Long> {
     @Resource
     private IdWorker idWorker;
 
-    private final String bucketName = Const.DEFAULT_BUCKET_NAME;
+    private static final String bucketName = Const.DEFAULT_BUCKET_NAME;
 
     /**
      * 获取全局唯一的cosPath

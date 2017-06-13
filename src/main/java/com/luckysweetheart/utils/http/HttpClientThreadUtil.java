@@ -471,6 +471,7 @@ public class HttpClientThreadUtil {
             try {
                 response.getEntity().getContent().close(); // !!!IMPORTANT
             } catch (Exception e) {
+                logger.error(e.getMessage(),e);
             }
         }
     }
@@ -529,6 +530,7 @@ public class HttpClientThreadUtil {
             try {
                 response.getEntity().getContent().close(); // !!!IMPORTANT
             } catch (Exception e) {
+                logger.error(e.getMessage(),e);
             }
         }
     }
@@ -580,6 +582,7 @@ public class HttpClientThreadUtil {
             try {
                 response.getEntity().getContent().close(); // !!!IMPORTANT
             } catch (Exception e) {
+                logger.error(e.getMessage(),e);
             }
         }
     }
