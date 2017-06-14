@@ -1,5 +1,6 @@
 <#assign contextPath=request.getContextPath()>
-<#assign title="注册">
+<#assign title="登录">
+<#assign action='loginPage'>
 <#include '/common/head.ftl' >
 <@defaultLayout>
 <h1 class="layui-layer-title">登录</h1>

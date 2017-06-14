@@ -1,6 +1,7 @@
 <#assign contextPath=request.getContextPath()>
 <#assign title="注册">
 <#include '/common/head.ftl' >
+<#assign action='registerPage'>
 <@defaultLayout>
 <form class="layui-form" action="">
     <div class="layui-form-item">

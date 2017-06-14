@@ -1,0 +1,234 @@
+.content-main {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.header {
+    height: 65px;
+    border-bottom: 1px solid #404553;
+    background-color: #393D49;
+    color: #fff;
+}
+
+.header .layui-nav {
+    position: absolute;
+    right: 20px;
+    top: 0;
+    padding: 0;
+    background: none;
+}
+
+.header .layui-nav-menu {
+    left: 250px;
+}
+
+.layui-layout-admin .header-op {
+    border-bottom-color: #009688;
+    background-color: #fff;
+}
+
+.header-op .layui-nav .layui-nav-item {
+    margin: 0 10px;
+    line-height: 70px;
+}
+
+.header-op .layui-nav .layui-nav-item a {
+    color: #999;
+}
+
+.header-op .layui-nav .layui-nav-more {
+    top: 32px;
+}
+
+.header-op .layui-nav .layui-nav-mored {
+    top: 26px;
+}
+
+.logo {
+    position: absolute;
+    left: 10px;
+    top: 18px;
+}
+
+.logo img {
+    width: 103px;
+    height: 30px;
+}
+
+.site-inline {
+    font-size: 0;
+}
+
+.site-fix .site-tree {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 666;
+    min-height: 0;
+    overflow: auto;
+    background-color: #fff;
+}
+
+.site-block {
+    padding: 20px;
+    border: 1px solid #eee;
+}
+
+.site-text {
+    position: relative;
+}
+
+.site-title {
+    margin: 30px 0 20px;
+}
+
+.site-title fieldset {
+    border: none;
+    padding: 0;
+    border-top: 1px solid #eee;
+}
+
+.site-title fieldset legend {
+    margin-left: 20px;
+    padding: 0 10px;
+    font-size: 22px;
+    font-weight: 300;
+}
+
+.site-tree {
+    width: 220px;
+    min-height: 900px;
+    padding: 5px 0 20px;
+}
+
+.site-tree {
+    border-right: 10px solid #aaa;
+}
+
+.site-tree, .site-content {
+    display: block;
+    vertical-align: top;
+    font-size: 14px;
+}
+
+.site-tree .layui-tree {
+    line-height: 32px;
+}
+
+.site-tree .layui-tree li h2 {
+    line-height: 36px;
+    border-left: 5px solid #009E94;
+    margin: 15px 0 5px;
+    padding: 0 10px;
+    background-color: #f2f2f2;
+}
+
+.site-content {
+    width: auto;
+    min-height: 900px;
+    padding: 20px 20px 10px 20px;
+}
+
+.site-fix .site-content {
+    margin-left: 220px;
+}
+
+.footer {
+    padding: 30px 0;
+    line-height: 30px;
+    text-align: center;
+    background-color: #eee;
+    color: #666;
+    font-weight: 300;
+}
+
+.layui-nav-item a cite {
+    padding: 0 10px;
+}
+
+body .layui-layout-admin .site-op {
+    bottom: 82px;
+    padding: 0;
+}
+
+body .layui-layout-admin .footer-op {
+    height: auto;
+    padding: 15px 0;
+    line-height: 26px;
+}
+
+.tip-error {
+    color: #FF5722;
+}
+
+/*body .layui-tree-skin-shihuang .layui-tree-branch{color: #2B2B2B;}*/
+/*body .layui-tree-skin-shihuang .layui-tree-leaf{color: #2B2B2B;}*/
+
+div#rMenu {
+    position: absolute;
+    visibility: hidden;
+    top: 0;
+    text-align: left;
+    padding: 0;
+    z-index: 9999;
+}
+
+div#rMenu ul {
+    width: 90px;
+    padding: 0 15px;
+    background: #393D49;
+    color: #c2c2c2;
+}
+
+div#rMenu ul li {
+    cursor: pointer;
+    list-style: none outside none;
+    width: 100%;
+    line-height: 32px;
+}
+
+div#rMenu ul li:hover {
+    color: #eeeeee;
+}
+
+.edit-op {
+    overflow: auto;
+    background-color: #fff;
+    display: block;
+    font-size: 14px;
+    padding: 15px;
+    text-align: left;
+}
+
+.layui-login {
+    margin: 80px auto;
+    padding: 40px 0;
+    width: 500px;
+    height: auto;
+}
+
+.body-content {
+    margin-top: 10px;
+    height: 530px;
+}
+
+.body-menu {
+    width: 68px;
+    background-color: #393D49;
+    text-align: center;
+    display: none;
+}
+.body-menu > tbody{
+    line-height: 30px;
+}
+.body-menu > tbody > tr > td > a {
+    text-align: center;
+    color: #c2c2c2 !important;
+    cursor: pointer;
+}
+.body-menu > tbody > tr > td > a :hover{
+    text-align: center;
+    color: #fff !important;
+    cursor: pointer;
+}

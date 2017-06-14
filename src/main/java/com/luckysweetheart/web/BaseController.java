@@ -1,6 +1,7 @@
 package com.luckysweetheart.web;
 
 import com.luckysweetheart.dto.UserDTO;
+import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.web.utils.SessionUtils;
 import com.luckysweetheart.web.utils.UserAgentUtil;
 import org.slf4j.Logger;
@@ -135,4 +136,33 @@ public abstract class BaseController {
         return !isMobile();
     }
 
+    protected <T> ResultInfo<T> getFailResult() {
+        ResultInfo<T> resultInfo = new ResultInfo<>();
+        return resultInfo.fail();
+    }
+
+    protected <T> ResultInfo<T> getFailResult(String message) {
+        ResultInfo<T> resultInfo = new ResultInfo<>();
+        resultInfo.fail(message);
+        return resultInfo;
+    }
+
+    protected <T> ResultInfo<T> getFailResult(String message,Class<T> clazz) {
+        return ResultInfo.create(clazz).fail(message);
+    }
+
+    protected <T> ResultInfo<T> getFailResult(String message, String resultCode) {
+        ResultInfo<T> resultInfo = new ResultInfo<>();
+        return resultInfo.fail(message).setResultCode(resultCode);
+    }
+
+    protected <T> ResultInfo<T> getSuccessResult() {
+        ResultInfo<T> resultInfo = new ResultInfo<>();
+        return resultInfo.success();
+    }
+
+    protected <T> ResultInfo<T> getSuccessResult(T data) {
+        ResultInfo<T> resultInfo = new ResultInfo<>();
+        return resultInfo.success(data);
+    }
 }

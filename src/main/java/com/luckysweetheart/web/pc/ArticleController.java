@@ -3,12 +3,14 @@ package com.luckysweetheart.web.pc;
 import com.luckysweetheart.common.Const;
 import com.luckysweetheart.common.Paged;
 import com.luckysweetheart.common.PagedResult;
+import com.luckysweetheart.dal.query.ArticleCommentsQuery;
 import com.luckysweetheart.dal.query.ArticleQuery;
 import com.luckysweetheart.dal.query.condition.ConditionParam;
 import com.luckysweetheart.dal.query.field.ArticleQueryField;
 import com.luckysweetheart.dal.query.order.OrderParam;
 import com.luckysweetheart.dto.ArticleDTO;
 import com.luckysweetheart.exception.BusinessException;
+import com.luckysweetheart.service.ArticleCommentsService;
 import com.luckysweetheart.service.ArticleService;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.web.BaseController;
@@ -32,6 +34,9 @@ public class ArticleController extends BaseController {
 
     @Resource
     private ArticleService articleService;
+
+    @Resource
+    private ArticleCommentsService articleCommentsService;
 
     @RequestMapping("/create")
     public String create() {
@@ -62,13 +67,19 @@ public class ArticleController extends BaseController {
 
     }
 
-    @RequestMapping("/detail/{articleId}")
-    public String detail(@PathVariable("articleId") Long articleId) {
-        ResultInfo<ArticleDTO> resultInfo = articleService.findOne(articleId);
+    @RequestMapping("/detail")
+    public String detail(Long articleId) {
+        /*ResultInfo<ArticleDTO> resultInfo = articleService.findOne(articleId);
         if (resultInfo.isSuccess()) {
             setAttribute("article", resultInfo.getData());
-        }
+        }*/
         return "/article/detail";
+    }
+
+    @RequestMapping("/getDetail")
+    @ResponseBody
+    public ResultInfo<ArticleDTO> getDetail(Long articleId){
+        return articleService.findOne(articleId);
     }
 
     @RequestMapping("/list")
@@ -101,6 +112,11 @@ public class ArticleController extends BaseController {
             setAttribute("size", 0);
         }
         return "/article/list";
+    }
+
+    @RequestMapping("/editPage")
+    public String editPage(Long articleId){
+        return "/article/editPage";
     }
 
     @RequestMapping("/modify")

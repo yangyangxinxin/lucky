@@ -12,6 +12,7 @@ import com.luckysweetheart.utils.ResultInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -105,6 +106,7 @@ public class ArticleService extends ParameterizedBaseService<Article, Long> {
             notNull(article, "文章不存在");
             ArticleDTO articleDTO = new ArticleDTO();
             BeanCopierUtils.copy(article, articleDTO);
+            //articleDTO.setContent(HtmlUtils.htmlEscape(articleDTO.getContent()));
             return resultInfo.success(articleDTO);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

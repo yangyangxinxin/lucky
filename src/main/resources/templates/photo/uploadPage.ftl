@@ -1,6 +1,7 @@
 <#assign contextPath=request.getContextPath()>
 <#assign title="注册">
 <#include '/common/head.ftl' >
+<#assign action='photo'>
 <@defaultLayout>
 <input type="file" name="file" class="layui-upload-file" multiple/>上传文件
 <hr/>

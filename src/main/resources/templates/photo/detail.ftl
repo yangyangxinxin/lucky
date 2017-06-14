@@ -1,6 +1,7 @@
 <#assign contextPath=request.getContextPath()>
-<#assign title="detail">
+<#assign title="相片详情">
 <#include '/common/head.ftl' >
+<#assign action='photo'>
 <@defaultLayout>
 
     <#if photo?? >

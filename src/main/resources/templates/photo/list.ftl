@@ -1,5 +1,6 @@
 <#assign contextPath=request.getContextPath()>
 <#assign title="list">
+<#assign action='photo'>
 <#include '/common/head.ftl' >
 <@defaultLayout>
 

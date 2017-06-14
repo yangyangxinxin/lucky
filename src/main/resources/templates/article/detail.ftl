@@ -1,34 +1,43 @@
 <#assign contextPath=request.getContextPath()>
 <#assign title="查看文本">
 <#include '/common/head.ftl' >
+<#assign action='article'>
 <@defaultLayout>
-<#if article?exists>
+<div>
     <p>
-        <span>${article.title!}</span>
-        <p>
-            ${article.content!}
-        </p>
-    </p>
-</#if>
+        <span id="title"></span>
+    <p>
+    <div id="content">
+    </div>
+    <button id="edit" class="layui-btn">修改文章</button>
+</div>
 <script>
-    var layedit = layui.layedit;
+    $(document).ready(function () {
 
-    var str = "&lt;script&gt;alert('123')&lt;/script&gt;";
+        var id = $app.getRequest().articleId;
 
-    $("#demo").text(str);
-    var index = layedit.build('demo'); //建立编辑器
+        $("#edit").click(function () {
+            window.location.href="/article/editPage?articleId="+id;
+        })
 
-    $(".layui-btn").click(function () {
-        var content = layedit.getContent(index);
-        var title = $("input[name='title']").val();
-        $.post("/article/doCreate",{'title':title,'content' :content},function (data) {
+        $.get("/article/getDetail",{'articleId':id},function (data) {
             if(data.success){
-                layer.alert("提交成功");
-            }else{
-                layer.alert(data.msg);
+                $("#title").text(data.data.title);
+                $('#content').html('');
+                editormd.markdownToHTML("content", {
+                    markdown: data.data.content,
+                    htmlDecode: "style,script,iframe",
+                    path: "/js/editormd/lib/",
+                    syncScrolling: "single",
+                    emoji: true,
+                    taskList: true,
+                    tex: true,
+                    flowChart: true
+                });
             }
         },'json')
     })
+
 
 </script>
 </@defaultLayout>
