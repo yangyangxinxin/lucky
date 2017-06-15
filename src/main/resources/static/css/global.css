@@ -210,25 +210,5 @@ div#rMenu ul li:hover {
 
 .body-content {
     margin-top: 10px;
-    height: 530px;
-}
-
-.body-menu {
-    width: 68px;
-    background-color: #393D49;
-    text-align: center;
-    display: none;
-}
-.body-menu > tbody{
-    line-height: 30px;
-}
-.body-menu > tbody > tr > td > a {
-    text-align: center;
-    color: #c2c2c2 !important;
-    cursor: pointer;
-}
-.body-menu > tbody > tr > td > a :hover{
-    text-align: center;
-    color: #fff !important;
-    cursor: pointer;
+    height: 100%;
 }

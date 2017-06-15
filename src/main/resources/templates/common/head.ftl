@@ -75,11 +75,13 @@
         </dl>
     </li>
     <#if userInfo?exists>
-        <li class="layui-nav-item <#if action?exists && action=='profile'> layui-this </#if>"><a href="/profile/index">${userInfo.username!}</a></li>
+        <li class="layui-nav-item <#if action?exists && action=='profile'> layui-this </#if>" style="margin-left:950px;"><a href="/profile/index">${userInfo.username!}</a></li>
         <li class="layui-nav-item"><a href="/account/logout">退出</a></li>
+        <#else>
+        <li class="layui-nav-item <#if action?exists && action=='loginPage'> layui-this </#if>" style="margin-left:950px;"><a href="/account/loginPage">登录</a></li>
+        <li class="layui-nav-item <#if action?exists && action=='registerPage'> layui-this </#if>" style=""><a href="/account/registerPage">注册</a></li>
     </#if>
-    <li class="layui-nav-item <#if action?exists && action=='loginPage'> layui-this </#if>" style="margin-left:950px;"><a href="/account/loginPage">登录</a></li>
-    <li class="layui-nav-item <#if action?exists && action=='registerPage'> layui-this </#if>" style=""><a href="/account/registerPage">注册</a></li>
+
 </ul>
 <div class="body-content">
     <#nested>
@@ -93,8 +95,6 @@
         </p>
     </div>
 </div>
-
-
 </body>
 </html>
 <script>

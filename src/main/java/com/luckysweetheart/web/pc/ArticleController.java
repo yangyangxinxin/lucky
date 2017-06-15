@@ -117,6 +117,11 @@ public class ArticleController extends BaseController {
         if (resultInfo.isSuccess()) {
             PagedResult<ArticleDTO> pagedResult = resultInfo.getData();
             setAttribute("articles", pagedResult.getResults());
+            Paged p = pagedResult.getPaged();
+            int currentPage = p.getPage();
+            int pages = p.getPages();
+            setAttribute("pages",pages);
+            setAttribute("currentPage",currentPage);
             setAttribute("paged", pagedResult.getPaged());
             setAttribute("size", pagedResult.getSize());
         } else {

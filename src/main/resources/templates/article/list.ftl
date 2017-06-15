@@ -33,9 +33,34 @@
 
     </tbody>
 </table>
+<div id="demo1"></div>
 </@defaultLayout>
 <script>
+
+    var pages = ${pages!};
+    var currentPage = ${currentPage!};
     $(document).ready(function(){
-        
+        layui.use(['laypage', 'layer'], function() {
+            var laypage = layui.laypage, layer = layui.layer;
+
+            laypage({
+                cont: 'demo1',
+                pages: pages, //总页数,
+                groups: 5, //连续显示分页数,
+                skip:true,
+                curr:function () {
+                    return currentPage;
+                }(),
+                jump: function(obj, first){
+                    //得到了当前页，用于向服务端请求对应数据
+                    console.log(obj);
+                    var curr = obj.curr;
+                    if(!first){
+                        window.location.href="/article/list?itemPage="+curr;
+                    }
+
+                }
+            });
+        });
     })
 </script>

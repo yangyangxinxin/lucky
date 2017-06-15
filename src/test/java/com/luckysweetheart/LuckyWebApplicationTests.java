@@ -8,6 +8,7 @@ import com.luckysweetheart.dal.query.PhotoQuery;
 import com.luckysweetheart.dal.query.condition.ConditionParam;
 import com.luckysweetheart.dal.query.field.PhotoQueryField;
 import com.luckysweetheart.dal.query.order.OrderParam;
+import com.luckysweetheart.dto.ArticleDTO;
 import com.luckysweetheart.dto.PhotoDTO;
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
@@ -28,6 +29,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -68,7 +70,28 @@ public class LuckyWebApplicationTests {
     }
 
     @Test
-    public void test3() {
+    public void test3() throws BusinessException, InterruptedException {
+        ArticleDTO articleDTO = null;
+
+        synchronized (this) {
+            for (int i = 0; i < 100; i++) {
+                articleDTO = new ArticleDTO();
+                articleDTO.setDeleteStatus(0);
+                if (i % 10 == 0) {
+                    articleDTO.setAuthor("刘俊妤");
+                } else {
+                    articleDTO.setAuthor("yangxin");
+                }
+                articleDTO.setCommentsCount(0L);
+                articleDTO.setTitle("这是第" + i + " 篇的标题");
+                articleDTO.setContent("这是第" + i + "篇的内容。");
+                articleDTO.setCreateTime(new Date());
+                articleDTO.setUpdateTime(new Date());
+                articleDTO.setOwnerUserId(1L);
+                articleService.create(articleDTO);
+                Thread.sleep(500L);
+            }
+        }
 
     }
 

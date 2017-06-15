@@ -3,35 +3,21 @@
 <#include '/common/head.ftl' >
 <#assign action='article'>
 <@defaultLayout>
-<#--<input name="title"/>
-    <textarea id="demo" style="display: none;"></textarea>
-    <button class="layui-btn">提交</button>
-    <script>
-        var layedit = layui.layedit;
+<form class="layui-form" action="#">
+    <div class="layui-form-item" style="float: left;margin-left:30px;">
+        <label class="layui-form-label">文章标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
 
-        var str = "&lt;script&gt;alert('123')&lt;/script&gt;";
+        </div>
+    </div>
+    <div style="float: right;margin-right:30px;">
+        <button class="layui-btn" type="button">提交</button>
+    </div>
+    <div class="editormd" id="content-editormd">
+    </div>
 
-        $("#demo").text(str);
-        var index = layedit.build('demo'); //建立编辑器
-        
-        $(".layui-btn").click(function () {
-            var content = layedit.getContent(index);
-            var title = $("input[name='title']").val();
-            $.post("/article/doCreate",{'title':title,'content' :content},function (data) {
-                if(data.success){
-                    layer.alert("提交成功");
-                }else{
-                    layer.alert(data.msg);
-                }
-            },'json')
-        })
-        
-    </script>-->
-
-<input name="title"/>
-<div class="editormd" id="content-editormd">
-</div>
-<button class="layui-btn">提交</button>
+</form>
 <script>
     var editor;
     editor = editormd("content-editormd", {
