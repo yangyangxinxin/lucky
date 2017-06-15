@@ -1,5 +1,6 @@
 <#assign contextPath=request.getContextPath()>
-<#assign title="">
+<#assign title="个人资料">
+<#assign action='profile'>
 <#include '/common/head.ftl' >
 <@defaultLayout>
 username : ${user.username!}<br/>

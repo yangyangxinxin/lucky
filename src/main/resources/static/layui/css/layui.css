@@ -193,14 +193,14 @@ a cite {
     display: block !important
 }
 
-.layui-hide {
-    display: none !important
-}
-
 .layui-main {
     position: relative;
     width: 1140px;
-    margin: 0 auto
+    margin: 0 auto;
+}
+
+.layui-hide {
+    display: none !important
 }
 
 .layui-header {

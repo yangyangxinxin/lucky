@@ -9,9 +9,11 @@ import com.luckysweetheart.dal.query.condition.ConditionParam;
 import com.luckysweetheart.dal.query.field.ArticleQueryField;
 import com.luckysweetheart.dal.query.order.OrderParam;
 import com.luckysweetheart.dto.ArticleDTO;
+import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.service.ArticleCommentsService;
 import com.luckysweetheart.service.ArticleService;
+import com.luckysweetheart.service.UserService;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.web.BaseController;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,9 @@ public class ArticleController extends BaseController {
     @Resource
     private ArticleCommentsService articleCommentsService;
 
+    @Resource
+    private UserService userService;
+
     @RequestMapping("/create")
     public String create() {
         return "/article/create";
@@ -46,8 +51,12 @@ public class ArticleController extends BaseController {
     @RequestMapping("/doCreate")
     @ResponseBody
     public ResultInfo<Long> doCreate(String title, String content) {
-
         ResultInfo<Long> resultInfo = new ResultInfo<>();
+
+        UserDTO userDTO = userService.findById(getLoginUserId());
+        if (userDTO == null) {
+            return resultInfo.fail("用户不存在");
+        }
 
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setContent(content);
@@ -58,6 +67,8 @@ public class ArticleController extends BaseController {
         articleDTO.setLikeCount(0L);
         articleDTO.setViewCount(0L);
         articleDTO.setCommentsCount(0L);
+        articleDTO.setAuthor(userDTO.getUsername());
+
         try {
             return articleService.create(articleDTO);
         } catch (BusinessException e) {
@@ -78,7 +89,7 @@ public class ArticleController extends BaseController {
 
     @RequestMapping("/getDetail")
     @ResponseBody
-    public ResultInfo<ArticleDTO> getDetail(Long articleId){
+    public ResultInfo<ArticleDTO> getDetail(Long articleId) {
         return articleService.findOne(articleId);
     }
 
@@ -94,7 +105,7 @@ public class ArticleController extends BaseController {
         List<OrderParam<ArticleQueryField>> orderParams = new ArrayList<>();
 
         conditionParams.add(new ConditionParam<ArticleQueryField>(ArticleQueryField.DELETE_STATUS, Const.DELETE_STATUS_NO, ConditionParam.OPERATION_EQ));
-        conditionParams.add(new ConditionParam<ArticleQueryField>(ArticleQueryField.USER_ID, getLoginUserId(), ConditionParam.OPERATION_EQ));
+        //conditionParams.add(new ConditionParam<ArticleQueryField>(ArticleQueryField.USER_ID, getLoginUserId(), ConditionParam.OPERATION_EQ));
 
         orderParams.add(new OrderParam<ArticleQueryField>(ArticleQueryField.CREATE_TIME, OrderParam.ORDER_TYPE_DESC));
 
@@ -115,7 +126,7 @@ public class ArticleController extends BaseController {
     }
 
     @RequestMapping("/editPage")
-    public String editPage(Long articleId){
+    public String editPage(Long articleId) {
         return "/article/editPage";
     }
 
