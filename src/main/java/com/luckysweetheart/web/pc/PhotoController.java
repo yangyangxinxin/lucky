@@ -14,6 +14,7 @@ import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.utils.FileUtil;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.web.BaseController;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,9 +99,14 @@ public class PhotoController extends BaseController {
         return "/photo/detail";
     }
 
+    /**
+     * 只是跳转页面，数据由js获取
+     * @param itemPage
+     * @return
+     */
     @RequestMapping("/list")
     public String list(Integer itemPage) {
-        Paged paged = new Paged();
+        /*Paged paged = new Paged();
         itemPage = itemPage == null || itemPage == 0 ? 1 : itemPage;
         paged.setPage(itemPage);
         PhotoQuery photoQuery = new PhotoQuery();
@@ -108,7 +114,7 @@ public class PhotoController extends BaseController {
         List<OrderParam<PhotoQueryField>> orderParams = new ArrayList<>();
 
         conditionParams.add(new ConditionParam<PhotoQueryField>(PhotoQueryField.DELETE_STATUS, Const.DELETE_STATUS_NO, ConditionParam.OPERATION_EQ));
-        conditionParams.add(new ConditionParam<PhotoQueryField>(PhotoQueryField.USER_ID, getLoginUserId(), ConditionParam.OPERATION_EQ));
+        //conditionParams.add(new ConditionParam<PhotoQueryField>(PhotoQueryField.USER_ID, getLoginUserId(), ConditionParam.OPERATION_EQ));
 
         orderParams.add(new OrderParam<PhotoQueryField>(PhotoQueryField.CREATE_TIME, OrderParam.ORDER_TYPE_DESC));
 
@@ -123,8 +129,44 @@ public class PhotoController extends BaseController {
             setAttribute("size", resultInfo.getData().getSize());
         } else {
             setAttribute("size", 0);
-        }
+        }*/
         return "/photo/list";
+    }
+
+    @RequestMapping("/queryPage")
+    @ResponseBody
+    public ResultInfo<Map<String,Object>> queryList(Integer itemPage){
+        ResultInfo<Map<String,Object>> resultInfo = new ResultInfo<>();
+        Paged paged = new Paged();
+        itemPage = itemPage == null || itemPage == 0 ? 1 : itemPage;
+        paged.setPage(itemPage);
+        PhotoQuery photoQuery = new PhotoQuery();
+        List<ConditionParam<PhotoQueryField>> conditionParams = new ArrayList<>();
+        List<OrderParam<PhotoQueryField>> orderParams = new ArrayList<>();
+
+        conditionParams.add(new ConditionParam<PhotoQueryField>(PhotoQueryField.DELETE_STATUS, Const.DELETE_STATUS_NO, ConditionParam.OPERATION_EQ));
+        //conditionParams.add(new ConditionParam<PhotoQueryField>(PhotoQueryField.USER_ID, getLoginUserId(), ConditionParam.OPERATION_EQ));
+
+        orderParams.add(new OrderParam<PhotoQueryField>(PhotoQueryField.CREATE_TIME, OrderParam.ORDER_TYPE_DESC));
+
+        photoQuery.setPaged(paged);
+        photoQuery.setOrderParams(orderParams);
+        photoQuery.setConditionParams(conditionParams);
+
+        ResultInfo<PagedResult<PhotoDTO>> resultInfo1 = photoService.query(photoQuery);
+
+        if(resultInfo1.isSuccess()){
+            PagedResult<PhotoDTO> result = resultInfo1.getData();
+            Integer totalPage = result.getPaged().getPages();
+            Map<String,Object> map = new HashMap<>();
+            map.put("list",result.getResults());
+            map.put("totalPage",totalPage);
+            return resultInfo.success(map);
+        }
+
+        return resultInfo.fail(resultInfo1.getMsg());
+
+
     }
 
     /**

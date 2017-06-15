@@ -211,4 +211,5 @@ div#rMenu ul li:hover {
 .body-content {
     margin-top: 10px;
     height: 100%;
+    min-height: 450px;
 }
