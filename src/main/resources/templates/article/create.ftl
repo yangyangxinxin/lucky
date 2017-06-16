@@ -12,7 +12,8 @@
         </div>
     </div>
     <div style="float: right;margin-right:30px;">
-        <button class="layui-btn" type="button">提交</button>
+        <i class="layui-icon" style="font-size:30px;cursor: pointer;" title="发布" id="submit">&#xe609;</i>
+        <#--<button class="layui-btn" type="button">提交</button>-->
     </div>
     <div class="editormd" id="content-editormd">
     </div>
@@ -32,7 +33,7 @@
         flowChart: true
     });
 
-    $(".layui-btn").click(function () {
+    $("#submit").click(function () {
         var content = editor.getMarkdown();
         var title = $("input[name='title']").val();
         $.post("/article/doCreate",{'title':title,'content' :content},function (data) {

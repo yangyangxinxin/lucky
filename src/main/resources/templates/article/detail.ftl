@@ -3,25 +3,23 @@
 <#include '/common/head.ftl' >
 <#assign action='article'>
 <@defaultLayout>
-<div>
-    <p>
-        <span id="title"></span>
-    <p>
-    <div id="content">
+
+<fieldset class="layui-elem-field layui-field-title">
+    <legend id="title"></legend>
+    <div class="layui-field-box" id="content">
     </div>
-    <button id="edit" class="layui-btn">修改文章</button>
-</div>
+</fieldset>
 <script>
     $(document).ready(function () {
 
         var id = $app.getRequest().articleId;
 
         $("#edit").click(function () {
-            window.location.href="/article/editPage?articleId="+id;
-        })
+            window.location.href = "/article/editPage?articleId=" + id;
+        });
 
-        $.get("/article/getDetail",{'articleId':id},function (data) {
-            if(data.success){
+        $.get("/article/getDetail", {'articleId': id}, function (data) {
+            if (data.success) {
                 $("#title").text(data.data.title);
                 $('#content').html('');
                 editormd.markdownToHTML("content", {
@@ -35,7 +33,7 @@
                     flowChart: true
                 });
             }
-        },'json')
+        }, 'json')
     })
 
 

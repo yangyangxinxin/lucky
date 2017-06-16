@@ -58,9 +58,10 @@ public class PhotoController extends BaseController {
 
     @RequestMapping(value = "/doUploadMultipart", method = RequestMethod.POST)
     @ResponseBody
-    public Object upload() {
+    public Object upload(String name) {
         List<Map<String, Object>> list = new ArrayList<>();
         try {
+            logger.info(name);
             List<MultipartFile> files = getMultipartFile("file");
             if (files != null && files.size() > 0) {
                 for (MultipartFile file : files) {

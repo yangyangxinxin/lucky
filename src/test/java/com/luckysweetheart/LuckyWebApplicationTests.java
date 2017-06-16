@@ -13,6 +13,7 @@ import com.luckysweetheart.dto.PhotoDTO;
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.service.ArticleService;
+import com.luckysweetheart.service.EmailService;
 import com.luckysweetheart.service.PhotoService;
 import com.luckysweetheart.service.UserService;
 import com.luckysweetheart.store.StoreService;
@@ -49,6 +50,9 @@ public class LuckyWebApplicationTests {
 
     @Resource
     private ArticleService articleService;
+
+    @Resource
+    private EmailService emailService;
 
     @Test
     public void test1() {
@@ -163,6 +167,11 @@ public class LuckyWebApplicationTests {
                 System.out.println(JSON.toJSONString(photoDTO));
             }
         }
+    }
+
+    @Test
+    public void testSend(){
+        emailService.sendSimpleMail("848135512@qq.com","测试3","这是内容3");
     }
 
 }
