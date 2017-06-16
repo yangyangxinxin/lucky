@@ -17,6 +17,8 @@ import com.luckysweetheart.service.EmailService;
 import com.luckysweetheart.service.PhotoService;
 import com.luckysweetheart.service.UserService;
 import com.luckysweetheart.store.StoreService;
+import com.luckysweetheart.utils.EmailSender;
+import com.luckysweetheart.utils.EmailTemplate;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.dto.StoreDataDTO;
 import org.junit.Test;
@@ -172,6 +174,13 @@ public class LuckyWebApplicationTests {
     @Test
     public void testSend(){
         emailService.sendSimpleMail("848135512@qq.com","测试3","这是内容3");
+    }
+
+    @Test
+    public void testSend2(){
+        EmailSender emailSender = EmailSender.init().emailTemplate(EmailTemplate.REGISTER).to("848135512@qq.com").to("354394024@qq.com").param("username","yangxin").param("code","123123123123").subject("注册");
+
+        emailService.sendEmailTemplate(emailSender);
     }
 
 }
