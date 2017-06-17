@@ -21,6 +21,7 @@ import com.luckysweetheart.utils.EmailSender;
 import com.luckysweetheart.utils.EmailTemplate;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.dto.StoreDataDTO;
+import com.luckysweetheart.web.utils.DomainUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,9 +179,36 @@ public class LuckyWebApplicationTests {
 
     @Test
     public void testSend2(){
-        EmailSender emailSender = EmailSender.init().emailTemplate(EmailTemplate.REGISTER).to("848135512@qq.com").to("354394024@qq.com").param("username","yangxin").param("code","123123123123").subject("注册");
 
-        emailService.sendEmailTemplate(emailSender);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final EmailSender emailSender = EmailSender.init().emailTemplate(EmailTemplate.REGISTER).to("848135512@qq.com").param("username","848135512").param("code","123123123123").subject("注册1");
+                System.out.println("第一个线程执行");
+                emailService.sendEmailTemplate(emailSender);
+                System.out.println("第一个线程执行完毕");
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final EmailSender emailSender = EmailSender.init().emailTemplate(EmailTemplate.REGISTER).to("yangxin_y@qq.com").param("username","yangxin_y").param("code","123123123123").subject("注册2");
+                System.out.println("第二个线程执行");
+                emailService.sendEmailTemplate(emailSender);
+                System.out.println("第二个线程执行完毕");
+            }
+        }).start();
+        System.out.println("主线程执行完毕");
+        try {
+            Thread.sleep(10 * 1000 * 60);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void  test111(){
+        System.out.println(DomainUtils.getIndexUrl());
     }
 
 }

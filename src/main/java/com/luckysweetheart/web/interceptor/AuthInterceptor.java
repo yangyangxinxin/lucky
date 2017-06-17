@@ -35,6 +35,7 @@ public class AuthInterceptor extends AbstractInterceptor {
         list.add("/article/getDetail");
         list.add("/photo/list");
         list.add("/photo/queryPage");
+        list.add("/test/*");
         return list;
     }
 

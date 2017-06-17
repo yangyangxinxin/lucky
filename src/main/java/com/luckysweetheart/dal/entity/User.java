@@ -27,6 +27,8 @@ public class User {
 
     private String mobilePhone;
 
+    private String email;
+
     private String username;
 
     private String password;
@@ -42,6 +44,14 @@ public class User {
     private Date createTime;
 
     private Date updateTime;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Integer getDeleteStatus() {
         return deleteStatus;

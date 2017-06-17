@@ -11,9 +11,9 @@ import java.util.List;
 @Repository
 public class UserDao extends ParameterizedBaseDAO<User, Long>{
 
-    public User findByMobilePhone(String mobilePhone){
-        String hql = "from User where mobilePhone = :mobilePhone";
-        List<User> list =  this.getSession().createQuery(hql).setString("mobilePhone",mobilePhone).list();
+    public User findByMobilePhoneOrEmail(String mobileOrEmail){
+        String hql = "from User where mobilePhone = :mobileOrEmail or email = :mobileOrEmail";
+        List<User> list =  this.getSession().createQuery(hql).setString("mobileOrEmail",mobileOrEmail).setString("mobileOrEmail",mobileOrEmail).list();
         if(list != null && list.size() > 0){
             return list.get(0);
         }

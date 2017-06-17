@@ -8,9 +8,7 @@ import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.store.StorageGroupService;
 import com.luckysweetheart.store.StoreService;
-import com.luckysweetheart.utils.BeanCopierUtils;
-import com.luckysweetheart.utils.ResultInfo;
-import com.luckysweetheart.utils.ValidateUtil;
+import com.luckysweetheart.utils.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -37,13 +35,16 @@ public class UserService extends ParameterizedBaseService<User, Long> {
     @Resource
     private StorageGroupService storageGroupService;
 
+    @Resource
+    private EmailService emailService;
+
     /**
      * 注册
      *
      * @param userDTO
      * @return
      */
-    public ResultInfo<UserDTO> registerUser(UserDTO userDTO) throws BusinessException {
+    public ResultInfo<UserDTO> registerUser(final UserDTO userDTO) throws BusinessException {
         ResultInfo<UserDTO> resultInfo = new ResultInfo<>();
         try {
             if (userDTO == null) {
@@ -58,13 +59,13 @@ public class UserService extends ParameterizedBaseService<User, Long> {
             if (!ValidateUtil.mobileVal(userDTO.getMobilePhone())) {
                 throw new BusinessException("手机号码不符合规范！");
             }
+            isTrue(ValidateUtil.email(userDTO.getEmail()), "邮箱不符合规范！");
             //查询是否已经注册
-            User byMoAndMobilePhone = userApi.findByMobilePhone(userDTO.getMobilePhone());
+            User byMoAndMobilePhone = userApi.findByMobilePhoneOrEmail(userDTO.getMobilePhone());
             if (byMoAndMobilePhone != null) {
                 throw new BusinessException("你已注册！请登录！");
             }
             // 加密用户密码
-
 
             String pwd = DigestUtils.sha512Hex(salt + userDTO.getPassword());
 
@@ -75,8 +76,16 @@ public class UserService extends ParameterizedBaseService<User, Long> {
             user.setImgPath(defaultUserImg);
             user.setDeleteStatus(Const.DELETE_STATUS_NO);
             user.setCreateTime(new Date());
+            user.setEmail(userDTO.getEmail());
             Long userId = userApi.save(user);
             userDTO.setUserId(userId);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    EmailSender sender = EmailSender.init().to(userDTO.getEmail()).emailTemplate(EmailTemplate.REGISTER).param("email",userDTO.getEmail()).param("basePath","basePath");
+                    emailService.sendEmailTemplate(sender);
+                }
+            }).start();
             return resultInfo.success(userDTO);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -101,7 +110,7 @@ public class UserService extends ParameterizedBaseService<User, Long> {
                 BeanCopierUtils.copy(user, userDTO);
                 return resultInfo.success(userDTO);
             }
-            User u = userApi.findByMobilePhone(mobilePhone);
+            User u = userApi.findByMobilePhoneOrEmail(mobilePhone);
             if (u != null) {
                 return resultInfo.fail("密码输入错误。");
             } else {
@@ -124,7 +133,7 @@ public class UserService extends ParameterizedBaseService<User, Long> {
         ResultInfo<UserDTO> resultInfo = new ResultInfo<>();
         try {
             Assert.notNull(userId, "用户id不能为空");
-            Assert.isTrue(ValidateUtil.pwdVal(password), "密码布符合规范");
+            Assert.isTrue(ValidateUtil.pwdVal(password), "密码不符合规范");
             User user = userApi.get(userId);
             Assert.notNull(user, "该用户不存在");
             password = DigestUtils.sha512Hex(salt + password);
@@ -168,10 +177,10 @@ public class UserService extends ParameterizedBaseService<User, Long> {
      * @param mobilePhone
      * @return
      */
-    public UserDTO findByMobilePhone(String mobilePhone) {
+    public UserDTO findByMobilePhoneOrEmail(String mobilePhone) {
         try {
-            Assert.isTrue(ValidateUtil.mobileVal(mobilePhone), "手机号不符合规范");
-            User user = userApi.findByMobilePhone(mobilePhone);
+            // Assert.isTrue(ValidateUtil.mobileVal(mobilePhone), "手机号不符合规范");
+            User user = userApi.findByMobilePhoneOrEmail(mobilePhone);
             if (user != null) {
                 UserDTO userDTO = new UserDTO();
                 BeanCopierUtils.copy(user, userDTO);
@@ -223,7 +232,7 @@ public class UserService extends ParameterizedBaseService<User, Long> {
             Assert.notNull(bytes, "文件不能为空");
             User user = userApi.get(userId);
             if (user != null) {
-                ResultInfo<StoreDataDTO> result = storeService.uploadFile(bytes, ".png",storageGroupService.getUserGroupName());
+                ResultInfo<StoreDataDTO> result = storeService.uploadFile(bytes, ".png", storageGroupService.getUserGroupName());
                 if (result.isSuccess()) {
                     user.setImgPath(result.getData().getResourcePath());
                     return resultInfo.success();
@@ -241,6 +250,7 @@ public class UserService extends ParameterizedBaseService<User, Long> {
 
     /**
      * 注意这里的update不含任何业务逻辑操作，请谨慎使用
+     *
      * @param userDTO
      * @throws BusinessException
      */

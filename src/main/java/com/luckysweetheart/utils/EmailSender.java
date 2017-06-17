@@ -85,4 +85,15 @@ public class EmailSender implements Serializable {
     public Map<String, Object> getParam() {
         return param;
     }
+
+    public String getSendToList() {
+        if (this.sendTo == null || this.sendTo.size() == 0) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String aSendTo : this.sendTo) {
+            sb.append(aSendTo).append(";");
+        }
+        return sb.toString();
+    }
 }
