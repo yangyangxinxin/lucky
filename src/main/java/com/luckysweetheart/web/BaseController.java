@@ -2,6 +2,7 @@ package com.luckysweetheart.web;
 
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.utils.ResultInfo;
+import com.luckysweetheart.web.utils.DomainService;
 import com.luckysweetheart.web.utils.SessionUtils;
 import com.luckysweetheart.web.utils.UserAgentUtil;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,15 +30,19 @@ public abstract class BaseController {
 
     protected HttpServletResponse response;
 
+    @Resource
+    private DomainService domainService;
+
     @ModelAttribute
     public void init(HttpServletRequest request, HttpServletResponse response) throws IOException {
         this.request = request;
         this.response = response;
         response.setContentType("text/html;charset=utf-8");
         request.setCharacterEncoding("utf-8");
+        setAttribute("domainUtils", domainService);
     }
 
-    protected void setSeesionAttribute(String key, Object value) {
+    protected void setSessionAttribute(String key, Object value) {
         SessionUtils.setAttribute(key, value, request);
     }
 
@@ -147,7 +153,7 @@ public abstract class BaseController {
         return resultInfo;
     }
 
-    protected <T> ResultInfo<T> getFailResult(String message,Class<T> clazz) {
+    protected <T> ResultInfo<T> getFailResult(String message, Class<T> clazz) {
         return ResultInfo.create(clazz).fail(message);
     }
 
@@ -164,5 +170,9 @@ public abstract class BaseController {
     protected <T> ResultInfo<T> getSuccessResult(T data) {
         ResultInfo<T> resultInfo = new ResultInfo<>();
         return resultInfo.success(data);
+    }
+
+    protected boolean isLogin() {
+        return SessionUtils.isLogin(request);
     }
 }

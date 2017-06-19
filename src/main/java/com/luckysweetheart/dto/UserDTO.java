@@ -1,9 +1,15 @@
 package com.luckysweetheart.dto;
 
+import java.util.Date;
+
 /**
  * Created by yangxin on 2017/5/22.
  */
 public class UserDTO implements DTO {
+
+    public static final Integer ACTIVE_STATUS_NO = 0;
+
+    public static final Integer ACTIVE_STATUS_YES = 1;
 
     private Long userId;
 
@@ -18,6 +24,45 @@ public class UserDTO implements DTO {
     private String httpUrl;
 
     private String email;
+
+    /**
+     * 激活状态
+     */
+    private Integer activeStatus;
+
+    /**
+     * 激活码
+     */
+    private String activeCode;
+
+    /**
+     * 激活时间
+     */
+    private Date activeDate;
+
+    public Integer getActiveStatus() {
+        return activeStatus;
+    }
+
+    public void setActiveStatus(Integer activeStatus) {
+        this.activeStatus = activeStatus;
+    }
+
+    public String getActiveCode() {
+        return activeCode;
+    }
+
+    public void setActiveCode(String activeCode) {
+        this.activeCode = activeCode;
+    }
+
+    public Date getActiveDate() {
+        return activeDate;
+    }
+
+    public void setActiveDate(Date activeDate) {
+        this.activeDate = activeDate;
+    }
 
     public String getEmail() {
         return email;

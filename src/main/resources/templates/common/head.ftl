@@ -3,6 +3,9 @@
 <#if Session.userInfo?exists>
     <#assign userInfo = Session.userInfo>
 </#if>
+<#if domainUtils?exists>
+    <#assign indexUrl = domainUtils.indexUrl>
+</#if>
 <!DOCTYPE html>
 <html lang="zh-cn">
 <meta charset="utf-8">
@@ -85,7 +88,7 @@
         <li class="layui-nav-item <#if action?exists && action=='profile'> layui-this </#if>" style="margin-left:800px"><a href="/profile/index">${userInfo.username!}</a></li>
         <li class="layui-nav-item" style="margin-left:0px;"><a href="/account/logout">退出</a></li>
         <#else>
-        <li class="layui-nav-item <#if action?exists && action=='loginPage'> layui-this </#if>" style="margin-left:800px;"><a href="/account/loginPage">登录</a></li>
+        <li class="layui-nav-item <#if action?exists && action=='loginPage'> layui-this </#if>" style="margin-left:800px;"><a href="javascript:window.location.href='/account/loginPage?returnUrl=' + encodeURIComponent(location.href)">登录</a></li>
         <li class="layui-nav-item <#if action?exists && action=='registerPage'> layui-this </#if>"  style="margin-left:0px;"><a href="/account/registerPage">注册</a></li>
     </#if>
 
@@ -96,9 +99,10 @@
 
 <div class="layui-footer footer footer-doc">
     <div class="layui-main">
-        <p>2017 © <a href="/">luckysweetheart.com</a></p>
+        <p>2017 © <a href="/">${indexUrl!}</a></p>
         <p>
-            <a href="http://www.luckysweetheart.com" target="_blank">yangxin</a>
+            <a href="/" target="_blank">yangxin</a>
+            <a href="https://github.com/yangyangxinxin/lucky" target="_blank">github</a>
         </p>
     </div>
 </div>

@@ -2,6 +2,7 @@ package com.luckysweetheart.service;
 
 import com.luckysweetheart.dal.entity.EmailSnapshoot;
 import com.luckysweetheart.dto.EmailSnapshootDTO;
+import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.utils.DateUtil;
 import com.luckysweetheart.utils.EmailSender;
 import freemarker.template.Template;
@@ -77,9 +78,6 @@ public class EmailService extends ParameterizedBaseService<EmailSnapshoot, Long>
         }
     }
 
-    public void sendSimleMail(EmailSnapshootDTO emailSnapshootDTO) {
-
-    }
 
     public synchronized void sendEmailTemplate(EmailSender emailSender) {
         long start = System.currentTimeMillis();
@@ -92,12 +90,7 @@ public class EmailService extends ParameterizedBaseService<EmailSnapshoot, Long>
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(from);
 
-            String[] tos = new String[emailSender.getSendTo().size()];
-            for (int i = 0; i < emailSender.getSendTo().size(); i++) {
-                tos[i] = emailSender.getSendTo().get(i);
-                logger.info("发送给 {}", tos[i]);
-            }
-            helper.setTo(tos);
+            helper.setTo(emailSender.getSendToArray());
             helper.setSubject(emailSender.getSubject());
 
             Map<String, Object> model = emailSender.getParam();
@@ -125,38 +118,19 @@ public class EmailService extends ParameterizedBaseService<EmailSnapshoot, Long>
             logger.info("邮件发送成功 ，耗时 {} s", (end - start) / 1000);
         } catch (Exception e) {
             if (emailSnapshoot != null && emailSnapshoot.getEmailId() != null) {
-                emailSnapshoot.setStatus(EmailSnapshoot.SEND_SUCCESS);
+                emailSnapshoot.setStatus(EmailSnapshoot.SEND_FAIL);
                 emailSnapshoot.setFailDate(new Date());
+                emailSnapshoot.setTryTimes(0L);
                 super.update(emailSnapshoot);
+                logger.error(e.getMessage(), e);
+            } else {
+                logger.info("邮件快照未保存成功，此错误信息可能是您传入的参数不正确，请检查传入的参数，例如Subject、content、收件人等信息是否存在。");
+                logger.error(e.getMessage(), e);
             }
-            logger.error(e.getMessage(), e);
+
         }
     }
 
-    public void sendTemplete() {
-        MimeMessage message = null;
-        try {
-            message = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom("981987024@qq.com");
-            helper.setTo("848135512@qq.com");
-            helper.setSubject("主题：模板邮件");
-
-            Map<String, Object> model = new HashedMap();
-            model.put("username", "zggdczfr");
-
-            //修改 application.properties 文件中的读取路径
-//            FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
-//            configurer.setTemplateLoaderPath("classpath:templates");
-            //读取 html 模板
-            Template template = freeMarkerConfigurer.getConfiguration().getTemplate("/email/test.ftl");
-            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
-            helper.setText(html, true);
-            javaMailSender.send(message);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 重发
@@ -165,20 +139,33 @@ public class EmailService extends ParameterizedBaseService<EmailSnapshoot, Long>
         try {
             logger.info("开始重发邮件... at {}", DateUtil.formatNow());
             long begin = System.currentTimeMillis();
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(from);
-            String[] arr = emailSnapshoot.getSendTo().split(";");
-            message.setTo(arr);
-            message.setSubject(emailSnapshoot.getSubject());
-            message.setText(emailSnapshoot.getContent());
+
+            if (emailSnapshoot.getStatus().equals(EmailSnapshoot.SEND_SUCCESS)) {
+                throw new BusinessException("该邮件已经成功发送！");
+            }
+
+            if (emailSnapshoot.getStatus().equals(EmailSnapshoot.SEND_ING)) {
+                throw new BusinessException("该邮件正在发送中！");
+            }
+
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(from);
+            helper.setTo(emailSnapshoot.getSendToArray());
+            helper.setSubject(emailSnapshoot.getSubject());
+            helper.setText(emailSnapshoot.getContent(), true);
             javaMailSender.send(message);
+
             emailSnapshoot.setSuccessDate(new Date());
             Long tryTimes = emailSnapshoot.getTryTimes() == null ? 0L : emailSnapshoot.getTryTimes();
             emailSnapshoot.setTryTimes(++tryTimes);
             emailSnapshoot.setStatus(EmailSnapshoot.SEND_SUCCESS);
             super.update(emailSnapshoot);
+
             long end = System.currentTimeMillis();
             logger.info("邮件重发成功... at {} , 耗时 {}", DateUtil.formatNow(), (end - begin) / 1000);
+        } catch (BusinessException e) {
+            logger.error(e.getMessage(), e);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             emailSnapshoot.setFailDate(new Date());

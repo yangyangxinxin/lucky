@@ -4,9 +4,11 @@ import com.luckysweetheart.common.Const;
 import com.luckysweetheart.common.PagedResult;
 import com.luckysweetheart.dal.dao.PhotoDao;
 import com.luckysweetheart.dal.entity.Photo;
+import com.luckysweetheart.dal.entity.User;
 import com.luckysweetheart.dal.query.PhotoQuery;
 import com.luckysweetheart.dto.PhotoDTO;
 import com.luckysweetheart.dto.StoreDataDTO;
+import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.store.StorageGroupService;
 import com.luckysweetheart.store.StoreService;
@@ -117,15 +119,20 @@ public class PhotoService extends ParameterizedBaseService<Photo, Long> {
         }
     }
 
+    @Resource
+    private UserService userService;
+
     public ResultInfo<PhotoDTO> detail(Long photoId) throws BusinessException {
         ResultInfo<PhotoDTO> re = new ResultInfo<>();
         try {
             notNull(photoId, "id不能为空");
             Photo photo = photoDao.get(photoId);
             if (photo != null) {
+                UserDTO userDTO = userService.findById(photo.getUserId());
                 PhotoDTO photoDTO = new PhotoDTO();
                 BeanCopierUtils.copy(photo, photoDTO);
                 photoDTO.setHttpUrl(storeService.getHttpUrlByResourcePath(photoDTO.getResourcePath()));
+                photoDTO.setUsername(userDTO.getUsername());
                 return re.success(photoDTO);
             }
             return re.fail("该相片不存在！");

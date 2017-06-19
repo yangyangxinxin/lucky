@@ -1,6 +1,7 @@
 package com.luckysweetheart.service;
 
 import com.luckysweetheart.common.Const;
+import com.luckysweetheart.common.IdWorker;
 import com.luckysweetheart.dal.dao.UserDao;
 import com.luckysweetheart.dal.entity.User;
 import com.luckysweetheart.dto.StoreDataDTO;
@@ -9,7 +10,9 @@ import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.store.StorageGroupService;
 import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.utils.*;
+import com.luckysweetheart.web.utils.DomainUtils;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -38,6 +41,13 @@ public class UserService extends ParameterizedBaseService<User, Long> {
     @Resource
     private EmailService emailService;
 
+    @Resource
+    private IdWorker idWorker;
+
+    private String getActiveCode() {
+        return AesUtil.encrypt(idWorker.nextId() + "");
+    }
+
     /**
      * 注册
      *
@@ -61,10 +71,17 @@ public class UserService extends ParameterizedBaseService<User, Long> {
             }
             isTrue(ValidateUtil.email(userDTO.getEmail()), "邮箱不符合规范！");
             //查询是否已经注册
-            User byMoAndMobilePhone = userApi.findByMobilePhoneOrEmail(userDTO.getMobilePhone());
+            User byMoAndMobilePhone = userApi.findByMobile(userDTO.getMobilePhone());
             if (byMoAndMobilePhone != null) {
-                throw new BusinessException("你已注册！请登录！");
+                throw new BusinessException("该手机号已注册！请登录！");
             }
+
+            User byEmail = userApi.findByEmail(userDTO.getEmail());
+
+            if (byEmail != null) {
+                throw new BusinessException("该邮箱已注册！请登录！");
+            }
+
             // 加密用户密码
 
             String pwd = DigestUtils.sha512Hex(salt + userDTO.getPassword());
@@ -77,15 +94,22 @@ public class UserService extends ParameterizedBaseService<User, Long> {
             user.setDeleteStatus(Const.DELETE_STATUS_NO);
             user.setCreateTime(new Date());
             user.setEmail(userDTO.getEmail());
+            user.setActiveStatus(Const.ACTIVE_STATUS_NO);
+            final String activeCode = getActiveCode();
+            user.setActiveCode(activeCode);
+
             Long userId = userApi.save(user);
             userDTO.setUserId(userId);
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    EmailSender sender = EmailSender.init().to(userDTO.getEmail()).emailTemplate(EmailTemplate.REGISTER).param("email",userDTO.getEmail()).param("basePath","basePath");
+                    String basePath = DomainUtils.getIndexUrl() + "/account/activeUser?email=" + AesUtil.encrypt(userDTO.getEmail()) + "&activeCode=" + activeCode + "&timestamp=" + new Date().getTime();
+                    EmailSender sender = EmailSender.init().to(userDTO.getEmail()).emailTemplate(EmailTemplate.REGISTER).param("email", userDTO.getEmail()).param("basePath", basePath).subject("注册_激活");
                     emailService.sendEmailTemplate(sender);
                 }
             }).start();
+
             return resultInfo.success(userDTO);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -265,5 +289,43 @@ public class UserService extends ParameterizedBaseService<User, Long> {
         }
     }
 
+    /**
+     * 激活用户
+     * @param email
+     * @param activeCode
+     * @param timestamp
+     * @return
+     */
+    public ResultInfo<Void> activeUser(String email, String activeCode, Long timestamp) {
+        ResultInfo<Void> resultInfo = new ResultInfo<>();
+        try {
+            isTrue(StringUtils.isNotBlank(email), "邮箱不能为空");
+            isTrue(StringUtils.isNotBlank(activeCode), "激活码不能为空");
+            isTrue(timestamp != null, "连接已过期");
+            Long now = new Date().getTime();
+
+            if (now - timestamp > 30 * 60 * 1000) {
+                throw new BusinessException("此连接已过期");
+            }
+            email = AesUtil.decrypt(email);
+            User user = userApi.findByEmail(email);
+            if (user != null) {
+                if (user.getActiveStatus().equals(User.ACTIVE_STATUS_YES)) {
+                    throw new BusinessException("此用户已经激活！");
+                }
+                if (!user.getActiveCode().equals(activeCode)) {
+                    throw new BusinessException("激活码不正确！");
+                }
+                user.setActiveStatus(User.ACTIVE_STATUS_YES);
+                user.setActiveDate(new Date());
+                userApi.update(user);
+                return resultInfo.success();
+            }
+            throw new BusinessException("该用户不存在！");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new BusinessException(e.getMessage());
+        }
+    }
 
 }

@@ -13,6 +13,8 @@ public class PhotoDTO implements DTO {
 
     private Long userId;
 
+    private String username;
+
     private Date createTime;
 
     private Date updateTime;
@@ -39,6 +41,14 @@ public class PhotoDTO implements DTO {
     private String suffix;
 
     private String httpUrl;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getHttpUrl() {
         return httpUrl;

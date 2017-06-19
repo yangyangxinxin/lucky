@@ -1,5 +1,6 @@
 package com.luckysweetheart.dal.entity;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -124,5 +125,18 @@ public class EmailSnapshoot {
 
     public void setTryTimes(Long tryTimes) {
         this.tryTimes = tryTimes;
+    }
+
+    public String[] getSendToArray() {
+        if (StringUtils.isBlank(this.sendTo)) {
+            return null;
+        }
+        try {
+            String sendTo = this.sendTo;
+            return sendTo.split(";");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -3,5 +3,8 @@
 <#assign action='index'>
 <#include '/common/head.ftl' >
 <@defaultLayout>
-<h1 style="text-align: center;font-size:30px;margin-top:50px;">Welcome to access this web site !</h1>
+<h1 style="text-align: center;font-size:30px;margin-top:50px;">Welcome to access this web site !
+</h1>
+<script>
+</script>
 </@defaultLayout>

@@ -9,22 +9,40 @@ import java.util.List;
  * Created by yangxin on 2017/5/22.
  */
 @Repository
-public class UserDao extends ParameterizedBaseDAO<User, Long>{
+public class UserDao extends ParameterizedBaseDAO<User, Long> {
 
-    public User findByMobilePhoneOrEmail(String mobileOrEmail){
+    public User findByMobilePhoneOrEmail(String mobileOrEmail) {
         String hql = "from User where mobilePhone = :mobileOrEmail or email = :mobileOrEmail";
-        List<User> list =  this.getSession().createQuery(hql).setString("mobileOrEmail",mobileOrEmail).setString("mobileOrEmail",mobileOrEmail).list();
-        if(list != null && list.size() > 0){
+        List<User> list = this.getSession().createQuery(hql).setString("mobileOrEmail", mobileOrEmail).setString("mobileOrEmail", mobileOrEmail).list();
+        if (list != null && list.size() > 0) {
             return list.get(0);
         }
         return null;
     }
 
+    public User findByMobile(String mobilePhone) {
+        String hql = "from User where mobilePhone = :mobilePhone";
+        List<User> users = this.getSession().createQuery(hql).setString("mobilePhone", mobilePhone).list();
+        if (users != null && users.size() > 0) {
+            return users.get(0);
+        }
+        return null;
+    }
+
+    public User findByEmail(String email) {
+        String hql = "from User where email = :email";
+        List<User> users = this.getSession().createQuery(hql).setString("email", email).list();
+        if (users != null && users.size() > 0) {
+            return users.get(0);
+        }
+        return null;
+    }
+
     // hibernate的占位符是从0下标开始
-    public User login(String mobilePhone,String password){
+    public User login(String mobilePhone, String password) {
         String hql = "from User where mobilePhone = ? and password = ?";
-        List<User> list =  this.getSession().createQuery(hql).setString(0,mobilePhone).setString(1,password).list();
-        if(list != null && list.size() > 0){
+        List<User> list = this.getSession().createQuery(hql).setString(0, mobilePhone).setString(1, password).list();
+        if (list != null && list.size() > 0) {
             return list.get(0);
         }
         return null;

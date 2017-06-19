@@ -1,5 +1,7 @@
 package com.luckysweetheart.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -95,5 +97,21 @@ public class EmailSender implements Serializable {
             sb.append(aSendTo).append(";");
         }
         return sb.toString();
+    }
+
+    public String[] getSendToArray() {
+        if (this.sendTo == null || this.sendTo.size() == 0) {
+            return null;
+        }
+        try {
+            String[] arr = new String[this.sendTo.size()];
+            for (int i = 0, length = this.sendTo.size(); i < length; i++) {
+                arr[i] = this.getSendTo().get(i);
+            }
+            return arr;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
