@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -208,7 +209,15 @@ public class LuckyWebApplicationTests {
 
     @Test
     public void  test111(){
-        System.out.println(DomainUtils.getIndexUrl());
+        final EmailSender emailSender = EmailSender.init().emailTemplate(EmailTemplate.REGISTER).to("848135512@qq.com","981987024@qq.com").
+                param("username","848135512").param("code","eeferfeeqq").subject("注册3").send();
+
     }
 
+    @Resource
+    private JavaMailSender sender;
+
+    @Test
+    public void test122(){
+    }
 }

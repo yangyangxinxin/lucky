@@ -1,5 +1,6 @@
 package com.luckysweetheart.utils;
 
+import com.luckysweetheart.service.EmailService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -17,6 +18,8 @@ public class EmailSender implements Serializable {
     private List<String> sendTo;
 
     private Map<String, Object> param;
+
+    private EmailService emailService;
 
     // 为了高大上
     private EmailSender() {
@@ -71,6 +74,11 @@ public class EmailSender implements Serializable {
         return this;
     }
 
+    public EmailSender emailService(EmailService emailService){
+        this.emailService = emailService;
+        return this;
+    }
+
 
     public EmailTemplate getEmailTemplate() {
         return emailTemplate;
@@ -113,5 +121,34 @@ public class EmailSender implements Serializable {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public synchronized EmailSender send(final EmailService emailService) {
+        final EmailSender sender = this;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                emailService.sendEmailTemplate(sender);
+            }
+        });
+        t.setName("邮件发送线程");
+        t.start();
+        try {
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+    private synchronized void initService() {
+        if (this.emailService == null) {
+            this.emailService = SpringUtil.getBean(EmailService.class);
+        }
+    }
+
+    public synchronized EmailSender send() {
+        initService();
+        return this.send(emailService);
     }
 }
