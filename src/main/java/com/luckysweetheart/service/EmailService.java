@@ -90,11 +90,13 @@ public class EmailService extends ParameterizedBaseService<EmailSnapshoot, Long>
         MimeMessage message = null;
         EmailSnapshoot emailSnapshoot = null;
         try {
+            isTrue(emailSender.getSendToArray() != null && emailSender.getSendToArray().length > 0, "收件人不能为空");
+            notNull(emailSender.getSubject(), "邮件主题或标题不能为空");
 
             message = javaMailSender.createMimeMessage();
+
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(from);
-
             helper.setTo(emailSender.getSendToArray());
             helper.setSubject(emailSender.getSubject());
 
@@ -137,6 +139,14 @@ public class EmailService extends ParameterizedBaseService<EmailSnapshoot, Long>
         }
     }
 
+    /**
+     * 根据Id进行重发
+     * @param emailSnapshootId
+     */
+    public synchronized void repeater(Long emailSnapshootId) {
+        EmailSnapshoot emailSnapshoot = this.get(emailSnapshootId);
+        repeater(emailSnapshoot);
+    }
 
     /**
      * 重发
@@ -145,7 +155,7 @@ public class EmailService extends ParameterizedBaseService<EmailSnapshoot, Long>
         try {
             logger.info("开始重发邮件... at {}", DateUtil.formatNow());
             long begin = System.currentTimeMillis();
-
+            notNull(emailSnapshoot, "邮件发送对象不能为空！");
             if (emailSnapshoot.getStatus().equals(EmailSnapshoot.SEND_SUCCESS)) {
                 throw new BusinessException("该邮件已经成功发送！");
             }
@@ -169,7 +179,7 @@ public class EmailService extends ParameterizedBaseService<EmailSnapshoot, Long>
             super.update(emailSnapshoot);
 
             long end = System.currentTimeMillis();
-            logger.info("邮件重发成功... at {} , 耗时 {}", DateUtil.formatNow(), (end - begin) / 1000);
+            logger.info("邮件重发成功... at {} , 耗时 {} s", DateUtil.formatNow(), (end - begin) / 1000);
         } catch (BusinessException e) {
             logger.error(e.getMessage(), e);
         } catch (Exception e) {
