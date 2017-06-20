@@ -99,6 +99,9 @@ public class PhotoService extends ParameterizedBaseService<Photo, Long> {
             Assert.notNull(userId, "删除人不能为空");
             Photo photo = photoDao.get(photoId);
             if (photo != null) {
+                if(photo.getDeleteStatus().equals(Const.DELETE_STATUS_YES)){
+                    throw new BusinessException("该相片已经被删除！");
+                }
                 if (photo.getUserId().equals(userId)) {
                     photo.setDeleteStatus(Const.DELETE_STATUS_YES);
                     ResultInfo<Void> result = storeService.deleteFile(photo.getResourcePath(), storageGroupService.getPhotoGroupName());
@@ -128,6 +131,9 @@ public class PhotoService extends ParameterizedBaseService<Photo, Long> {
             notNull(photoId, "id不能为空");
             Photo photo = photoDao.get(photoId);
             if (photo != null) {
+                if(photo.getDeleteStatus().equals(Const.DELETE_STATUS_YES)){
+                    return re.fail("该相片已经被删除！");
+                }
                 UserDTO userDTO = userService.findById(photo.getUserId());
                 PhotoDTO photoDTO = new PhotoDTO();
                 BeanCopierUtils.copy(photo, photoDTO);

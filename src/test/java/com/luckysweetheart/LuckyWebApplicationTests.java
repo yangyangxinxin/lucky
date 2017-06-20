@@ -210,7 +210,7 @@ public class LuckyWebApplicationTests {
     @Test
     public void  test111(){
         final EmailSender emailSender = EmailSender.init().emailTemplate(EmailTemplate.REGISTER).to("848135512@qq.com","981987024@qq.com").
-                param("username","848135512").param("code","eeferfeeqq").subject("注册3").send();
+                param("username","848135512").param("code","eeferfeeqq").subject("注册3").sleep(true).send();
 
     }
 

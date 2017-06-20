@@ -97,6 +97,7 @@ public class StoreService extends ParameterizedBaseService<StoreData,Long> {
     }
 
     public ResultInfo<Void> deleteFile(String resourcePath,String bucketName) throws BusinessException {
+        logger.info("调用存储删除文件...");
         ResultInfo<Void> resultInfo = new ResultInfo<>();
         try {
             StoreData storeData = storeDataApi.findByResourcePath(resourcePath);
@@ -113,6 +114,7 @@ public class StoreService extends ParameterizedBaseService<StoreData,Long> {
                 storeData.setDeleteStatus(StoreData.DELETE_STATUS_YES);
                 storeData.setUpdateTime(new Date());
                 //storeDataApi.update(storeData);
+                logger.info("文件删除成功...");
                 return resultInfo.success();
             }
             return resultInfo.fail(message).setResultCode(code + "");

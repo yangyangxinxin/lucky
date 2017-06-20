@@ -12,7 +12,7 @@
                 <div>上传时间：${photo.createTime!}</div>
                 <div>
                     <#if userInfo?exists && userInfo.userId == photo.userId>
-                        <a title="删除" style="cursor: pointer;">
+                        <a title="删除" style="cursor: pointer;" name="delete" photoId="${photo.photoId!}">
                             <i class="layui-icon" style="font-size: 36px;">
                                 &#xe640;
                             </i>
@@ -25,5 +25,26 @@
     <#else>
         ${msg!}
     </#if>
-
 </@defaultLayout>
+<script>
+    $(document).ready(function () {
+        $("a[name='delete']").click(function () {
+            var id = $(this).attr("photoId");
+            layer.confirm("你确定删除吗？",function () {
+                deletePhoto(id);
+            })
+        });
+
+        function deletePhoto(id) {
+            $.post("/photo/delete",{'photoId':id},function(data){
+                if(data.success){
+                    layer.alert("删除成功！",function(){
+                        location.href = "/photo/list";
+                    })
+                }else{
+                    layer.msg(data.msg);
+                }
+            },'json');
+        }
+    })
+</script>
