@@ -53,6 +53,10 @@ public class EmailSender implements Serializable {
         return new EmailSender();
     }
 
+    public EmailSender sleep() {
+        return this.sleep(true);
+    }
+
     public EmailSender sleep(boolean sleep) {
         this.sleep = sleep;
         return this;
@@ -157,7 +161,7 @@ public class EmailSender implements Serializable {
         }
     }
 
-    public synchronized EmailSender send(final EmailService emailService) {
+    public synchronized void send(final EmailService emailService) {
         final EmailSender sender = this;
         Thread t = new Thread(new Runnable() {
             @Override
@@ -174,7 +178,6 @@ public class EmailSender implements Serializable {
                 e.printStackTrace();
             }
         }
-        return this;
     }
 
     private synchronized void initService() {
@@ -183,8 +186,8 @@ public class EmailSender implements Serializable {
         }
     }
 
-    public synchronized EmailSender send() {
+    public synchronized void send() {
         initService();
-        return this.send(emailService);
+        this.send(emailService);
     }
 }

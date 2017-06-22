@@ -2,36 +2,26 @@ package com.luckysweetheart.dal.redis.dao;
 
 import com.alibaba.fastjson.JSON;
 import com.luckysweetheart.dal.DatabaseNamingStrategy;
-import com.luckysweetheart.utils.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 @Transactional(rollbackFor = Exception.class)
+@Service
 public class ParameterizedRedisBaseDao<T, PK extends Serializable> {
     public static Logger logger = LoggerFactory.getLogger(BaseRedisDao.class);
 
+    @Resource
     BaseRedisDao baseRedisDao;
 
+    @Resource
     private DatabaseNamingStrategy databaseNamingStrategy;
-
-    protected void init() {
-        try {
-            if (baseRedisDao == null) {
-                baseRedisDao = SpringUtil.getBean("baseRedisDao", BaseRedisDao.class);
-                baseRedisDao.init();
-            }
-            if (databaseNamingStrategy == null) {
-                databaseNamingStrategy = SpringUtil.getBean("databaseNamingStrategyRedis", DatabaseNamingStrategy.class);
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        }
-    }
 
 
     public Class<T> entityClass;
@@ -40,36 +30,33 @@ public class ParameterizedRedisBaseDao<T, PK extends Serializable> {
         initEntityClass(getClass());
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     private void initEntityClass(Class c) {
         Type type = c.getGenericSuperclass();
-        if (type instanceof ParameterizedType) {
+        if (type != null && type instanceof ParameterizedType) {
             Type[] parameterizedType = ((ParameterizedType) type)
                     .getActualTypeArguments();
             this.entityClass = (Class<T>) parameterizedType[0];
         } else {
-            initEntityClass((Class) type);
+            if (type != null) {
+                initEntityClass((Class) type);
+            }
         }
     }
 
     public void hset(PK pk, T t) {
-        init();
         baseRedisDao.hset(getTableName(), pk.toString(), t.toString());
     }
 
     public T hget(PK pk) {
-        init();
         return baseRedisDao.hget(getTableName(), pk + "", entityClass);
     }
 
     public boolean exists(String key) {//HEXISTS
-        init();
         return baseRedisDao.exists(getTableName() + "_" + key);
     }
 
 
     public boolean hexists(PK pk) {//HEXISTS
-        init();
         return baseRedisDao.hexists(getTableName(), pk);
     }
 
@@ -79,7 +66,6 @@ public class ParameterizedRedisBaseDao<T, PK extends Serializable> {
      * @return
      */
     public void hashdel(Object... hashKeys) {
-        init();
         baseRedisDao.hdel(getTableName(), hashKeys);
     }
 
@@ -88,7 +74,6 @@ public class ParameterizedRedisBaseDao<T, PK extends Serializable> {
      * @return 后辍
      */
     public T get(String key) {
-        init();
         return JSON.parseObject(baseRedisDao.get(getTableName() + "_" + key), entityClass);
     }
 
@@ -99,7 +84,6 @@ public class ParameterizedRedisBaseDao<T, PK extends Serializable> {
      * @return value
      */
     public void del(String key) {
-        init();
         baseRedisDao.del(getTableName() + "_" + key);
     }
 
@@ -110,7 +94,6 @@ public class ParameterizedRedisBaseDao<T, PK extends Serializable> {
      * @return value
      */
     public void set(String key, T value, long timeout) {
-        init();
         baseRedisDao.set(getTableName() + "_" + key, value.toString(), timeout);
     }
 
@@ -123,7 +106,6 @@ public class ParameterizedRedisBaseDao<T, PK extends Serializable> {
      * 此设置true后，会强制设置当前线程的stringRedisTemplate为一个,并开始事务,throw异常后自动回滚
      */
     public void setEnableTransactionSupport(boolean flag) {
-        init();
         baseRedisDao.setEnableTransactionSupport(flag);
     }
 
@@ -135,12 +117,6 @@ public class ParameterizedRedisBaseDao<T, PK extends Serializable> {
      */
     @SuppressWarnings("rawtypes")
     public String getTableName(Class c) {
-        if (databaseNamingStrategy == null) {
-            databaseNamingStrategy = new DatabaseNamingStrategy();
-            databaseNamingStrategy.setTablePrefix("themis_");
-            databaseNamingStrategy.setMaxLength(64);
-            databaseNamingStrategy.setIsAddUnderscores(true);
-        }
         return databaseNamingStrategy.classToTableName(c.getSimpleName());
     }
 }

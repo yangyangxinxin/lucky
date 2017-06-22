@@ -1,5 +1,7 @@
 package com.luckysweetheart.web.interceptor;
 
+import com.luckysweetheart.service.UnLoginUrlService;
+import com.luckysweetheart.utils.SpringUtil;
 import com.luckysweetheart.web.utils.AjaxResult;
 import com.luckysweetheart.web.utils.DomainUtils;
 import com.luckysweetheart.web.utils.RequestUtils;
@@ -18,25 +20,23 @@ import java.util.List;
  */
 public class AuthInterceptor extends AbstractInterceptor {
 
+    private UnLoginUrlService unLoginUrlService;
+
+    private synchronized void init() {
+        if (unLoginUrlService == null) {
+            unLoginUrlService = SpringUtil.getBean(UnLoginUrlService.class);
+        }
+    }
+
     /**
      * 不需要登录的URL
      *
      * @return
      */
     private List<String> unLoginList() {
-        List<String> list = new ArrayList<>();
-        list.add("/");
-        list.add("/index");
-        list.add("/account/*");
-        //list.add("/photo/*");
-        list.add("/download");
-        list.add("/article/list");
-        list.add("/article/detail");
-        list.add("/article/getDetail");
-        list.add("/photo/list");
-        list.add("/photo/queryPage");
-        list.add("/test/*");
-        return list;
+        init();
+        // 每次读取数据库会消耗性能，后续考虑添加到缓存中，或redis数据库中
+        return unLoginUrlService.queryUnLoginUrl();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class AuthInterceptor extends AbstractInterceptor {
                     returnURL = returnURL + "?" + queryStr;
                 }
             }
-            response.sendRedirect("/account/loginPage?returnUrl=" + URLEncoder.encode(returnURL,"UTF-8"));
+            response.sendRedirect("/account/loginPage?returnUrl=" + URLEncoder.encode(returnURL, "UTF-8"));
             return false;
         }
         return true;

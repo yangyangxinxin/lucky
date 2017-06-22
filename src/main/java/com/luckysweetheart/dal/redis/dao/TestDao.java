@@ -9,9 +9,10 @@ import javax.annotation.Resource;
  * Created by yangxin on 2017/6/20.
  */
 @Repository
-public class TestDao {
+public class TestDao extends ParameterizedRedisBaseDao<String,Long>{
 
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
+    public void set(String key,String value){
+        super.set(key,value,10000000);
+    }
 
 }

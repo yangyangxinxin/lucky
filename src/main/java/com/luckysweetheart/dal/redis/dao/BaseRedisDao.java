@@ -1,7 +1,6 @@
 package com.luckysweetheart.dal.redis.dao;
 
 import com.alibaba.fastjson.JSONObject;
-import com.luckysweetheart.utils.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.HashOperations;
@@ -10,6 +9,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -27,31 +27,22 @@ public class BaseRedisDao {
     /**
      * redisTemplate的list集合操作类
      */
+    @Resource
     protected ListOperations<String, String> listOperations;
 
     /**
      * redisTemplate的hash集合操作类
      */
+    @Resource
     protected HashOperations<String, String, String> hashOperations;
 
     /**
      * 字符操作类
      */
+    @Resource
     protected StringRedisTemplate stringRedisTemplate;
 
     public BaseRedisDao() {
-    }
-
-    public void init() {
-        if (stringRedisTemplate == null) {
-            try {
-                stringRedisTemplate = SpringUtil.getBean("stringRedisTemplate", StringRedisTemplate.class);
-                hashOperations = stringRedisTemplate.opsForHash();
-                listOperations = stringRedisTemplate.opsForList();
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-            }
-        }
     }
 
     /**
@@ -62,7 +53,6 @@ public class BaseRedisDao {
      * @param val
      */
     public void hset(String key, String filed, String val) {
-        init();
         logger.debug("hset:key|filed|val->" + key + "|" + filed + "|" + val);
         hashOperations.put(key, filed, val);
     }
@@ -76,7 +66,6 @@ public class BaseRedisDao {
      * @return
      */
     public <T> T hget(String key, String filed, Class<T> cls) {
-        init();
         logger.debug("hget:key|filed|cls->" + key + "|" + filed + "|" + cls.getCanonicalName());
         String result = hashOperations.get(key, filed);
         logger.debug("hget:key|filed|result->" + key + "|" + filed + "|" + result);
@@ -91,7 +80,6 @@ public class BaseRedisDao {
      * @return
      */
     public List<String> hmget(String key, Collection<String> fileds) {
-        init();
         logger.debug("hget:key|filed|cls->" + key + "|" + fileds);
         return hashOperations.multiGet(key, fileds);
     }
@@ -103,7 +91,6 @@ public class BaseRedisDao {
      * @return
      */
     public Set<String> hkeys(String key) {
-        init();
         logger.debug("hget:key->" + key);
         return hashOperations.keys(key);
     }
@@ -114,7 +101,6 @@ public class BaseRedisDao {
      * @return
      */
     public List<String> hvals(String key) {
-        init();
         logger.debug("hvals:key->" + key);
         return hashOperations.values(key);
     }
@@ -127,7 +113,6 @@ public class BaseRedisDao {
      * @return
      */
     public boolean hexists(String key, Object filed) {//HEXISTS
-        init();
         logger.debug("hexists:key|filed->" + key + "|" + filed);
         return hashOperations.hasKey(key, filed);
     }
@@ -138,7 +123,6 @@ public class BaseRedisDao {
      * @param key
      */
     protected void hdel(String key, Object... hashKeys) {
-        init();
         logger.debug("hget:key|hashKeys->" + key + "|" + JSONObject.toJSONString(hashKeys));
         hashOperations.delete(key, hashKeys);
     }
@@ -150,7 +134,6 @@ public class BaseRedisDao {
      * @return
      */
     public boolean exists(String key) {//HEXISTS
-        init();
         logger.debug("exists:key->" + key);
         return stringRedisTemplate.hasKey(key);
     }
@@ -161,7 +144,6 @@ public class BaseRedisDao {
      * @param key
      */
     public void del(String key) {
-        init();
         logger.debug("del:key->" + key);
         stringRedisTemplate.delete(key);
     }
@@ -173,7 +155,6 @@ public class BaseRedisDao {
      * @return
      */
     public Set<String> keys(String pt) {
-        init();
         logger.debug("keys:pattern->" + pt);
         return stringRedisTemplate.keys(pt);
     }
@@ -185,7 +166,6 @@ public class BaseRedisDao {
      * @return value
      */
     public String get(String key) {
-        init();
         logger.debug("key->" + key);
         return stringRedisTemplate.opsForValue().get(key);
     }
@@ -197,7 +177,6 @@ public class BaseRedisDao {
      * @return value
      */
     public void set(String key, String value, long timeout) {
-        init();
         logger.debug("key|value->" + key + "|" + value);
         stringRedisTemplate.opsForValue().set(key, value, timeout, TimeUnit.MILLISECONDS);
     }
@@ -206,7 +185,6 @@ public class BaseRedisDao {
      * 此设置true后，会强制设置当前线程的stringRedisTemplate为一个,并开始事务,throw异常后自动回滚
      */
     public void setEnableTransactionSupport(boolean flag) {
-        init();
         stringRedisTemplate.setEnableTransactionSupport(flag);
     }
 }

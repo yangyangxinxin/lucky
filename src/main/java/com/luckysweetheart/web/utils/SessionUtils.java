@@ -55,7 +55,8 @@ public class SessionUtils {
 
     public static void logout(HttpServletRequest request) {
         UserDTO user = getLoginUser(request);
-        removeAttribute(request, loginUserKey);
+        //removeAttribute(request, loginUserKey);
+        getSession(request).invalidate();
         if (user != null) {
             logger.info("注销成功，注销用户id：" + user.getUserId() + "，用户名：" + user.getUsername());
         }

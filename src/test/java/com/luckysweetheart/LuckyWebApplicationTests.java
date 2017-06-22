@@ -4,18 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.luckysweetheart.common.Const;
 import com.luckysweetheart.common.Paged;
 import com.luckysweetheart.common.PagedResult;
+import com.luckysweetheart.dal.entity.UnLoginUrl;
 import com.luckysweetheart.dal.query.PhotoQuery;
 import com.luckysweetheart.dal.query.condition.ConditionParam;
 import com.luckysweetheart.dal.query.field.PhotoQueryField;
 import com.luckysweetheart.dal.query.order.OrderParam;
+import com.luckysweetheart.dal.redis.dao.TestDao;
 import com.luckysweetheart.dto.ArticleDTO;
 import com.luckysweetheart.dto.PhotoDTO;
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
-import com.luckysweetheart.service.ArticleService;
-import com.luckysweetheart.service.EmailService;
-import com.luckysweetheart.service.PhotoService;
-import com.luckysweetheart.service.UserService;
+import com.luckysweetheart.service.*;
 import com.luckysweetheart.store.StoreService;
 import com.luckysweetheart.utils.EmailSender;
 import com.luckysweetheart.utils.EmailTemplate;
@@ -209,7 +208,7 @@ public class LuckyWebApplicationTests {
 
     @Test
     public void  test111(){
-        final EmailSender emailSender = EmailSender.init().emailTemplate(EmailTemplate.REGISTER).to("848135512@qq.com","981987024@qq.com").
+         EmailSender.init().emailTemplate(EmailTemplate.REGISTER).to("848135512@qq.com","981987024@qq.com").
                 param("username","848135512").param("code","eeferfeeqq").subject("注册3").sleep(true).send();
 
     }
@@ -217,7 +216,72 @@ public class LuckyWebApplicationTests {
     @Resource
     private JavaMailSender sender;
 
+    @Resource
+    private TestDao testDao;
+
     @Test
     public void test122(){
+        testDao.set("aaabbb","dwedfwfwerfr");
+    }
+
+    @Resource
+    private UnLoginUrlService unLoginUrlService;
+
+    @Test
+    public void test123(){
+
+        UnLoginUrl unLoginUrl = new UnLoginUrl();
+        unLoginUrl.setCreateTime(new Date());
+        unLoginUrl.setUrl("/");
+        unLoginUrlService.save(unLoginUrl);
+
+        unLoginUrl = new UnLoginUrl();
+        unLoginUrl.setCreateTime(new Date());
+        unLoginUrl.setUrl("/index");
+        unLoginUrlService.save(unLoginUrl);
+
+        unLoginUrl = new UnLoginUrl();
+        unLoginUrl.setCreateTime(new Date());
+        unLoginUrl.setUrl("/account/*");
+        unLoginUrlService.save(unLoginUrl);
+
+        unLoginUrl = new UnLoginUrl();
+        unLoginUrl.setCreateTime(new Date());
+        unLoginUrl.setUrl("/download");
+        unLoginUrlService.save(unLoginUrl);
+
+        unLoginUrl = new UnLoginUrl();
+        unLoginUrl.setCreateTime(new Date());
+        unLoginUrl.setUrl("/article/list");
+        unLoginUrlService.save(unLoginUrl);
+
+        unLoginUrl = new UnLoginUrl();
+        unLoginUrl.setCreateTime(new Date());
+        unLoginUrl.setUrl("/article/detail");
+        unLoginUrlService.save(unLoginUrl);
+
+        unLoginUrl = new UnLoginUrl();
+        unLoginUrl.setCreateTime(new Date());
+        unLoginUrl.setUrl("/photo/list");
+        unLoginUrlService.save(unLoginUrl);
+
+        unLoginUrl = new UnLoginUrl();
+        unLoginUrl.setCreateTime(new Date());
+        unLoginUrl.setUrl("/photo/queryPage");
+        unLoginUrlService.save(unLoginUrl);
+
+        unLoginUrl = new UnLoginUrl();
+        unLoginUrl.setCreateTime(new Date());
+        unLoginUrl.setUrl("/test/*");
+        unLoginUrlService.save(unLoginUrl);
+
+    }
+
+    @Test
+    public void test124(){
+        List<String> list = unLoginUrlService.queryUnLoginUrl();
+        for (String s : list) {
+            System.out.println(s);
+        }
     }
 }

@@ -39,9 +39,6 @@ public class UserService extends ParameterizedBaseService<User, Long> {
     private StorageGroupService storageGroupService;
 
     @Resource
-    private EmailService emailService;
-
-    @Resource
     private IdWorker idWorker;
 
     private String getActiveCode() {
@@ -101,14 +98,9 @@ public class UserService extends ParameterizedBaseService<User, Long> {
             Long userId = userApi.save(user);
             userDTO.setUserId(userId);
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    String basePath = DomainUtils.getIndexUrl() + "/account/activeUser?email=" + AesUtil.encrypt(userDTO.getEmail()) + "&activeCode=" + activeCode + "&timestamp=" + new Date().getTime();
-                    EmailSender sender = EmailSender.init().to(userDTO.getEmail()).emailTemplate(EmailTemplate.REGISTER).param("email", userDTO.getEmail()).param("basePath", basePath).subject("注册_激活");
-                    emailService.sendEmailTemplate(sender);
-                }
-            }).start();
+            String basePath = DomainUtils.getIndexUrl() + "/account/activeUser?email=" + AesUtil.encrypt(userDTO.getEmail()) + "&activeCode=" + activeCode + "&timestamp=" + new Date().getTime();
+
+            EmailSender.init().to(userDTO.getEmail()).emailTemplate(EmailTemplate.REGISTER).param("email", userDTO.getEmail()).param("basePath", basePath).subject("注册_激活").send();
 
             return resultInfo.success(userDTO);
         } catch (Exception e) {
@@ -131,6 +123,8 @@ public class UserService extends ParameterizedBaseService<User, Long> {
             UserDTO userDTO = new UserDTO();
             if (user != null) {
                 logger.info("登录成功");
+                user.setLastLoginTime(new Date());
+                update(user);
                 BeanCopierUtils.copy(user, userDTO);
                 return resultInfo.success(userDTO);
             }

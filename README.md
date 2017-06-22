@@ -7,7 +7,7 @@
 ### 相关技术
 
 - spring-boot、hibernate
-- 数据库 ： MySQL
+- 数据库 ： MySQL 、 redis
 - 前端模板引擎freemarker
 - 前端框架采用jQuery + layerUI  [点击查看layerUI开发文档](http://www.layui.com/doc/)
 - 存储使用腾讯的 COS存储 [点击查看COS存储Java开发文档](https://www.qcloud.com/document/product/436/6273)
@@ -94,3 +94,5 @@ photo|相册功能存储组|
 - 2017/06/14 文章编写改为markdown，markdown语法简单，用较少的编写量达到更好的展示效果，网站首页样式调整，首页终于有个样子了
 
 - 2017/06/16 网站的样式大改版，现在越来越好看了，没以前那么简陋（丑陋）了，今天添加了邮件相关的东西，用于发送验证码，短信验证码以前也考虑过，但是好贵啊，不想花钱，就用邮箱验证码了。目前的邮箱是使用的我自己的QQ邮箱，我已经申请了网站的QQ邮箱，但是14天后才能使用。等着吧。
+
+- 2017/06/22 redis新增，在线用户统计，不需要登录的URL放在数据库中管理

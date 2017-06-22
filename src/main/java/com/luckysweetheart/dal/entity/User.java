@@ -64,6 +64,16 @@ public class User {
      */
     private Date activeDate;
 
+    private Date lastLoginTime;
+
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
     public String getActiveCode() {
         return activeCode;
     }

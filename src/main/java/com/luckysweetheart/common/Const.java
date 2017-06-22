@@ -51,8 +51,16 @@ public interface Const {
      */
     String MAX_UPLOAD_FILE_SIZE_FORMAT = MAX_UPLOAD_FILE_SIZE / 1024 / 1024 + "MB";
 
-    public static final Integer ACTIVE_STATUS_NO = 0;
+    /**
+     * 用户激活状态：未激活
+     */
+    Integer ACTIVE_STATUS_NO = 0;
 
-    public static final Integer ACTIVE_STATUS_YES = 1;
+    /**
+     * 用户激活状态：已激活
+     */
+    Integer ACTIVE_STATUS_YES = 1;
+
+
 
 }
