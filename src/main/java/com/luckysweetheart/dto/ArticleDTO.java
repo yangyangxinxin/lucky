@@ -67,6 +67,26 @@ public class ArticleDTO {
 
     private String author;
 
+    private String createTimeFormat;
+
+    private String updateTimeFormat;
+
+    public String getCreateTimeFormat() {
+        return createTimeFormat;
+    }
+
+    public void setCreateTimeFormat(String createTimeFormat) {
+        this.createTimeFormat = createTimeFormat;
+    }
+
+    public String getUpdateTimeFormat() {
+        return updateTimeFormat;
+    }
+
+    public void setUpdateTimeFormat(String updateTimeFormat) {
+        this.updateTimeFormat = updateTimeFormat;
+    }
+
     public String getAuthor() {
         return author;
     }

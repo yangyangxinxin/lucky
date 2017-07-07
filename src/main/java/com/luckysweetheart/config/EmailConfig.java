@@ -1,6 +1,8 @@
 package com.luckysweetheart.config;
 
 import com.luckysweetheart.utils.DateUtil;
+import com.luckysweetheart.utils.EnvironmentUtil;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,8 +42,11 @@ public class EmailConfig {
     @Value("${spring.mail.protocol}")
     private String protocol; //协议
 
+    @Value("${spring.profiles.active}")
+    private String active;
+
     @Bean
-    public JavaMailSender getSender(){
+    public JavaMailSender getSender() {
         logger.info("初始化邮件配置 at {}", DateUtil.formatNow());
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setUsername(from);
@@ -51,19 +56,22 @@ public class EmailConfig {
         Properties props = new Properties();//②
         props.setProperty("mail.smtp.host", host);
         props.setProperty("mail.smtp.auth", "true");
-        javax.mail.Session session = javax.mail.Session.getDefaultInstance(props,new Authenticator(){
+        javax.mail.Session session = javax.mail.Session.getDefaultInstance(props, new Authenticator() {
             @Override
-            protected PasswordAuthentication getPasswordAuthentication(){
-                return new PasswordAuthentication(from,pass);
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(from, pass);
             }
         });
         javaMailSender.setSession(session);//③
-        try {
-            logger.info("测试邮件连接 at {} ",DateUtil.formatNow());
-            javaMailSender.testConnection();
-            logger.info("邮件连接正常 at {} ",DateUtil.formatNow());
-        } catch (MessagingException e) {
-            logger.error(e.getMessage(), e);
+        if (!StringUtils.equals("dev", active)) {
+            try {
+                logger.info("测试邮件连接 at {} ", DateUtil.formatNow());
+                javaMailSender.testConnection();
+                logger.info("邮件连接正常 at {} ", DateUtil.formatNow());
+
+            } catch (MessagingException e) {
+                logger.error(e.getMessage(), e);
+            }
         }
         logger.info("邮件配置初始化完成 at {}", DateUtil.formatNow());
         return javaMailSender;

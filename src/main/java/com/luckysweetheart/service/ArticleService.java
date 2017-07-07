@@ -8,6 +8,7 @@ import com.luckysweetheart.dal.query.ArticleQuery;
 import com.luckysweetheart.dto.ArticleDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.utils.BeanCopierUtils;
+import com.luckysweetheart.utils.DateUtil;
 import com.luckysweetheart.utils.ResultInfo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -106,6 +107,8 @@ public class ArticleService extends ParameterizedBaseService<Article, Long> {
             notNull(article, "文章不存在");
             ArticleDTO articleDTO = new ArticleDTO();
             BeanCopierUtils.copy(article, articleDTO);
+            articleDTO.setCreateTimeFormat(DateUtil.formatDate(articleDTO.getCreateTime()));
+            articleDTO.setUpdateTimeFormat(DateUtil.formatDate(articleDTO.getUpdateTime()));
             //articleDTO.setContent(HtmlUtils.htmlEscape(articleDTO.getContent()));
             return resultInfo.success(articleDTO);
         } catch (Exception e) {

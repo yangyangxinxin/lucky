@@ -32,6 +32,7 @@ public class RedisTest {
 
     @Test
     public void test2(){
+        
         System.out.println(userInfoRedisDao.findById(1L));
     }
 }

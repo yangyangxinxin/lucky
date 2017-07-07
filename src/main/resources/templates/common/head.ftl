@@ -2,9 +2,14 @@
 <#macro defaultLayout>
 <#if Session.userInfo?exists>
     <#assign userInfo = Session.userInfo>
+    <#assign loginUserId = Session.userInfo.userId>
+
+    <#else>
+        <#assign loginUserId = 0>
 </#if>
 <#if domainUtils?exists>
     <#assign indexUrl = domainUtils.indexUrl>
+
 </#if>
 <!DOCTYPE html>
 <html lang="zh-cn">

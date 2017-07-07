@@ -11,6 +11,7 @@
             <div class="layui-input-inline">
                 <input type="file" name="file" class="layui-upload-file" multiple/>
             </div>
+            <div class="layui-form-mid layui-word-aux">支持多个文件同时上传，每个文件的文件大小不能超过50MB</div>
         </div>
     </div>
 

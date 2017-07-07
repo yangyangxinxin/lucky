@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.ListOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +24,17 @@ public class UnLoginUrlService extends ParameterizedBaseService<UnLoginUrl, Long
     private ListOperations<String, String> listOperations;
 
     private static final String key = RedisKey.REDIS_UNLOGIN_URL_KEY;
+
+    public void setUnLoginUrl(String url){
+        UnLoginUrl unLoginUrl = new UnLoginUrl();
+        unLoginUrl.setUrl(url);
+        unLoginUrl.setCreateTime(new Date());
+        unLoginUrl.setUpdateTime(new Date());
+        save(unLoginUrl);
+        listOperations.leftPush(key, url);
+        // 5分钟有效期
+        listOperations.getOperations().expire(key, 5, TimeUnit.MINUTES);
+    }
 
     /**
      * <p>获取不需要登陆的URL，优先从Redis中取，取不到从mysql中取，然后再放到redis中，并设置该集合的过期时间为5分钟。</p>

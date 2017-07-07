@@ -6,7 +6,8 @@ package com.luckysweetheart.utils;
 public enum EmailTemplate {
 
     FORGET_PASSWORD("/email/forget_password.ftl"),
-    REGISTER("/email/register.ftl");
+    REGISTER("/email/register.ftl"),
+    TEST("/email/test.ftl");
 
     private String path;
 

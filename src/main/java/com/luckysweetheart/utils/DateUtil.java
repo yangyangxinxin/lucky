@@ -215,9 +215,9 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
-        Calendar now = Calendar.getInstance();
-        Date last21 = DateUtil.setDateByAdd(now.getTime(), Calendar.DATE, -20);
-        String endDate = DateUtil.formatDate(last21, "yyyy-MM-dd");
-        System.out.println(endDate);
+        Date[] dates = getStartEndTime("typeD");
+        for (Date date : dates) {
+            System.out.println(formatDate(date));
+        }
     }
 }

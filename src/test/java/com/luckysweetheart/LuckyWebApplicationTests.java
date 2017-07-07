@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.luckysweetheart.common.Const;
 import com.luckysweetheart.common.Paged;
 import com.luckysweetheart.common.PagedResult;
+import com.luckysweetheart.dal.dao.UserInfoDao;
 import com.luckysweetheart.dal.entity.UnLoginUrl;
+import com.luckysweetheart.dal.entity.UserInfo;
 import com.luckysweetheart.dal.query.PhotoQuery;
 import com.luckysweetheart.dal.query.condition.ConditionParam;
 import com.luckysweetheart.dal.query.field.PhotoQueryField;
@@ -283,5 +285,50 @@ public class LuckyWebApplicationTests {
         for (String s : list) {
             System.out.println(s);
         }
+    }
+
+    @Resource
+    private UserInfoService userInfoService;
+
+    @Resource
+    private UserInfoDao userInfoDao;
+
+    @Test
+    public void test125(){
+        long start = System.currentTimeMillis();
+        UserInfo userInfo;
+        for (int i = 0; i < 100000; i++) {
+            userInfo = new UserInfo();
+            userInfo.setName(Math.round(Math.random() * 1000) + "");
+            userInfoService.save(userInfo);
+        }
+        long end = System.currentTimeMillis();
+
+        //4205s
+        System.out.println("共消耗时间："  + (end - start) / 1000 + " s");
+
+    }
+
+    @Test
+    public void test126(){
+        userInfoDao.updateA();
+    }
+
+    @Test
+    public void test127(){
+        userInfoDao.updateB();
+    }
+
+    @Test
+    public void test128(){
+        long start = System.currentTimeMillis();
+        List<UserInfo> userInfos = userInfoDao.getAll();
+        for (UserInfo userInfo : userInfos) {
+            System.out.println(userInfo);
+        }
+        long end = System.currentTimeMillis();
+
+        //4205s
+        System.out.println("共消耗时间："  + (end - start) / 1000 + " s");
     }
 }
