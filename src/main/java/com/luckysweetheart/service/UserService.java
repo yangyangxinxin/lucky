@@ -100,6 +100,7 @@ public class UserService extends ParameterizedBaseService<User, Long> {
 
             String basePath = DomainUtils.getIndexUrl() + "/account/activeUser?email=" + AesUtil.encrypt(userDTO.getEmail()) + "&activeCode=" + activeCode + "&timestamp=" + new Date().getTime();
 
+            logger.info(basePath);
             EmailSender.init().to(userDTO.getEmail()).emailTemplate(EmailTemplate.REGISTER).param("email", userDTO.getEmail()).param("basePath", basePath).subject("注册_激活").send();
 
             return resultInfo.success(userDTO);

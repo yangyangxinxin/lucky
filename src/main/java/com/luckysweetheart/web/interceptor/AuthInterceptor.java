@@ -1,6 +1,5 @@
 package com.luckysweetheart.web.interceptor;
 
-import com.luckysweetheart.service.UnLoginUrlService;
 import com.luckysweetheart.utils.SpringUtil;
 import com.luckysweetheart.web.utils.AjaxResult;
 import com.luckysweetheart.web.utils.DomainUtils;
@@ -20,13 +19,6 @@ import java.util.List;
  */
 public class AuthInterceptor extends AbstractInterceptor {
 
-    private UnLoginUrlService unLoginUrlService;
-
-    private synchronized void init() {
-        if (unLoginUrlService == null) {
-            unLoginUrlService = SpringUtil.getBean(UnLoginUrlService.class);
-        }
-    }
 
     /**
      * 不需要登录的URL
@@ -34,9 +26,17 @@ public class AuthInterceptor extends AbstractInterceptor {
      * @return
      */
     private List<String> unLoginList() {
-        init();
-        // 每次读取数据库会消耗性能，后续考虑添加到缓存中，或redis数据库中
-        return unLoginUrlService.queryUnLoginUrl();
+        List<String> list = new ArrayList<>();
+        list.add("/");
+        list.add("/index");
+        list.add("/account/*");
+        list.add("/download");
+        list.add("/article/list");
+        list.add("/article/detail");
+        list.add("/photo/list");
+        list.add("/photo/queryPage");
+        list.add("/test/*");
+        return list;
     }
 
     @Override
