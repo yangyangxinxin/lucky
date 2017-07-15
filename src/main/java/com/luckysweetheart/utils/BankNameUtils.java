@@ -2,16 +2,6 @@ package com.luckysweetheart.utils;
 
 public class BankNameUtils {
 
-	/**
-	 * @param args
-	 */
-		public static void main(String[] args) {
-//			String cardNumber = "6210676802084484923";
-			String cardNumber = "6215583100004882388";
-//			String cardNumber = "6228480478561173475";
-			String name = getNameOfBank(cardNumber);
-			System.out.println(name);
-		}
 
 
 		//传入卡号 得到银行名称

@@ -98,7 +98,7 @@ public class UserService extends ParameterizedBaseService<User, Long> {
             Long userId = userApi.save(user);
             userDTO.setUserId(userId);
 
-            String basePath = DomainUtils.getIndexUrl() + "/account/activeUser?email=" + AesUtil.encrypt(userDTO.getEmail()) + "&activeCode=" + activeCode + "&timestamp=" + new Date().getTime();
+            String basePath = DomainUtils.getIndexUrl() + "/account/activeUser?email=" + AesUtil.encrypt(userDTO.getEmail()) + "&activeCode=" + activeCode + "&stamp=" + new Date().getTime();
 
             logger.info(basePath);
             EmailSender.init().to(userDTO.getEmail()).emailTemplate(EmailTemplate.REGISTER).param("email", userDTO.getEmail()).param("basePath", basePath).subject("注册_激活").send();
@@ -323,8 +323,5 @@ public class UserService extends ParameterizedBaseService<User, Long> {
         }
     }
 
-    public static void main(String[] args) {
-        AesUtil.decrypt("f86be84a61718a6dbb65781d92e1d30d853b08886af2545a81906fe1c8ba61d71ecb7ae65644252f28cdd63f1aea5e247181c2d53c0f4e2b337b857ae6fbc19d");
-    }
 
 }

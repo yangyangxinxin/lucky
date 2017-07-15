@@ -104,9 +104,9 @@ public class AccountController extends BaseController {
     }
 
     @RequestMapping("/activeUser")
-    public String active(String email, String activeCode, Long timestamp) {
+    public String active(String email, String activeCode, Long stamp) {
         try {
-            ResultInfo<Void> resultInfo = userService.activeUser(email, activeCode, timestamp);
+            ResultInfo<Void> resultInfo = userService.activeUser(email, activeCode, stamp);
             if (resultInfo.isSuccess()) {
                 setAttribute("msg", "已激活成功");
                 setAttribute("code", 0);

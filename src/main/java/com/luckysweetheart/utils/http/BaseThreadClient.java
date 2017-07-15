@@ -254,8 +254,8 @@ public class BaseThreadClient {
         return this;
     }
 
-    public static void main(String[] args) {
-        /**
+   /* public static void main(String[] args) {
+        *//**
          Map<String,Object> paramMaps=new HashMap<String,Object>();
          paramMaps.put("preservationId", 48);
          String ke="htb.ebaoquan.org";
@@ -266,6 +266,6 @@ public class BaseThreadClient {
          .setParams(paramMaps)
          .send(PreservationFull.class);
          System.out.println(JSON.toJSON(resultInfo));
-         */
-    }
+         *//*
+    }*/
 }

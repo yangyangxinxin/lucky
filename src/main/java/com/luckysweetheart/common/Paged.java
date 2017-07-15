@@ -493,12 +493,4 @@ public class Paged implements Serializable, Cloneable {
 	public void setOrderDirection(String orderDirection) {
 		this.orderDirection = orderDirection;
 	}
-
-	public static void main(String[] args){
-		Paged p = new Paged();
-		p.setPage(3);
-		p.setPageSize(20);
-		System.out.println(p.getOffset());
-		System.out.println(p.getBeginIndex());
-	}
 }

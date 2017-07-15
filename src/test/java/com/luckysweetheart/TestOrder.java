@@ -1,10 +1,13 @@
+/*
 package com.luckysweetheart;
 
 import com.luckysweetheart.utils.Util;
 
+*/
 /**
  * Created by yangxin on 2017/6/20.
- */
+ *//*
+
 public class TestOrder {
 
     private static String a;
@@ -35,4 +38,4 @@ class A{
     public void setOrderNumber() {
         this.orderNumber = Util.generateNumber();
     }
-}
+}*/

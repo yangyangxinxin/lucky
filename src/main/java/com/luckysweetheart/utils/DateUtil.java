@@ -214,10 +214,10 @@ public class DateUtil {
         return dates;
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Date[] dates = getStartEndTime("typeD");
         for (Date date : dates) {
             System.out.println(formatDate(date));
         }
-    }
+    }*/
 }

@@ -166,7 +166,7 @@ public class ExcelUtil {
 		return dataArrayByte;  
 	} 
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		ExcelUtil xls = new ExcelUtil();
 		try {
 			String[] title = new String[]{"一","二","三","四","五","六","七","八","九"};
@@ -175,7 +175,7 @@ public class ExcelUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	private static void closeStream(FileInputStream fileInputStream) throws IOException {
 		if (fileInputStream != null) {

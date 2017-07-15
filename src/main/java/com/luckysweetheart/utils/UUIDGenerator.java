@@ -11,8 +11,5 @@ public class UUIDGenerator {
 		return java.util.UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
 	}
 
-	public static void main(String[] args) {
-		System.out.println(gen());
-	}
 
 }

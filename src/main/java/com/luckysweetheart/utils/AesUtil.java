@@ -138,19 +138,6 @@ public class AesUtil {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-//		String data = "123456";
-//		String ja = encrypt(data);
-//		System.out.println(encrypt(data.getBytes("UTF-8"), CRYPT_KEY));
-//		System.out.println(new sun.misc.BASE64Encoder().encode(encrypt(data.getBytes("UTF-8"), CRYPT_KEY)));
-//		System.out.println(ja);
-//		System.out.println(decrypt(ja));
-        String data = "1";
-        String str = encrypt(data);
-        System.out.println(str + "=" + str.length());
-        String s = decrypt("E350AB0E018B4E6F1CE1A819A9E832EE");
-        System.out.println(s);
-    }
 
 
 }

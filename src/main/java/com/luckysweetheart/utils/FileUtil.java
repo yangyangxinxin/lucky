@@ -58,10 +58,10 @@ public class FileUtil {
 		return StringUtils.trimToEmpty(ext);
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		String name = "folder/fileName.suffix";
 		System.out.println(getExtensionNoDot(name));
-	}
+	}*/
 
 	/**
 	 * 判断是否存在扩展名

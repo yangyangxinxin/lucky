@@ -194,10 +194,10 @@ public class CommonUtil {
 		}
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		//System.out.println(privacyPhone("400-808-9187"));
 		System.out.println(generateShortUuid());
-	}
+	}*/
 	
 	/**
 	 * 查找字符组串中是否包含特定的字符串
