@@ -28,14 +28,23 @@ public class AuthInterceptor extends AbstractInterceptor {
     private List<String> unLoginList() {
         List<String> list = new ArrayList<>();
         list.add("/");
+        list.add("/m/");
+        list.add("/m/index");
         list.add("/index");
         list.add("/account/*");
+        list.add("/m/account/*");
         list.add("/download");
+        list.add("/m/download");
         list.add("/article/list");
+        list.add("/m/article/list");
         list.add("/article/detail");
+        list.add("/m/article/detail");
         list.add("/photo/list");
+        list.add("/m/photo/list");
         list.add("/photo/queryPage");
+        list.add("/m/photo/queryPage");
         list.add("/test/*");
+        list.add("/m/test/*");
         return list;
     }
 

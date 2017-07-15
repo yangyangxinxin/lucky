@@ -1,3 +1,4 @@
+
 <#assign contextPath=request.getContextPath()>
 <#assign title="新建文章">
 <#include '/common/head.ftl' >

@@ -323,4 +323,8 @@ public class UserService extends ParameterizedBaseService<User, Long> {
         }
     }
 
+    public static void main(String[] args) {
+        AesUtil.decrypt("f86be84a61718a6dbb65781d92e1d30d853b08886af2545a81906fe1c8ba61d71ecb7ae65644252f28cdd63f1aea5e247181c2d53c0f4e2b337b857ae6fbc19d");
+    }
+
 }
