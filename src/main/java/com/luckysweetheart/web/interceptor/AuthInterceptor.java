@@ -1,10 +1,7 @@
 package com.luckysweetheart.web.interceptor;
 
 import com.luckysweetheart.utils.SpringUtil;
-import com.luckysweetheart.web.utils.AjaxResult;
-import com.luckysweetheart.web.utils.DomainUtils;
-import com.luckysweetheart.web.utils.RequestUtils;
-import com.luckysweetheart.web.utils.SessionUtils;
+import com.luckysweetheart.web.utils.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -30,6 +27,7 @@ public class AuthInterceptor extends AbstractInterceptor {
         list.add("/");
         list.add("/m/");
         list.add("/m/index");
+        list.add("/m/setNightShift");
         list.add("/index");
         list.add("/account/*");
         list.add("/m/account/*");
@@ -73,7 +71,11 @@ public class AuthInterceptor extends AbstractInterceptor {
                     returnURL = returnURL + "?" + queryStr;
                 }
             }
-            response.sendRedirect("/account/loginPage?returnUrl=" + URLEncoder.encode(returnURL, "UTF-8"));
+            if(UserAgentUtil.isMobile(request)){
+                response.sendRedirect("/m/account/loginPage?returnUrl=" + URLEncoder.encode(returnURL, "UTF-8"));
+            }else {
+                response.sendRedirect("/account/loginPage?returnUrl=" + URLEncoder.encode(returnURL, "UTF-8"));
+            }
             return false;
         }
         return true;

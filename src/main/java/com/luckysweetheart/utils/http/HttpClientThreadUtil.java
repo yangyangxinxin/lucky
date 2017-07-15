@@ -179,12 +179,12 @@ public class HttpClientThreadUtil {
                 str = result;
                 // 如果是下载的文件，可以用response.getEntity().getContent返回InputStream
             } else {
-                str = JSON.toJSONString(ResultInfo.createFail("请求失败:" + response.getStatusLine().getStatusCode(), null)
+                str = JSON.toJSONString(ResultInfo.createFail("请求失败:" + response.getStatusLine().getStatusCode())
                         .setResultCode(response.getStatusLine().getStatusCode() + ""));
             }
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
-            return JSON.toJSONString(ResultInfo.createFail("请求失败:" + e.getMessage(), null).setResultCode("404"));
+            return JSON.toJSONString(ResultInfo.createFail("请求失败:" + e.getMessage()).setResultCode("404"));
         } finally {
             httpClient.getConnectionManager().closeExpiredConnections();
             try {
@@ -233,12 +233,12 @@ public class HttpClientThreadUtil {
                 str = result;
                 // 如果是下载的文件，可以用response.getEntity().getContent返回InputStream
             } else {
-                str = JSON.toJSONString(ResultInfo.createFail("请求失败:" + response.getStatusLine().getStatusCode(), null)
+                str = JSON.toJSONString(ResultInfo.createFail("请求失败:" + response.getStatusLine().getStatusCode())
                         .setResultCode(response.getStatusLine().getStatusCode() + ""));
             }
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
-            return JSON.toJSONString(ResultInfo.createFail("请求失败:" + e.getMessage(), null).setResultCode("404"));
+            return JSON.toJSONString(ResultInfo.createFail("请求失败:" + e.getMessage()).setResultCode("404"));
         } finally {
             httpClient.getConnectionManager().closeExpiredConnections();
             try {
@@ -406,12 +406,12 @@ public class HttpClientThreadUtil {
                 str = result;
                 // 如果是下载的文件，可以用response.getEntity().getContent返回InputStream
             } else {
-                str = JSON.toJSONString(ResultInfo.createFail("请求失败:" + response.getStatusLine().getStatusCode(), null)
+                str = JSON.toJSONString(ResultInfo.createFail("请求失败:" + response.getStatusLine().getStatusCode())
                         .setResultCode(response.getStatusLine().getStatusCode() + ""));
             }
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
-            return JSON.toJSONString(ResultInfo.createFail("请求失败:" + e.getMessage(), null).setResultCode("404"));
+            return JSON.toJSONString(ResultInfo.createFail("请求失败:" + e.getMessage()).setResultCode("404"));
         } finally {
             httpClient.getConnectionManager().closeExpiredConnections();
             try {
@@ -460,12 +460,12 @@ public class HttpClientThreadUtil {
                 return result;
                 // 如果是下载的文件，可以用response.getEntity().getContent返回InputStream
             } else {
-                String str = JSON.toJSONString(ResultInfo.createFail("请求失败:" + response.getStatusLine().getStatusCode(), null)
+                String str = JSON.toJSONString(ResultInfo.createFail("请求失败:" + response.getStatusLine().getStatusCode())
                         .setResultCode(response.getStatusLine().getStatusCode() + ""));
                 return str;
             }
         } catch (IOException e) {
-            return JSON.toJSONString(ResultInfo.createFail("请求失败:" + e.getMessage(), null));
+            return JSON.toJSONString(ResultInfo.createFail("请求失败:" + e.getMessage()));
         } finally {
             httpClient.getConnectionManager().closeExpiredConnections();
             try {

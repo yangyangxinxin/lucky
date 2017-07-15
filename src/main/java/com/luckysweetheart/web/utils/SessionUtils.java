@@ -62,4 +62,8 @@ public class SessionUtils {
         }
     }
 
+    public static boolean containsKey(String key,HttpServletRequest request){
+        return getSession(request).getAttribute(key) != null;
+    }
+
 }

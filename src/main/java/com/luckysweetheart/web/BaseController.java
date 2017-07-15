@@ -35,6 +35,7 @@ public abstract class BaseController {
 
     @ModelAttribute
     public void init(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         this.request = request;
         this.response = response;
         response.setContentType("text/html;charset=utf-8");

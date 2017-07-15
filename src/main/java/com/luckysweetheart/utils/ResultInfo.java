@@ -53,6 +53,16 @@ public class ResultInfo<T> implements Serializable {
 		result.fail(msg,e);
 		return result;
 	}
+
+	public static ResultInfo<Void> createFail(String msg){
+		ResultInfo<Void> result = new ResultInfo<Void>();
+		result.fail(msg);
+		return result;
+	}
+
+	public static <T> ResultInfo<T> createFail(String msg,Class clazz){
+		return ResultInfo.create(clazz).fail(msg);
+	}
 	
 	public ResultInfo<T> success(){
 		this.success = true;

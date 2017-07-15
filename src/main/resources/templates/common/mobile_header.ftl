@@ -3,13 +3,18 @@
     <#if Session.userInfo?exists>
         <#assign userInfo = Session.userInfo>
         <#assign loginUserId = Session.userInfo.userId>
-
     <#else>
         <#assign loginUserId = 0>
     </#if>
     <#if domainUtils?exists>
         <#assign indexUrl = domainUtils.indexUrl>
+    </#if>
 
+
+    <#if Session.night?exists>
+        <#assign nightShift = Session.night>
+    <#else>
+        <#assign nightShift = false>
     </#if>
 <!DOCTYPE html>
 <html>
@@ -43,9 +48,9 @@
     <script src="${contextPath}/js/common/app.js"></script>
 </head>
 
-
+<body>
 <!-- page 容器 -->
-<div class="page">
+<div class="page <#if nightShift> theme-dark </#if>" >
     <!-- 标题栏 -->
     <header class="bar bar-nav">
         <a class="icon icon-me pull-left open-panel"></a>
@@ -80,11 +85,44 @@
 <!-- Left Panel with Reveal effect -->
 <div class="panel panel-left panel-reveal">
     <div class="content-block">
-        <p>这是一个侧栏</p>
-        <p></p>
-        <!-- Click on link with "close-panel" class will close panel -->
-        <p><a href="#" class="close-panel">关闭</a></p>
+        <ul>
+            <li>
+                <div class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title label" style="width: 60%;">Night Mode</div>
+                        <div class="item-input">
+                            <label class="label-switch">
+                                <input type="checkbox" id="dark-switch" <#if nightShift> checked </#if> >
+                                <div class="checkbox"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
 </div>
+</body>
 </html>
+<script>
+    $(document).ready(function () {
+        $("#dark-switch").change(function () {
+            var status = 0;
+            if($(this).prop("checked")){
+                status = 1;
+            }else{
+                status = 0;
+            }
+            $.post("/m/setNightShift",{"status":status},function (data) {
+                if(data.success){
+                    if(data.data == 1){
+                        $("body").addClass("theme-dark");
+                    }else{
+                        $("*").removeClass("theme-dark");
+                    }
+                }
+            },"json");
+        })
+    })
+</script>
 </#macro>

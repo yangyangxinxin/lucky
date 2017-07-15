@@ -4,7 +4,7 @@
 <#include '/common/mobile_header.ftl' >
 <@mobileLayout>
 <div class="content-block">
-    这里是content
+    <h1>Welcome to access this web site !</h1>
 </div>
 </@mobileLayout>
 <script>
