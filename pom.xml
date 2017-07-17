@@ -195,7 +195,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<warSourceExcludes>src/main/resources/**</warSourceExcludes>
-					<warName>lucky-20170715001</warName>
+					<warName>lucky-20170717001</warName>
 				</configuration>
 			</plugin>
 			<plugin>
