@@ -13,7 +13,7 @@ $(document).ready(function(){
             success:function(data){
                 if(data.success){
                     console.log(data);
-                    layer.alert("注册成功！",function () {
+                    layer.alert("注册成功，系统将会发送给您一条激活邮件。",function () {
                         window.location.href = "/account/loginPage";
                     });
 

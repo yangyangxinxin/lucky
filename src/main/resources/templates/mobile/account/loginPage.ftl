@@ -54,7 +54,7 @@
                         window.location.href = "/m/index";
                     }
                 } else {
-                    $.toast(data.msg);
+                    $.alert(data.msg);
                 }
             }, "json")
         })

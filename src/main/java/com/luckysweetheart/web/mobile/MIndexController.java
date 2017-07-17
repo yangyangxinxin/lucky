@@ -18,12 +18,13 @@ public class MIndexController extends BaseController {
 
     @RequestMapping({"/", "/index"})
     public String index() throws IOException {
-        if (isLogin()) {
+        /*if (isLogin()) {
             return "/mobile/index";
         } else {
             response.sendRedirect("/m/account/loginPage");
             return null;
-        }
+        }*/
+        return "/mobile/index";
     }
 
     // 0 : 白天 1: 夜间
