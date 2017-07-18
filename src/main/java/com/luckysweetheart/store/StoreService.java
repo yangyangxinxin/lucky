@@ -44,7 +44,9 @@ public class StoreService extends ParameterizedBaseService<StoreData,Long> {
     @Resource
     private IdWorker idWorker;
 
-    private static final String bucketName = Const.DEFAULT_BUCKET_NAME;
+    @Resource
+    private StorageGroupService storageGroupService;
+
 
     /**
      * 获取全局唯一的cosPath
@@ -58,13 +60,13 @@ public class StoreService extends ParameterizedBaseService<StoreData,Long> {
 
     public ResultInfo<StoreDataDTO> uploadFile(String filePath, String fileName) throws BusinessException {
         String cosPath = "/" + fileName;
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, cosPath, filePath);
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(storageGroupService.getDefaultGroupName(), cosPath, filePath);
         return uploadFile(uploadFileRequest, cosPath);
     }
 
     public ResultInfo<StoreDataDTO> uploadFile(byte[] bytes, String suffix) throws BusinessException {
         String cosPath = getCosPath(suffix);
-        UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, cosPath, bytes);
+        UploadFileRequest uploadFileRequest = new UploadFileRequest(storageGroupService.getDefaultGroupName(), cosPath, bytes);
         return uploadFile(uploadFileRequest, cosPath);
     }
 
@@ -162,7 +164,7 @@ public class StoreService extends ParameterizedBaseService<StoreData,Long> {
      * @throws Exception
      */
     public byte[] download(String cosFilePath) throws Exception {
-        return download(cosFilePath, bucketName);
+        return download(cosFilePath, storageGroupService.getDefaultGroupName());
     }
 
 
@@ -174,7 +176,7 @@ public class StoreService extends ParameterizedBaseService<StoreData,Long> {
      * @return
      */
     public String downloadLocal(String cosFilePath, String localPathDown) {
-        GetFileLocalRequest getFileLocalRequest = new GetFileLocalRequest(bucketName, cosFilePath, localPathDown);
+        GetFileLocalRequest getFileLocalRequest = new GetFileLocalRequest(storageGroupService.getDefaultGroupName(), cosFilePath, localPathDown);
         getFileLocalRequest.setUseCDN(false);
         getFileLocalRequest.setReferer("http://www.luckysweetheart.com");
         return cosClient.getFileLocal(getFileLocalRequest);
