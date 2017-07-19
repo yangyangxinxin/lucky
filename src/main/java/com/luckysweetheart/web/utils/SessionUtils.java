@@ -14,10 +14,8 @@ public class SessionUtils {
 
     private static Logger logger = LoggerFactory.getLogger(SessionUtils.class);
 
-    public static final String loginUserKey = "userInfo";
-
     public static UserDTO getLoginUser(HttpServletRequest request) {
-        Object obj = getAttribute(loginUserKey, request);
+        Object obj = getAttribute(SessionKeys.LOGIN_USER_KEY, request);
         if (obj != null) {
             return (UserDTO) obj;
         }
@@ -45,7 +43,7 @@ public class SessionUtils {
     }
 
     public static void login(HttpServletRequest request, UserDTO userVO) {
-        setAttribute(loginUserKey, userVO, request);
+        setAttribute(SessionKeys.LOGIN_USER_KEY, userVO, request);
         logger.info("登录成功，登录用户id：" + userVO.getUserId() + "，用户名：" + userVO.getUsername());
     }
 

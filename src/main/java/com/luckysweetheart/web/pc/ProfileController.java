@@ -29,8 +29,6 @@ public class ProfileController extends BaseController {
     @Resource
     private StoreService storeService;
 
-
-
     /**
      * 账户设置首页
      *
@@ -47,6 +45,7 @@ public class ProfileController extends BaseController {
         }
         return "/profile/index";
     }
+
 
 
 

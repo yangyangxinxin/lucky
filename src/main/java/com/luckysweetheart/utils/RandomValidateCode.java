@@ -1,5 +1,7 @@
 package com.luckysweetheart.utils;
 
+import com.luckysweetheart.web.utils.SessionKeys;
+
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,10 +16,10 @@ import java.util.Random;
  * 2016年5月23日 下午3:40:43
  */
 public class RandomValidateCode {
-    public static final String RANDOMCODEKEY = "RANDOMVALIDATECODEKEY";//放到session中的key
+    public static final String RANDOMCODEKEY = SessionKeys.RANDOM_CODE;//放到session中的key
     public static final String SESSION_RANDOM_PREFIX = "random_";
     private Random random = new Random();
-    private String randString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
+    private static String randString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生的字符串
     
     private int width = 80;//图片宽
     private int height = 35;//图片高
@@ -106,7 +108,11 @@ public class RandomValidateCode {
     /*
      * 获取随机的字符
      */
-    public String getRandomString(int num){
+    public static String getRandomString(int num){
         return String.valueOf(randString.charAt(num));
+    }
+
+    public static String getRandomString(){
+        return getRandomString(4);
     }
 }

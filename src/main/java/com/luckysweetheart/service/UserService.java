@@ -323,5 +323,8 @@ public class UserService extends ParameterizedBaseService<User, Long> {
         }
     }
 
+    public ResultInfo<Void> updateMobilePhone(String mobile,Long userId){
+        return null;
+    }
 
 }

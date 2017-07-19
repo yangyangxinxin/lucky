@@ -33,7 +33,7 @@ public class VerificationCode {
     /**
      * 验证码类型，例如注册、登录、激活等，之后写在常量里面
      */
-    private String type;
+    private Integer type;
 
     /**
      * 过期时间
@@ -67,11 +67,11 @@ public class VerificationCode {
         this.code = code;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
