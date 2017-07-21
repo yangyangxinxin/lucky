@@ -9,6 +9,16 @@ $(document).ready(function(){
             'mobile' : mobile,
             'password' : password
         };
+        login(data);
+    })
+
+    $("input[name='password']").on("keydown", function (event) {
+        if (event.keyCode == "13") {
+            $("#submitBtn").click();
+        }
+    });
+
+    function login(data) {
         $.ajax({
             url:"/account/doLogin",
             data:data,
@@ -35,5 +45,7 @@ $(document).ready(function(){
                 layer.alert("服务器繁忙，请稍后再试");
             }
         })
-    })
+    }
+
+
 })

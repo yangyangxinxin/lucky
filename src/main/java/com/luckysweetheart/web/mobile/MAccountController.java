@@ -6,6 +6,7 @@ import com.luckysweetheart.service.UserService;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.web.BaseController;
 import com.luckysweetheart.web.pc.AccountController;
+import com.luckysweetheart.web.utils.LoginUtils;
 import com.luckysweetheart.web.utils.SessionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,7 @@ public class MAccountController extends BaseController {
             ResultInfo<UserDTO> resultInfo = userService.login(mobile, password);
             if (resultInfo.isSuccess()) {
                 SessionUtils.login(request, resultInfo.getData());
+                LoginUtils.writeJWT(resultInfo.getData().getUserId(), response);
             }
             return resultInfo;
         } catch (Exception e) {

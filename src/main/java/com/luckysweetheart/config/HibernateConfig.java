@@ -33,6 +33,9 @@ public class HibernateConfig {
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddlAuto;
 
+    @Value("${hibernate.autoReconnect}")
+    private String autoReconnect;
+
     @Bean
     public LocalSessionFactoryBean sessionFactory(DataSource dataSource, DatabaseNamingStrategy databaseNamingStrategy) {
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
@@ -49,6 +52,7 @@ public class HibernateConfig {
         properties.setProperty("hibernate.show_sql", showSql);
         properties.setProperty("hibernate.format_sql", formatSql);
         properties.setProperty("hibernate.hbm2ddl.auto", ddlAuto);
+        properties.setProperty("hibernate.autoReconnect",autoReconnect);
         properties.setProperty("hibernate.current_session_context_class","org.springframework.orm.hibernate4.SpringSessionContext");
 
         propertiesFactoryBean.setProperties(properties);

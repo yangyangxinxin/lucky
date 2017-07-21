@@ -1,11 +1,15 @@
 package com.luckysweetheart.web.pc;
 
+import com.alibaba.fastjson.JSONObject;
+import com.luckysweetheart.common.Const;
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.service.EmailService;
 import com.luckysweetheart.service.UserService;
 import com.luckysweetheart.utils.*;
 import com.luckysweetheart.web.BaseController;
 import com.luckysweetheart.web.utils.DomainUtils;
+import com.luckysweetheart.web.utils.JwtUtils;
+import com.luckysweetheart.web.utils.LoginUtils;
 import com.luckysweetheart.web.utils.SessionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 
 /**
  * Created by yangxin on 2017/5/23.
@@ -57,6 +62,7 @@ public class AccountController extends BaseController {
             if (resultInfo.isSuccess()) {
                 // 在session中写key
                 SessionUtils.login(request, resultInfo.getData());
+                LoginUtils.writeJWT(resultInfo.getData().getUserId(),response);
             }
             return resultInfo;
         } catch (Exception e) {

@@ -62,5 +62,6 @@ public interface Const {
     Integer ACTIVE_STATUS_YES = 1;
 
 
+    String COOKIE_TOKEN = "_lucky";
 
 }
