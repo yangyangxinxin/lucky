@@ -25,7 +25,7 @@ public class AuthInterceptor extends AbstractInterceptor {
 
     private UserService userService;
 
-    private void init(){
+    private void init() {
         if (userService == null) {
             userService = SpringUtil.getBean(UserService.class);
         }
@@ -88,7 +88,7 @@ public class AuthInterceptor extends AbstractInterceptor {
                     if (c != null && Const.COOKIE_TOKEN.equals(c.getName())) {
                         try {
                             String value = c.getValue();
-                            if(StringUtils.isBlank(value)) {
+                            if (StringUtils.isNotBlank(value)) {
                                 _jzqctk = JwtUtils.decode(c.getValue());
                                 if (_jzqctk != null) {
                                     Long t = _jzqctk.getLong("t");
@@ -106,7 +106,7 @@ public class AuthInterceptor extends AbstractInterceptor {
                                 }
                             }
                         } catch (RuntimeException e) {
-                            logger.error("_jzqctk获取错误：" + e.getMessage(),e);
+                            logger.error("_jzqctk获取错误：" + e.getMessage(), e);
                         }
                     }
                 }
