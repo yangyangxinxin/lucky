@@ -65,6 +65,16 @@ bubu|测试存储组，如果存储时不传，默认存在这里|
 user|用户的相关信息，比如头像等|
 photo|相册功能存储组|
 
+- Spring Boot 的启动
+
+1. Jar方式
+
+    `clean install -Dmaven.test.skip=true`
+
+    `java -jar lucky-web-1.0.jar --spring.profiles.avtive=dev`
+2. War方式
+
+    在`pom.xml`中把下方注释的代码打开，在`LuckyWebApplication.java` 中把现有的代码注释，然后把注释的代码打开，即可通过`Tomcat`容器启动项目
 
 ---
 

@@ -5,8 +5,8 @@
 
 	<groupId>com.luckySweetHeart</groupId>
 	<artifactId>lucky-web</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<version>1.0</version>
+	<packaging>jar</packaging>
 
 	<name>lucky-web</name>
 	<description>bubu and baba&#39;s first web site!</description>
@@ -45,6 +45,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>springloaded</artifactId>
+			<version>1.2.5.RELEASE</version>
 		</dependency>
 
 		<!-- Json包 -->
@@ -148,7 +153,8 @@
 			<artifactId>spring-orm</artifactId>
 			<version>4.3.6.RELEASE</version>
 		</dependency>
-		<!-- 把SpringBoot项目打包为war包 -->
+		<!--&lt;!&ndash; 把SpringBoot项目打包为war包 &ndash;&gt;
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-legacy</artifactId>
@@ -183,21 +189,22 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
-		</dependency>
+		</dependency>-->
+
 		<!--end-->
 
 	</dependencies>
 
 	<build>
 		<plugins>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<warSourceExcludes>src/main/resources/**</warSourceExcludes>
 					<warName>lucky-20170717001</warName>
 				</configuration>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

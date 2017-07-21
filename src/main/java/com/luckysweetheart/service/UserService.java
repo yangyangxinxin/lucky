@@ -324,6 +324,31 @@ public class UserService extends ParameterizedBaseService<User, Long> {
     }
 
     public ResultInfo<Void> updateMobilePhone(String mobile,Long userId){
+        ResultInfo<Void> resultInfo = new ResultInfo<>();
+        try{
+            isTrue(ValidateUtil.mobileVal(mobile),"手机号码不符合规范");
+            User findByMobile = userApi.findByMobile(mobile);
+            if(findByMobile != null && !findByMobile.getUserId().equals(userId)){
+                return resultInfo.fail("该手机号码已经被注册");
+            }
+            User user = userApi.get(userId);
+            user.setMobilePhone(mobile);
+            userApi.update(user);
+            return resultInfo.success();
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            throw e;
+        }
+    }
+
+    public ResultInfo<Void> updateEmail(String email,Long userId){
+        ResultInfo<Void> resultInfo = new ResultInfo<>();
+        try{
+            isTrue(ValidateUtil.email(email),"邮箱不符合规范");
+
+        }catch (Exception e){
+
+        }
         return null;
     }
 

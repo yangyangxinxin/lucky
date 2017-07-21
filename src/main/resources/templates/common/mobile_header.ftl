@@ -115,7 +115,7 @@
             }
             $.post("/m/setNightShift",{"status":status},function (data) {
                 if(data.success){
-                    if(data.data == 1){
+                    if(data.data === 1){
                         $("body").addClass("theme-dark");
                     }else{
                         $("*").removeClass("theme-dark");
