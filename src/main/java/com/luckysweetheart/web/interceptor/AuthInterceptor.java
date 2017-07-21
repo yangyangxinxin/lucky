@@ -87,19 +87,22 @@ public class AuthInterceptor extends AbstractInterceptor {
                 for (Cookie c : cookies) {
                     if (c != null && Const.COOKIE_TOKEN.equals(c.getName())) {
                         try {
-                            _jzqctk = JwtUtils.decode(c.getValue());
-                            if (_jzqctk != null) {
-                                Long t = _jzqctk.getLong("t");
-                                Long userId = _jzqctk.getLong("userId");
-                                if (t != null && System.currentTimeMillis() - 1000 * 60 * 60L > t) {//超过1小时，发现有cookie清空
-                                    //jwt清空
-                                    Cookie cookie = new Cookie(Const.COOKIE_TOKEN, null);
-                                    response.addCookie(cookie);
-                                } else if (userId != null) {
-                                    init();
-                                    UserDTO dto = userService.findById(userId);
-                                    SessionUtils.login(request, dto);
-                                    flag = true;
+                            String value = c.getValue();
+                            if(StringUtils.isBlank(value)) {
+                                _jzqctk = JwtUtils.decode(c.getValue());
+                                if (_jzqctk != null) {
+                                    Long t = _jzqctk.getLong("t");
+                                    Long userId = _jzqctk.getLong("userId");
+                                    if (t != null && System.currentTimeMillis() - 1000 * 60 * 60L > t) {//超过1小时，发现有cookie清空
+                                        //jwt清空
+                                        Cookie cookie = new Cookie(Const.COOKIE_TOKEN, null);
+                                        response.addCookie(cookie);
+                                    } else if (userId != null) {
+                                        init();
+                                        UserDTO dto = userService.findById(userId);
+                                        SessionUtils.login(request, dto);
+                                        flag = true;
+                                    }
                                 }
                             }
                         } catch (RuntimeException e) {

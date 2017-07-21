@@ -2,6 +2,8 @@ package com.luckysweetheart.web.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.luckysweetheart.exception.ResultInfoException;
+import com.sun.media.jfxmedia.logging.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.codec.Codecs;
@@ -14,6 +16,8 @@ import java.util.Map;
  * Created by yangxin on 2017/07/21.
  */
 public class JwtUtils {
+
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     private static Object obj = new Object();
 
@@ -60,8 +64,7 @@ public class JwtUtils {
 
     public byte[] enSign(String data) {
         byte[] content = Codecs.utf8Encode(data);
-        byte[] signed = signer.sign(content);
-        return signed;
+        return signer.sign(content);
     }
 
 
@@ -96,6 +99,7 @@ public class JwtUtils {
             Jwt jwt = JwtHelper.decodeAndVerify(token, verifier);
             return JSONObject.parseObject(jwt.getClaims());
         } catch (RuntimeException e) {
+            logger.error(e.getMessage(),e);
             throw new ResultInfoException("jwtError", "校验失败");
         }
     }
