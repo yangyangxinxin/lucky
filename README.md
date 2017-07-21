@@ -69,9 +69,10 @@ photo|相册功能存储组|
 
 1. Jar方式
 
-    `mvn clean install -Dmaven.test.skip=true`
+        `mvn clean install -Dmaven.test.skip=true` // 打包
 
-    `java -jar lucky-web-1.0.jar --spring.profiles.avtive=dev`
+        `java -jar lucky-web-1.0.jar --spring.profiles.avtive=dev` // 启动，并指定环境为dev，如果是生产环境，改为prod
+
 2. War方式
 
     在`pom.xml`中把下方注释的代码打开，在`LuckyWebApplication.java` 中把现有的代码注释，然后把注释的代码打开，即可通过`Tomcat`容器启动项目
