@@ -69,7 +69,7 @@ photo|相册功能存储组|
 
 1. Jar方式
 
-    `clean install -Dmaven.test.skip=true`
+    `mvn clean install -Dmaven.test.skip=true`
 
     `java -jar lucky-web-1.0.jar --spring.profiles.avtive=dev`
 2. War方式
