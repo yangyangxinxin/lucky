@@ -244,6 +244,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
 			</plugin>
 			<!-- 热启动，热部署依赖插件 -->
 			<plugin>
