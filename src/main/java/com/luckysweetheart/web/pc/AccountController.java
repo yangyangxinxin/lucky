@@ -105,7 +105,7 @@ public class AccountController extends BaseController {
      */
     @RequestMapping("/logout")
     public String logout() {
-        SessionUtils.logout(request);
+        SessionUtils.logout(request,response);
         return "/account/loginPage";
     }
 
