@@ -2,7 +2,6 @@ package com.luckysweetheart.web.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.luckysweetheart.exception.ResultInfoException;
-import com.sun.media.jfxmedia.logging.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
@@ -104,16 +103,5 @@ public class JwtUtils {
         }
     }
 
-    public static void main(String[] args) {
-        JSONObject json = new JSONObject();
-        json.put("hehe", 123);
-        json.put("yfx", "文明");
-        String token = JwtUtils.encode(json);
-        System.out.println(token);
-        //Map map=JwtHelper.headers(token);
-        //System.out.println(map);
-        JSONObject info = JwtUtils.decode("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYyI6IjUwMDI0MDE5ODcwNDE0NjM1NSIsIm1wIjoiMTUzMjAzNjkxNTAiLCJ0IjoxNDk1Nzg1NjM0OTI1LCJ0cCI6MCwibm0iOiLmmJPlh6Hnv5QifQ.dJImNPUMP0qIuQAyrPrND9pG577g7AxbzrsUuETS4BjCHORCchosaHEw6S9PoKiOEM9a0T8d_-uMW01-giYCH0vkrWZdYdChCMUqnlxFGfI9mNd0RtqE8gy6govxpmGtnGeubdK-Mhcmdrr00yW0m0KuctR7y2e9fDjSoCuQI_c");
-        System.out.println(info);
-    }
 
 }

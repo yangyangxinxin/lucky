@@ -3,6 +3,7 @@ package com.luckysweetheart.web.pc;
 import com.luckysweetheart.service.EmailService;
 import com.luckysweetheart.utils.EmailSender;
 import com.luckysweetheart.utils.EmailTemplate;
+import com.luckysweetheart.web.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,7 +15,7 @@ import javax.annotation.Resource;
  */
 @Controller
 @RequestMapping("/test")
-public class TestController {
+public class TestController extends BaseController{
 
     @Resource
     private EmailService emailService;
@@ -31,6 +32,10 @@ public class TestController {
         }).start();
         System.out.println("执行完毕");
         return "发送成功";
+    }
+
+    public Object testJsonp(){
+        return null;
     }
 
 }

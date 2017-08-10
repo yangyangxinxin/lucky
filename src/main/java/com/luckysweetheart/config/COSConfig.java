@@ -13,10 +13,11 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Date;
 
 /**
+ * 腾讯COS存储配置
  * Created by yangxin on 2017/5/22.
  */
 @Configuration
-public class StoreConfig {
+public class COSConfig {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 

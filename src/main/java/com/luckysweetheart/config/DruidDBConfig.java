@@ -1,6 +1,7 @@
 package com.luckysweetheart.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.luckysweetheart.utils.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,6 +77,7 @@ public class DruidDBConfig {
     @Bean     //声明其为Bean实例
     @Primary  //在同样的DataSource中，首先使用被标注的DataSource
     public DataSource dataSource() {
+        logger.info("初始化数据库连接池 at {}", DateUtil.formatNow());
         DruidDataSource datasource = new DruidDataSource();
 
         datasource.setUrl(this.dbUrl);
@@ -102,7 +104,7 @@ public class DruidDBConfig {
             logger.error("druid configuration initialization filter", e);
         }
         datasource.setConnectionProperties(connectionProperties);
-
+        logger.info("数据库连接池初始化完成 at {}", DateUtil.formatNow());
         return datasource;
     }
 }

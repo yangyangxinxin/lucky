@@ -8,39 +8,64 @@ import org.springframework.stereotype.Service;
  * Created by yangxin on 2017/5/26.
  */
 @Service
-public class StorageGroupService{
+public class StorageGroupService {
 
-    @Value("${defaultGroupName}")
-    private String defaultGroupName;
+    @Value("${storage.strategy}")
+    private String storageStrategy;
 
-    @Value("${userGroupName}")
-    private String userGroupName;
+    @Value("${cos.defaultGroupName}")
+    private String cosDefaultGroupName;
 
-    @Value("${photoGroupName}")
-    private String photoGroupName;
+    @Value("${cos.userGroupName}")
+    private String cosUserGroupName;
+
+    @Value("${cos.photoGroupName}")
+    private String cosPhotoGroupName;
+
+    @Value("${oos.defaultGroupName}")
+    private String oosDefaultGroupName;
+
+    @Value("${oos.userGroupName}")
+    private String oosUserGroupName;
+
+    @Value("${oos.photoGroupName}")
+    private String oosPhotoGroupName;
+
 
     /**
      * 测试的bucketName
+     *
      * @return
      */
     public String getDefaultGroupName() {
-        return defaultGroupName;
+        if (storageStrategy.equalsIgnoreCase(StoreServiceFactory.COS)) {
+            return cosDefaultGroupName;
+        }
+        return oosDefaultGroupName;
     }
 
     /**
      * 用于存储用户的头像信息
+     *
      * @return
      */
     public String getUserGroupName() {
-        return userGroupName;
+        if (storageStrategy.equalsIgnoreCase(StoreServiceFactory.COS)) {
+            return cosUserGroupName;
+        }
+        return oosUserGroupName;
     }
 
     /**
      * 用于用户相片存储
+     *
      * @return
      */
     public String getPhotoGroupName() {
-        return photoGroupName;
+        if (storageStrategy.equalsIgnoreCase(StoreServiceFactory.COS)) {
+            return cosPhotoGroupName;
+        }
+        return oosPhotoGroupName;
     }
 
 }
