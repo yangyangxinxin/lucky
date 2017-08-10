@@ -1,10 +1,13 @@
 package com.luckysweetheart.web.utils;
 
+import com.luckysweetheart.common.Const;
 import com.luckysweetheart.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -51,16 +54,26 @@ public class SessionUtils {
         getSession(request).removeAttribute(key);
     }
 
-    public static void logout(HttpServletRequest request) {
+    public static void logout(HttpServletRequest request, HttpServletResponse response) {
         UserDTO user = getLoginUser(request);
         //removeAttribute(request, loginUserKey);
         getSession(request).invalidate();
+        Cookie[] coes = request.getCookies();
+        if (coes != null && coes.length > 0) {
+            for (Cookie c : coes) {
+                if (c != null && Const.COOKIE_TOKEN.equals(c.getName())) {
+                    c.setValue(null);
+                    c.setMaxAge(0);
+                    response.addCookie(c);
+                }
+            }
+        }
         if (user != null) {
             logger.info("注销成功，注销用户id：" + user.getUserId() + "，用户名：" + user.getUsername());
         }
     }
 
-    public static boolean containsKey(String key,HttpServletRequest request){
+    public static boolean containsKey(String key, HttpServletRequest request) {
         return getSession(request).getAttribute(key) != null;
     }
 
