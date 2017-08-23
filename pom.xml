@@ -189,6 +189,27 @@
 			<artifactId>spring-orm</artifactId>
 			<version>4.3.6.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>com.baidu.aip</groupId>
+			<artifactId>aip-core</artifactId>
+			<version>1.3.8</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/aip-core-1.3.8.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.baidu.aip</groupId>
+			<artifactId>orc_sdk</artifactId>
+			<version>1.3.9</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/ocr_sdk-1.3.9.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160810</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/json-20160810.jar</systemPath>
+		</dependency>
 		<!--&lt;!&ndash; 把SpringBoot项目打包为war包 &ndash;&gt;
 
 		<dependency>
