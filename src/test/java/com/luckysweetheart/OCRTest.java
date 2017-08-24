@@ -26,7 +26,6 @@ public class OCRTest {
     @Resource
     private BaiduOCRService baiduOCRService;
 
-    // 4570
     private String img = "C:\\Users\\dp\\Desktop\\证件识别\\IMG_4570.JPG";
 
     @Test
