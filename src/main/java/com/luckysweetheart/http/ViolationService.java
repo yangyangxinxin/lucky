@@ -135,7 +135,7 @@ public class ViolationService {
             }
 
         }else{
-            violationRecord.setSuccess(ViolationRecord.SUCCESS);
+            violationRecord.setSuccess(ViolationRecord.FAIL);
         }
         Long pk = violationRecordDao.save(violationRecord);
         response.setViolationId(pk);
