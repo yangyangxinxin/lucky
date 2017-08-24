@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 /**
  * Created by yangxin on 2017/8/11.
  */
@@ -329,6 +331,77 @@ public class OCRUtil {
 
             return bankCardInfo;
         }
+        return null;
+    }
+
+    public static VehicleLicenseInfo getVehicleLicenseInfo(org.json.JSONObject resultJson ) throws OCRException {
+        JSONObject object = convert(resultJson);
+        if (object.containsKey("error_code")) {
+            String code = object.get("error_code").toString();
+            if (code.startsWith("SDK")) {
+                throw new OCRException(code, getErrorMsg(code));
+            } else {
+                Integer intCode = Integer.valueOf(code);
+                throw new OCRException(code, getErrorMsg(intCode));
+            }
+        }
+        logger.info(object.toJSONString());
+        return getVehicleLicenseInfo(object);
+    }
+
+    public static VehicleLicenseInfo getVehicleLicenseInfo(JSONObject resultJson ){
+        if(resultJson != null){
+            if(resultJson.containsKey("words_result")){
+
+                VehicleLicenseInfo info = new VehicleLicenseInfo();
+                JSONObject wordsResult = resultJson.getJSONObject("words_result");
+
+                JSONObject breadObj = wordsResult.getJSONObject("品牌型号");
+                String bread = breadObj.getString("words");
+                info.setBrand(bread);
+
+                JSONObject issuesTimeObj = wordsResult.getJSONObject("发证日期");
+                Date issuesTime = issuesTimeObj.getDate("words");
+                info.setIssueTime(issuesTime);
+
+
+                JSONObject functionObj = wordsResult.getJSONObject("使用性质");
+                String function = functionObj.getString("words");
+                info.setUseFunction(function);
+
+                JSONObject engineNoObj = wordsResult.getJSONObject("发动机号码");
+                String engineNo = engineNoObj.getString("words");
+                info.setEngineNo(engineNo);
+
+
+                JSONObject plateNumberObj = wordsResult.getJSONObject("号牌号码");
+                String plateNumber = plateNumberObj.getString("words");
+                info.setPlateNumber(plateNumber);
+
+                JSONObject ownerObj = wordsResult.getJSONObject("所有人");
+                String owner = ownerObj.getString("words");
+                info.setOwner(owner);
+
+                JSONObject addressObj = wordsResult.getJSONObject("住址");
+                String address = addressObj.getString("words");
+                info.setAddress(address);
+
+                JSONObject registerTimeObj = wordsResult.getJSONObject("注册日期");
+                Date registerTime = registerTimeObj.getDate("words");
+                info.setRegisterDate(registerTime);
+
+                JSONObject vinObj = wordsResult.getJSONObject("车辆识别代号");
+                String vin = vinObj.getString("words");
+                info.setVin(vin);
+
+                JSONObject carTypeObj = wordsResult.getJSONObject("车辆类型");
+                String carType = carTypeObj.getString("words");
+                info.setCarType(carType);
+
+                return info;
+            }
+        }
+
         return null;
     }
 

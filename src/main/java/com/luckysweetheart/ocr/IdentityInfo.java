@@ -1,8 +1,8 @@
 package com.luckysweetheart.ocr;
 
 import com.alibaba.fastjson.JSON;
+import com.luckysweetheart.utils.DateUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.mapu.common.DateUtil;
 
 import java.io.Serializable;
 import java.util.Date;

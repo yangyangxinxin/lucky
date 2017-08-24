@@ -5,12 +5,15 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.luckysweetheart.http.request.ViolationRequest;
 import com.luckysweetheart.http.response.ViolationResponse;
+import com.luckysweetheart.ocr.BaiduOCRService;
 import com.luckysweetheart.utils.http.HttpUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +36,9 @@ public class ViolationService {
 
     @Value("${ali.violation.method}")
     private String method;
+
+    @Resource
+    private BaiduOCRService baiduOCRService;
 
     public ViolationResponse getViolation(ViolationRequest request) throws Exception {
 

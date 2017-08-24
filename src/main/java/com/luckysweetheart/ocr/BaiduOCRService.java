@@ -111,6 +111,34 @@ public class BaiduOCRService {
         return OCRUtil.getBankCardInfo(response);
     }
 
+    /**
+     * 获取行驶证信息
+     * @param bytes
+     * @param isCompress
+     * @return
+     * @throws IOException
+     * @throws OCRException
+     */
+    public VehicleLicenseInfo getVehicleLicense(byte[] bytes,boolean isCompress) throws IOException, OCRException {
+        logger.info("开始调用百度行驶证识别接口... at {} ", DateUtil.formatDate(new Date()));
+        long start = System.currentTimeMillis();
+        if (isCompress) {
+            if (bytes.length > MAX_LENGTH) {
+                bytes = thumbnailUtilService.createThumbnail(bytes);
+                long end = System.currentTimeMillis();
+                logger.info("压缩过后的文件大小为：{} KB,cost {} ms", bytes.length / 1024, end - start);
+            }
+        }
+        HashMap<String, String> options = new HashMap<String, String>();
+
+        options.put("detect_direction", "true");
+
+        JSONObject response = aipOcr.vehicleLicense(bytes,options);
+        long end = System.currentTimeMillis();
+        logger.info("调用百度行驶证识别接口调用结束... at {} , cost {} ms", DateUtil.formatDate(new Date()), end - start);
+        return OCRUtil.getVehicleLicenseInfo(response);
+    }
+
 
 
 
