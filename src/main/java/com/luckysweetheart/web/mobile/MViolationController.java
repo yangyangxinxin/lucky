@@ -1,10 +1,14 @@
 package com.luckysweetheart.web.mobile;
 
+import com.luckysweetheart.dal.dao.ViolationRecordDao;
+import com.luckysweetheart.dal.entity.ViolationRecord;
 import com.luckysweetheart.http.ViolationService;
 import com.luckysweetheart.http.response.ViolationResponse;
+import com.luckysweetheart.service.ViolationRecordService;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.web.BaseController;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +24,9 @@ public class MViolationController extends BaseController{
 
     @Resource
     private ViolationService violationService;
+
+    @Resource
+    private ViolationRecordService violationRecordService;
 
     @RequestMapping({"/","/index"})
     public String index(){

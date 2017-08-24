@@ -7,7 +7,8 @@ public enum EmailTemplate {
 
     FORGET_PASSWORD("/email/forget_password.ftl"),
     REGISTER("/email/register.ftl"),
-    TEST("/email/test.ftl");
+    TEST("/email/test.ftl"),
+    VIOLATION_COUNT("/email/violationCount.ftl");
 
     private String path;
 

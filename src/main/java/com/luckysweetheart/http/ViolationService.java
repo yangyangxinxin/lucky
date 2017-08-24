@@ -11,10 +11,13 @@ import com.luckysweetheart.ocr.BaiduOCRService;
 import com.luckysweetheart.ocr.OCRException;
 import com.luckysweetheart.ocr.VehicleLicenseInfo;
 import com.luckysweetheart.service.ViolationRecordService;
+import com.luckysweetheart.utils.DateUtil;
 import com.luckysweetheart.utils.http.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,9 +51,11 @@ public class ViolationService {
     @Resource
     private ViolationRecordDao violationRecordDao;
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Transactional(rollbackFor = Exception.class)
     public ViolationResponse getViolation(ViolationRequest request) throws IOException {
-
+        logger.info("调用接口查询违章记录，车牌号：{} , at {} " , request.getPlateNumber(),DateUtil.formatNow());
         Map<String, String> headers = new HashMap<>();
         //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
         headers.put("Authorization", "APPCODE " + appCode);
@@ -132,7 +137,9 @@ public class ViolationService {
         }else{
             violationRecord.setSuccess(ViolationRecord.SUCCESS);
         }
-        violationRecordDao.save(violationRecord);
+        Long pk = violationRecordDao.save(violationRecord);
+        response.setViolationId(pk);
+        logger.info("调用接口查询违章记录结束 at {}" , DateUtil.formatNow());
         return response;
 
     }

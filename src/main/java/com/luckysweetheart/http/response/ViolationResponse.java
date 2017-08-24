@@ -53,6 +53,19 @@ public class ViolationResponse implements Serializable {
      */
     private String vin;
 
+    /**
+     * 数据库主键ID
+     */
+    private Long violationId;
+
+    public Long getViolationId() {
+        return violationId;
+    }
+
+    public void setViolationId(Long violationId) {
+        this.violationId = violationId;
+    }
+
     public String getPlateNumber() {
         return plateNumber;
     }
