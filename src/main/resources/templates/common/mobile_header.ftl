@@ -16,6 +16,10 @@
     <#else>
         <#assign nightShift = false>
     </#if>
+
+<#if !hasFooter?exists>
+    <#assign hasFooter = true>
+</#if>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,6 +50,8 @@
     <script src="${contextPath}/js/jquery.min.js"></script>
     <script src="/mobile/js/light7.js"></script>
     <script src="${contextPath}/js/common/app.js"></script>
+    <script src="/js/jquery.ui.widget.js"></script>
+    <script src="/js/jquery.fileupload.js"></script>
 </head>
 
 <body>
@@ -57,6 +63,7 @@
         <h1 class="title">${title!}</h1>
     </header>
 
+    <#if hasFooter>
     <!-- 工具栏 -->
     <nav class="bar bar-tab">
         <a class="tab-item active" href="/m/index">
@@ -72,6 +79,7 @@
             <span class="tab-label">文章</span>
         </a>
     </nav>
+    </#if>
 
     <!-- 这里是页面内容区 -->
     <div class="content">

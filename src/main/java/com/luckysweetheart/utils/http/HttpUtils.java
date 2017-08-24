@@ -1,5 +1,6 @@
 package com.luckysweetheart.utils.http;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
@@ -114,8 +115,7 @@ public class HttpUtils {
     public static HttpResponse doPost(String host, String path, String method,
                                       Map<String, String> headers,
                                       Map<String, String> querys,
-                                      String body)
-            throws Exception {
+                                      String body) throws IOException {
         HttpClient httpClient = wrapClient(host);
 
         HttpPost request = new HttpPost(buildUrl(host, path, querys));

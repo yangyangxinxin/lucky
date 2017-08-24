@@ -2,20 +2,24 @@ package com.luckysweetheart;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.luckysweetheart.http.ViolationClient;
+import com.luckysweetheart.http.ViolationService;
 import com.luckysweetheart.http.request.ViolationRequest;
 import com.luckysweetheart.http.response.ViolationResponse;
 import com.luckysweetheart.utils.http.HttpClientThreadUtil;
 import com.luckysweetheart.utils.http.HttpUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,22 +30,22 @@ import java.util.Map;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = LuckyWebApplication.class)
 @WebAppConfiguration
+@ActiveProfiles({"dev"})
 public class ViolationTest {
 
     @Resource
-    private ViolationClient client;
+    private ViolationService violationService;
+
+    private String img = "C:\\Users\\dp\\Desktop\\证件识别\\IMG_4570.JPG";
 
     @Test
     public void test1() throws Exception {
+        System.out.println(violationService.getViolation(FileUtils.readFileToByteArray(new File(img))));
+    }
 
-        ViolationRequest request = new ViolationRequest();
-
-        request.setEngineNo("H285674");
-        request.setPlateNumber("新A769S8");
-        request.setVin("502002");
-
-        ViolationResponse violation = client.getViolation(request);
-        System.out.println(violation);
+    @Test
+    public void test2(){
+        System.out.println("111");
     }
 
 

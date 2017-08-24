@@ -60,6 +60,7 @@ public class AuthInterceptor extends AbstractInterceptor {
         list.add("/test/*");
         list.add("/m/test/*");
         list.add("/verification/*");
+        list.add("/m/violation/*");
         return list;
     }
 
