@@ -2,14 +2,21 @@ package com.luckysweetheart;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.luckysweetheart.common.Paged;
+import com.luckysweetheart.common.PagedResult;
+import com.luckysweetheart.dal.dao.UserDao;
+import com.luckysweetheart.dal.entity.User;
+import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.http.ViolationService;
 import com.luckysweetheart.http.request.ViolationRequest;
 import com.luckysweetheart.http.response.ViolationResponse;
+import com.luckysweetheart.utils.EntityToModelUtils;
 import com.luckysweetheart.utils.http.HttpClientThreadUtil;
 import com.luckysweetheart.utils.http.HttpUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.hibernate.criterion.DetachedCriteria;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -21,6 +28,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.annotation.Resource;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +44,9 @@ public class ViolationTest {
     @Resource
     private ViolationService violationService;
 
+    @Resource
+    private UserDao userDao;
+
     private String img = "C:\\Users\\dp\\Desktop\\证件识别\\IMG_4570.JPG";
 
     @Test
@@ -44,9 +55,21 @@ public class ViolationTest {
     }
 
     @Test
-    public void test2(){
-        System.out.println("111");
+    public void test2() throws InstantiationException, IllegalAccessException {
+        List<User> all = userDao.getAll();
+        List<UserDTO> userDTOS = EntityToModelUtils.entityListToModelList(all, UserDTO.class);
+        System.out.println(JSON.toJSONString(userDTOS));
     }
+
+    @Test
+    public void test3() throws InstantiationException, IllegalAccessException {
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class);
+        PagedResult<User> result = userDao.findByPaged(new Paged(), detachedCriteria, User.class);
+        PagedResult<UserDTO> pagedResult = EntityToModelUtils.getModelPagedResult(result, UserDTO.class);
+        System.out.println(JSON.toJSONString(pagedResult));
+
+    }
+
 
 
     public static void main(String[] args) {

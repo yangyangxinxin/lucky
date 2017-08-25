@@ -186,9 +186,9 @@ public class IdentityInfo implements Serializable {
         return JSON.toJSONString(this);
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         IdentityInfo info = new IdentityInfo();
         info.setOverdueTime("20170814");
         System.out.println(info.getOverdue());
-    }
+    }*/
 }
