@@ -24,6 +24,8 @@
 		<java.version>1.7</java.version>
 	</properties>
 
+
+
 	<dependencies>
 		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -253,6 +255,46 @@
 	</dependencies>
 
 	<build>
+		<!--
+			http://www.cnblogs.com/xiaosiyuan/p/6894766.html
+			通过这种方式，package的同时把第三方jar包也打进去。
+
+			目的就是把src/main/resources/lib下的jar打到BOOT-INF/lib下，但是必须要增加第二个resource，不然src/main/resources下的配置文件又打不进jar包了。
+
+			如果要打成war包，则pom文件需要这样改：
+
+
+			设置maven-war-plugins插件，否则外部依赖无法打进war包
+
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-war-plugin</artifactId>
+			<configuration>
+				<webResources>
+					<resource>
+						<directory>lib</directory>
+						<targetPath>WEB-INF/lib/</targetPath>
+						<includes>
+							<include>**/*.jar</include>
+						</includes>
+					</resource>
+				</webResources>
+			</configuration>
+		</plugin>-->
+		<resources>
+			<resource>
+				<directory>src/main/resources/lib</directory>
+				<targetPath>BOOT-INF/lib/</targetPath>
+				<includes>
+					<include>**/*.jar</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<targetPath>BOOT-INF/classes/</targetPath>
+			</resource>
+		</resources>
+
 		<plugins>
 			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -279,7 +321,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 
 
 </project>

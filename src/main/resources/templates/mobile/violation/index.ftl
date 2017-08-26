@@ -9,7 +9,7 @@
         <input type="file" id="file" name="file" style="display: none;"/>
 
     <div class="content-block content-padded">
-        <p><a href="javascript:void(0);" class="button button-big button-round" onclick="document.getElementById('file').click()">请上传行驶证</a></p>
+        <p><a style="cursor: pointer;" class="button button-big button-round" onclick="document.getElementById('file').click()">请上传行驶证</a></p>
         <p>
             注意：<br/>
             1.上传行驶证主要是为了不让你手动输入车牌号、车架号和发动机号码，系统自动识别。本网站不会记录你的个人信息。请放心使用。
