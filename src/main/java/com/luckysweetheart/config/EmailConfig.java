@@ -8,9 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import javax.annotation.Resource;
 import javax.mail.Authenticator;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -45,6 +47,9 @@ public class EmailConfig {
     @Value("${spring.profiles.active}")
     private String active;
 
+    @Resource
+    private Environment environment;
+
     @Bean
     public JavaMailSender getSender() {
         logger.info("初始化邮件配置 at {}", DateUtil.formatNow());
@@ -63,16 +68,20 @@ public class EmailConfig {
             }
         });
         javaMailSender.setSession(session);//③
-        if (!StringUtils.equals("dev", active)) {
-            try {
-                logger.info("测试邮件连接 at {} ", DateUtil.formatNow());
-                javaMailSender.testConnection();
-                logger.info("邮件连接正常 at {} ", DateUtil.formatNow());
-
-            } catch (MessagingException e) {
-                logger.error(e.getMessage(), e);
+        String[] activeProfiles = environment.getActiveProfiles();
+        for (String activeProfile : activeProfiles) {
+            if (StringUtils.equals("prod", activeProfile)) {
+                try {
+                    logger.info("测试邮件连接 at {} ", DateUtil.formatNow());
+                    javaMailSender.testConnection();
+                    logger.info("邮件连接正常 at {} ", DateUtil.formatNow());
+                } catch (MessagingException e) {
+                    logger.error(e.getMessage(), e);
+                }
+                break;
             }
         }
+
         logger.info("邮件配置初始化完成 at {}", DateUtil.formatNow());
         return javaMailSender;
     }

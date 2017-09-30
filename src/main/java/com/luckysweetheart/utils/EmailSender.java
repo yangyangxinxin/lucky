@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 邮件发送工具
@@ -44,6 +46,8 @@ public class EmailSender implements Serializable {
     private boolean sleep = false;
 
     private long sleepTime = 1000 * 60; // 一分钟
+
+    private ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
 
     private EmailSender() {
 
@@ -163,14 +167,12 @@ public class EmailSender implements Serializable {
 
     public synchronized void send(final EmailService emailService) {
         final EmailSender sender = this;
-        Thread t = new Thread(new Runnable() {
+        this.fixedThreadPool.execute(new Runnable() {
             @Override
             public void run() {
                 emailService.sendEmailTemplate(sender);
             }
         });
-        t.setName("邮件发送线程");
-        t.start();
         if (sleep) {
             try {
                 Thread.sleep(sleepTime);
