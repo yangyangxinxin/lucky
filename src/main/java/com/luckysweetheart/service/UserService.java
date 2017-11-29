@@ -4,11 +4,11 @@ import com.luckysweetheart.common.Const;
 import com.luckysweetheart.common.IdWorker;
 import com.luckysweetheart.dal.dao.UserDao;
 import com.luckysweetheart.dal.entity.User;
-import com.luckysweetheart.dto.StoreDataDTO;
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
-import com.luckysweetheart.store.StorageGroupService;
-import com.luckysweetheart.store.StoreService;
+import com.luckysweetheart.storage.StorageApi;
+import com.luckysweetheart.storage.StorageGroupService;
+import com.luckysweetheart.storage.request.PutObject;
 import com.luckysweetheart.utils.*;
 import com.luckysweetheart.web.utils.DomainUtils;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -33,7 +33,7 @@ public class UserService extends ParameterizedBaseService<User, Long> {
     private UserDao userApi;
 
     @Resource
-    private StoreService storeService;
+    private StorageApi storageApi;
 
     @Resource
     private StorageGroupService storageGroupService;
@@ -251,9 +251,15 @@ public class UserService extends ParameterizedBaseService<User, Long> {
             Assert.notNull(bytes, "文件不能为空");
             User user = userApi.get(userId);
             if (user != null) {
-                ResultInfo<StoreDataDTO> result = storeService.uploadFile(bytes, ".png", storageGroupService.getUserGroupName());
-                if (result.isSuccess()) {
-                    user.setImgPath(result.getData().getResourcePath());
+                PutObject putObject = new PutObject();
+                putObject.setGroupName(storageGroupService.getUserGroupName());
+                putObject.setFileName(user.getUsername() + "用户邮箱" + ".png");
+                putObject.setExtName(".png");
+                putObject.setBytes(bytes);
+                putObject.setLength(bytes.length);
+                String storeId = storageApi.putObject(putObject);
+                if (StringUtils.isNotBlank(storeId)) {
+                    user.setImgPath(storeId);
                     return resultInfo.success();
                 } else {
                     throw new BusinessException("上传头像出错");

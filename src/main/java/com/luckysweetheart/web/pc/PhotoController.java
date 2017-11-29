@@ -10,18 +10,15 @@ import com.luckysweetheart.dal.query.order.OrderParam;
 import com.luckysweetheart.dto.PhotoDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.service.PhotoService;
-import com.luckysweetheart.store.StoreService;
-import com.luckysweetheart.utils.FileUtil;
+import com.luckysweetheart.storage.StorageApi;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.web.BaseController;
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -35,7 +32,7 @@ import java.util.*;
 public class PhotoController extends BaseController {
 
     @Resource
-    private StoreService storeService;
+    private StorageApi storageApi;
 
     @Resource
     private PhotoService photoService;

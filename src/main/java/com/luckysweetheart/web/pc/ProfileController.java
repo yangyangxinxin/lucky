@@ -1,17 +1,12 @@
 package com.luckysweetheart.web.pc;
 
 import com.luckysweetheart.dto.UserDTO;
-import com.luckysweetheart.service.EmailService;
 import com.luckysweetheart.service.UserService;
-import com.luckysweetheart.store.StoreService;
-import com.luckysweetheart.utils.*;
+import com.luckysweetheart.storage.StorageApi;
+import com.luckysweetheart.storage.StorageGroupService;
 import com.luckysweetheart.web.BaseController;
-import com.luckysweetheart.web.utils.DomainUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -27,7 +22,10 @@ public class ProfileController extends BaseController {
     private UserService userService;
 
     @Resource
-    private StoreService storeService;
+    private StorageApi storageApi;
+
+    @Resource
+    private StorageGroupService storageGroupService;
 
     /**
      * 账户设置首页
@@ -37,17 +35,18 @@ public class ProfileController extends BaseController {
     @RequestMapping("/index")
     public String profileIndex() {
         UserDTO userDTO = userService.findById(getLoginUserId());
-        if (userDTO != null) {
-            userDTO.setHttpUrl(storeService.getHttpUrlByResourcePath(userDTO.getImgPath()));
-            setAttribute("user", userDTO);
-        } else {
-            setAttribute("msg", "用户不存在。");
+        try {
+            if (userDTO != null) {
+                userDTO.setHttpUrl(storageApi.getHttpUrl(userDTO.getImgPath()));
+                setAttribute("user", userDTO);
+            } else {
+                setAttribute("msg", "用户不存在。");
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
         return "/profile/index";
     }
-
-
-
 
 
 }

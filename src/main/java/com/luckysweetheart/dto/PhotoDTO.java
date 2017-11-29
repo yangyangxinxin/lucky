@@ -24,7 +24,7 @@ public class PhotoDTO implements DTO {
     /**
      * 文件存储id
      */
-    private String resourcePath;
+    private String storeId;
 
     /**
      * 父目录id
@@ -138,13 +138,12 @@ public class PhotoDTO implements DTO {
         this.deleteStatus = deleteStatus;
     }
 
-    public String getResourcePath() {
-        return resourcePath;
+    public String getStoreId() {
+        return storeId;
     }
 
-    public void setResourcePath(String resourcePath) {
-        this.resourcePath = resourcePath;
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 }
-
 

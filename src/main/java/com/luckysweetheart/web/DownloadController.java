@@ -6,8 +6,9 @@ import com.luckysweetheart.dto.StoreDataDTO;
 import com.luckysweetheart.exception.BusinessException;
 import com.luckysweetheart.exception.StorageException;
 import com.luckysweetheart.service.PhotoService;
-import com.luckysweetheart.store.StorageGroupService;
-import com.luckysweetheart.store.StoreService;
+import com.luckysweetheart.storage.StorageApi;
+import com.luckysweetheart.storage.StorageGroupService;
+import com.luckysweetheart.storage.dto.FileMetaInfo;
 import com.luckysweetheart.utils.ResultInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,6 @@ import java.util.Date;
 @RequestMapping("/download")
 public class DownloadController extends BaseController {
 
-    @Resource
-    private StoreService storeService;
 
     @Resource
     private IdWorker idWorker;
@@ -39,20 +38,16 @@ public class DownloadController extends BaseController {
     private PhotoService photoService;
 
     @Resource
+    private StorageApi storageApi;
+
+    @Resource
     private StorageGroupService storageGroupService;
 
     @RequestMapping("/file")
-    public void downloadFile(String cosPath) {
+    public void downloadFile(String storeId) {
         byte bs[];
-        StoreDataDTO dto = storeService.getByCosPath(cosPath);
-        String fileName;
-        if (dto != null) {
-            fileName = dto.getFileName();
-        } else {
-            fileName = idWorker.nextId() + ".png";
-        }
         try {
-            bs = storeService.download(cosPath, dto == null ? storageGroupService.getDefaultGroupName() : dto.getBucketName());
+            bs = storageApi.getObject(storeId);
             if (bs != null) {
                 response.setContentType("application/x-download");
                 response.setCharacterEncoding("utf-8");
@@ -68,11 +63,14 @@ public class DownloadController extends BaseController {
                  *
                  * */
                 //IE使用URLEncoder
+
+                FileMetaInfo fileMetaInfo = storageApi.getFileMetaInfo(storeId);
+
                 if (userAgent.contains("windows")) {
-                    strHeader = "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8");
+                    strHeader = "attachment;filename=" + URLEncoder.encode(fileMetaInfo.getFileName(), "UTF-8");
                     //其他使用转iso
                 } else {
-                    strHeader = "attachment;filename=" + new String((fileName).getBytes("utf-8"), "ISO8859-1");
+                    strHeader = "attachment;filename=" + new String((fileMetaInfo.getFileName()).getBytes("utf-8"), "ISO8859-1");
                 }
                 response.addHeader("Content-Disposition", strHeader);
                 OutputStream os;
@@ -92,9 +90,8 @@ public class DownloadController extends BaseController {
             ResultInfo<PhotoDTO> resultInfo = photoService.detail(photoId);
             if (resultInfo.isSuccess() && resultInfo.getData() != null) {
                 PhotoDTO dto = resultInfo.getData();
-                StoreDataDTO storeDataDTO = storeService.getByResourcePath(dto.getResourcePath());
-                if (storeDataDTO != null) {
-                    downloadFile(storeDataDTO.getCosPath());
+                if (dto != null) {
+                    downloadFile(dto.getStoreId());
                 }
             }
         } catch (BusinessException e) {

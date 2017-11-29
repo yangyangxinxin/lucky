@@ -10,14 +10,16 @@ import com.luckysweetheart.dto.PhotoDTO;
 import com.luckysweetheart.dto.StoreDataDTO;
 import com.luckysweetheart.dto.UserDTO;
 import com.luckysweetheart.exception.BusinessException;
-import com.luckysweetheart.store.StorageGroupService;
-import com.luckysweetheart.store.StoreService;
+import com.luckysweetheart.storage.StorageApi;
+import com.luckysweetheart.storage.StorageGroupService;
+import com.luckysweetheart.storage.request.PutObject;
 import com.luckysweetheart.utils.BeanCopierUtils;
 import com.luckysweetheart.utils.FileUtil;
 import com.luckysweetheart.utils.ResultInfo;
 import com.luckysweetheart.web.utils.UploadUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -32,14 +34,16 @@ import java.util.List;
 @Service
 public class PhotoService extends ParameterizedBaseService<Photo, Long> {
 
+
     @Resource
-    private StoreService storeService;
+    private PhotoDao photoDao;
+
+    @Resource
+    private StorageApi storageApi;
 
     @Resource
     private StorageGroupService storageGroupService;
 
-    @Resource
-    private PhotoDao photoDao;
 
     public ResultInfo<Long> create(PhotoDTO photoDTO) throws BusinessException {
         ResultInfo<Long> resultInfo = new ResultInfo<>();
@@ -54,10 +58,17 @@ public class PhotoService extends ParameterizedBaseService<Photo, Long> {
             BeanCopierUtils.copy(photoDTO, photo);
             Long pk = photoDao.save(photo);
             if (photoDTO.getIsDirectory().equals(Const.NO_DIRECTORY)) { // 是目录直接保存，不是目录，存储图片
-                ResultInfo<StoreDataDTO> result = storeService.uploadFile(photoDTO.getBytes(), photoDTO.getSuffix(), storageGroupService.getPhotoGroupName());
-                if (result.isSuccess()) {
+                PutObject putObject = new PutObject();
+                putObject.setBytes(photoDTO.getBytes());
+                putObject.setLength(photoDTO.getBytes().length);
+                putObject.setFileName(photoDTO.getName() + photoDTO.getSuffix());
+                putObject.setExtName(photoDTO.getSuffix());
+                putObject.setGroupName(storageGroupService.getPhotoGroupName());
+                String storeId = storageApi.putObject(putObject);
+
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(storeId)) {
                     photo.setPhotoId(pk);
-                    photo.setResourcePath(result.getData().getResourcePath());
+                    photo.setStoreId(storeId);
                     photoDao.update(photo);
                 } else {
                     throw new BusinessException("文件上传出现异常");
@@ -99,17 +110,17 @@ public class PhotoService extends ParameterizedBaseService<Photo, Long> {
             Assert.notNull(userId, "删除人不能为空");
             Photo photo = photoDao.get(photoId);
             if (photo != null) {
-                if(photo.getDeleteStatus().equals(Const.DELETE_STATUS_YES)){
+                if (photo.getDeleteStatus().equals(Const.DELETE_STATUS_YES)) {
                     throw new BusinessException("该相片已经被删除！");
                 }
                 if (photo.getUserId().equals(userId)) {
                     photo.setDeleteStatus(Const.DELETE_STATUS_YES);
-                    ResultInfo<Void> result = storeService.deleteFile(photo.getResourcePath(), storageGroupService.getPhotoGroupName());
-                    if (result.isSuccess()) {
+                    boolean deleteObject = storageApi.deleteObject(photo.getStoreId());
+                    if (deleteObject) {
                         photoDao.update(photo);
                         return resultInfo.success();
                     } else {
-                        throw new BusinessException(result.getMsg());
+                        throw new BusinessException("文件删除失败");
                     }
                 } else {
                     throw new BusinessException("该相片不属于你");
@@ -131,13 +142,13 @@ public class PhotoService extends ParameterizedBaseService<Photo, Long> {
             notNull(photoId, "id不能为空");
             Photo photo = photoDao.get(photoId);
             if (photo != null) {
-                if(photo.getDeleteStatus().equals(Const.DELETE_STATUS_YES)){
+                if (photo.getDeleteStatus().equals(Const.DELETE_STATUS_YES)) {
                     return re.fail("该相片已经被删除！");
                 }
                 UserDTO userDTO = userService.findById(photo.getUserId());
                 PhotoDTO photoDTO = new PhotoDTO();
                 BeanCopierUtils.copy(photo, photoDTO);
-                photoDTO.setHttpUrl(storeService.getHttpUrlByResourcePath(photoDTO.getResourcePath()));
+                photoDTO.setHttpUrl(storageApi.getHttpUrl(photo.getStoreId()));
                 photoDTO.setUsername(userDTO.getUsername());
                 return re.success(photoDTO);
             }
@@ -158,7 +169,7 @@ public class PhotoService extends ParameterizedBaseService<Photo, Long> {
                 for (Photo photo : pagedResult.getResults()) {
                     PhotoDTO photoDTO = new PhotoDTO();
                     BeanCopierUtils.copy(photo, photoDTO);
-                    photoDTO.setHttpUrl(storeService.getHttpUrlByResourcePath(photo.getResourcePath()));
+                    photoDTO.setHttpUrl(storageApi.getHttpUrl(photo.getStoreId()));
                     photoDTOS.add(photoDTO);
                 }
                 dtoPagedResult.setResults(photoDTOS);
